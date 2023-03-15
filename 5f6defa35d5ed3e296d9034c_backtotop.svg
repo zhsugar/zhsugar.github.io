@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>corner-up-round</title>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="corner-up-round" transform="translate(7.500000, 7.500000) scale(-1, 1) translate(-7.500000, -7.500000) " fill="#355FFF" fill-rule="nonzero">
-            <path d="M7.3,0.3 L1.6,6 L3,7.4 L7,3.4 L7,9 C7,11.2 5.2,13 3,13 L0,13 L0,15 L3,15 C6.3,15 9,12.3 9,9 L9,3.4 L13,7.4 L14.4,6 L8.7,0.3 C8.3,-0.1 7.7,-0.1 7.3,0.3 Z" id="Path"></path>
-        </g>
-    </g>
-</svg>
