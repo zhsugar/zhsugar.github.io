@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>智能果园源码释义</title>
+		<style>
+			ul {
+				color: #b0c4de;
+				list-style: none;
+			}
+			a {
+				color: aqua;
+			}
+			li {
+				color: #b0c4de;
+			}
+		</style>
+	</head>
+	<body bgcolor="black">
+		<ol>
+			<li>huoyanbaojing 详细代码 <a href="./Arduino/huoyanbaojing.html">点我</a>
+				<ul>
+					<details>
+					<summary>概要</summary>
+						<li>
+							<ol>
+							这是一个基于Arduino的火焰检测与报警系统的代码，该系统包括以下组件：
+							
+							- 火焰传感器：使用模拟口A1来读取当前环境中火焰的强度值（模拟量）
+							- 蜂鸣器：如果检测到火苗，则打开数字口2上的蜂鸣器进行警报
+							- LED指示灯：如果检测到火苗，则点亮LED指示灯
+							- 电机驱动模块：通过控制数字口9上的电机驱动模块，可以控制电机的启动和关闭
+							- 开关按键：用于启停电机
+							
+							具体代码解释如下：
+							
+							<li> 定义了一些常量和变量，包括LED、KEY、beep对应的引脚号，KEY_NUM、vall、val、dianJiPin等变量。
+							
+							<li> 在setup()函数中，设置引脚模式，启动串口进行通信，并初始化蜂鸣器。
+							
+							<li> 在loop()函数中，通过调用ScanKey()函数检测是否有按键输入，如果有则执行相应操作。
+							
+							<li> 紧接着，调用huoyanbaojing()函数，对火焰强度进行检测，并根据其阈值来开启或关闭蜂鸣器。
+							
+							<li> 然后使用analogRead()函数读取模拟接口A0的值（即14口），将其赋值给val变量，再通过Serial.println()函数输出到串口中。
+							
+							<li> 如果检测到当前火焰强度值大于500，则点亮LED指示灯；否则关闭LED。
+							
+							<li> 在ScanKey()函数中，判断开关按键是否被按下，并且通过KEY_NUM变量返回“1”来表示有按键输入。
+							
+							<li> 在huoyanbaojing()函数中，读取模拟接口A1的数值，并且通过调节阈值判断是否需要发出报警。如果当前环境存在火焰，则打开蜂鸣器以及相应红色LED等进行视觉和声音上的报警，否则都关闭。
+							
+							总之，该代码实现了基本的火焰检测与报警功能，并且可以通过调节设定阈值参数以改变火焰检测的敏感度。
+						</ol>
+						</li>
+					</details>
+				</ul>
+			</li>
+			
+			<br><br><br>
+			<li>
+				jiaohua 详细代码 <a href="./Arduino/jiaohua.html">点我</a>
+				<ul>
+					<details>
+					<summary>概要</summary>
+						<li>
+						<ol>
+							这段代码是用来控制土壤湿度传感器并连接自动浇水系统的。具体功能是：通过读取数字口2（D0）上的信号，判断土壤湿度是否低于预设阈值，从而自动控制继电器打开或关闭水泵来进行浇水。
+							
+							代码解释如下：
+							
+							<li> 在 setup() 函数中，定义了数字口2（D0）以及继电器控制口（digtalPin 9），并且将其设置为输出模式和输入模式，同时开始串口通信。
+							
+							<li> 在 loop() 函数中，首先通过 digitalRead() 读取数字口 2 上对应的数值，并且通过 Serial.print() 和 Serial.println() 进行在串口上的显示。
+							
+							<li> 如果检测到湿度过低，即 digitalRead(PIN_DO) 函数返回值为真，则通过 digitalWrite() 功能打开继电器，启动水泵开始进行浇水，并且在串口上输出 "开始浇水"。
+							
+							<li> 如果检测到湿度正常或者偏高，即 digitalRead(PIN_DO) 函数返回值为假，则通过 digitalWrite() 功能关闭继电器，停止水泵进行浇水，并且在串口上输出 "停止浇水"。
+							
+							<li> 在每次循环结束后延时 500 毫秒，等待一定时间后继续读取土壤湿度传感器上数字口的数值, 避免频繁操作对水泵等的影响。
+							
+							总之，该代码实现了自动控制水泵浇水的功能，适用于植物等需要定时进行浇水的场合。根据传感器读到的数值而进行水泵的开关，以保持土壤湿度在适宜的范围内。
+						</ol>
+						</li>
+					</details>
+				</ul>
+			</li>
+			
+			<br><br><br>
+			<li>
+				keranqitijiance 详细代码 <a href="./Arduino/keranqitijiance.html">点我</a>
+				<ul>
+					<details>
+					<summary>概要</summary>
+						<li>
+							<ol>
+							这是一个基于Arduino的声音控制led灯和蜂鸣器的代码。此代码使用了以下组件：
+							
+							- LED灯：使用引脚2（LED）来控制的小灯
+							- 声音传感器：通过引脚3（shengyin）读取声音传感器的电信号
+							- 两个彩色LED灯：连接在引脚13和12上
+							- 蜂鸣器：连接在引脚11上
+							
+							具体代码解释如下：
+							
+							<li> 在 setup() 函数中，定义了引脚模式，并且开始串口通信。
+							
+							<li> loop() 函数中，首先通过 analogRead() 读取声音传感器对应的模拟口A0的值，然后通过Serial.println()函数输出到串口中。
+							
+							<li> 然后通过 digitalRead() 读取数字口 7 对应的值，并且通过 Serial.println() 输出到串口中。
+							
+							<li> 然后进行相关判断，如果检测到声音过大即数字口 7 对应的状态为LOW，则点亮红色LED并且启动蜂鸣器警报。
+							
+							<li> 如果声音过小或没有声音（数字口7对应的状态为HIGH），则停止蜂鸣器警报，同时点亮绿色LED灯。
+							
+							<li> 最后通过 delay() 延时函数让程序等待一段时间结束循环。
+							
+							总之，本代码实现了声音控制LED灯和蜂鸣器的功能，当检测到环境中声音较大时（例如突发火警），红色LED灯和蜂鸣器起到报警作用，当声音很小或完全没有声音时，绿色LED灯常亮，表示环境正常。
+						</ol>
+						</li>
+					</details>
+				</ul>
+			</li>
+			
+			<br><br><br>
+			<li>
+				RFID_LED 详细代码 <a href="./Arduino/RFID_LED.html">点我</a>
+				<ul>
+					<details>
+					<summary>概要</summary>
+						<li>
+						<ol>
+							这段代码是一个基于Arduino的RFID刷卡系统。具体的功能是：当刷卡时，通过读取RFID模块获取卡片信息，并根据卡片信息库进行比对，如果匹配则点亮LED小灯表示刷卡成功，并且将刷卡的信息通过串口发送出去。
+							
+							代码解释如下：
+							
+							<li> 首先定义了一些全局变量，包括连接LED小灯的引脚（数字口2），存储卡片信息的数组 CardInfo,最大的卡信息数 MaxNum等。
+							
+							<li> 在 setup() 函数中，初始化SPI和RFID的SDA(SS)、RST引脚，并开始串口通信。
+							
+							<li> 在 loop() 函数中，利用 mfrc522.PICC_IsNewCardPresent() 检测是否有新的卡片出现。
+							
+							<li> 如果检测到新的卡片，通过 mfrc522.PICC_ReadCardSerial() 读取卡片串号，然后将其转化成16进制，存储在字符串 temp 中，并通过 Serial.print() 显示在串口上。
+							
+							<li> 然后通过与存储在 CardInfo[4][2] 中的卡片信息逐一比对来判断当前读取到的卡片是否为已知卡片，如果匹配则通过Serial.print() 函数输出对应的卡片信息和状态码1（表示刷卡成功），并在程序中设置变量 g_boolSuccess 为真。
+							在检测到已知卡片时通过串口输出“刷卡成功”，并点亮LED小灯表示刷卡成功，然后等待两秒，再将LED小灯熄灭。如果没有匹配到任何已知卡片，则通过Serial.print()函数输出“刷卡失败”，并熄灭LED小灯。
+							
+							具体解释如下：
+							
+							<li> 首先通过 if 语句判断变量 g_boolSuccess 是否为真，即判断是否匹配到了已知卡片，如果是，则进入 if 分支执行相关操作；如果否，则进入 else 分支执行对应操作。
+							
+							<li> 如果匹配到了已知卡片，则通过 Serial.print() 输出“刷卡成功”，对应的LED小灯点亮，并且程序进入 delay() 等待状态，持续两秒钟，然后 LED 小灯熄灭。
+							
+							<li> 如果未匹配到已知卡片，则程序通过 Serial.print() 输出“刷卡失败”，并将对应的 LED 小灯熄灭。
+							
+							<li> 最后将变量 g_boolSuccess 设置为假，通过 mfrc522.PICC_HaltA() 和 mfrc522.PCD_StopCrypto1() 实现停止读写和加密功能，然后等待下次刷卡。
+							
+							<li> 总之，这段代码对 RFID 刷卡系统进行了扩展完善，通过等待两秒的时间可以更直观地提醒用户刷卡成功，从而增强了应用的互动性和用户体验。
+							
+							<li> 最后判断变量 g_boolSuccess 是否真，如果是，则点亮 LED 小灯表示刷卡成功，将变量值设置为假，并等待下次读取。
+							
+							总之，这段代码实现了一个基于RFID的刷卡系统，可以根据存储在卡片信息库中的卡片信息来辨别不同的卡片，进而决定是否进行开锁等相关操作，使用方便高效。
+						</ol>
+						</li>
+					</details>
+				</ul>
+			</li>
+			
+			<br><br><br>
+			<li>
+			    wenshiducanji 详细代码 <a href="./Arduino/wenshiducanji.html">点我</a>
+				<ul>
+					<details>
+					<summary>概要</summary>
+						<ol>
+							callback()这段代码是一个基于ESP8266和阿里云的温湿度传感器程序，通过读取 DHT11 温湿度传感器数据，并将其通过 MQTT 协议上报到阿里云物联网平台。
+							
+							具体解释如下：
+							
+							<li> 首先导入需要用到的头文件，包括 AliyunIoTSDK.h、ESP8266WiFi.h、PubSubClient.h 和 ArduinoJson.h 等。</li>
+							
+							<li> 然后定义了 DHT11_PIN 为 DHT11 传感器的引脚，定义了 WIFI 的 SSID 和密码，以及设备的三元组信息（PRODUCT_KEY、DEVICE_NAME 和 DEVICE_SECRET）和服务器地区（REGION_ID）等。
+							
+							<li> 接下来定义了 MQTT 协议相关的常量，包括 MQTT_SERVER、MQTT_PORT、MQTT_USRNAME、CLIENT_ID 和 MQTT_PASSWD 等。其中 CLIENT_ID 是基于 DEVICE_NAME 和 PRODUCT_KEY 组成的，能够唯一标识一个设备。
+							
+							<li> 然后定义了 ALINK_BODY_FORMAT 字符串和 ALINK_TOPIC_PROP_POST 常量，分别表示设备属性上报的消息体格式和话题地址。
+							
+							<li> 接下来定义了一些变量，包括 lastMs、RH_sum、T_sum 和 count 等。
+							
+							<li> 然后初始化 WiFi 连接，并通过 DHT.begin() 初始化 DHT11 传感器。
+							
+							<li> 在 loop() 函数中，首先判断 WiFi 是否连接，如果未连接，则通过 WiFi.begin() 函数进行连接。
+							
+							<li> 如果已经连接 WiFi，则通过 DHT.read() 函数读取当前的温湿度数据。
+							
+							<li> 然后通过 count 变量计算出一个可靠的平均值，并将其存储到 RH_sum 和 T_sum 变量中，用于上报到阿里云物联网平台。
+							
+							<li> 如果已经过去了 5 秒钟（即 lastMs + 5000），则将 RH_sum 和 T_sum 上报到阿里云平台。
+							
+							<li> 最后通过 client.loop() 函数等待 MQTT 消息的到来，并调用 callback() 函数对消息进行处理。
+							
+							总之，这段代码实现了基于 ESP8266 和阿里云平台的温湿度传感器程序，能够通过 MQTT 协议将采集到的数据上报到阿里云平台。
+							
+							wifiInit()-setup()这段代码是针对前文中基于 ESP8266 和阿里云物联网平台的温湿度传感器程序的三个函数，分别是 wifiInit()、mqttCheckConnect() 和 mqttIntervalPost()，并在 setup() 函数中调用了 wifiInit() 函数实现 WiFi 连接和阿里云 MQTT 服务器连接。
+							
+							具体解释如下：
+						
+				
+							<li> wifiInit() 函数首先通过 WiFi.mode() 函数将 ESP8266 设置为工作在客户端模式（WIFI_STA），然后使用 WiFi.begin() 在指定的 SSID 和密码下连接到 WiFi 网络。在连接过程中，如果出现错误，则会通过 Serial.println() 输出“WiFi not Connect”，持续 1 秒钟，直到成功连接到 WiFi。
+							
+							<li> 如果成功连接到 WiFi，则通过 Serial.println() 显示当前 IP 地址，并使用 client.setServer() 和 client.setCallback() 函数连接到阿里云 MQTT 服务器，并设置回调函数 callback() 用于处理接收到的消息。
+							
+							<li> mqttCheckConnect() 函数主要实现了阿里云 MQTT 服务器的连接重试机制，当未能成功连接到 MQTT 服务器时，程序会通过 Serial.println() 输出“Connecting to MQTT Server ...”，等待 5 秒钟，然后再次尝试连接。如果连接成功，则通过 Serial.println() 输出“MQTT Connected!”，否则输出“MQTT Connect err:”后面跟着的是 client.state() 的值。
+							
+							<li> mqttIntervalPost() 函数主要实现了数据上报的功能，包括计算平均温湿度、封装消息体、通过 client.publish() 函数将数据上报到阿里云平台等。
+							
+							<li> 在 setup() 函数中，首先通过 Serial.begin() 初始化串口通信，然后输出“Demo Start”，最后调用 wifiInit() 函数实现 WiFi 连接和阿里云 MQTT 服务器连接的操作。
+							
+							总之，这段代码提供了一个完整的基于 ESP8266 和阿里云物联网平台的温湿度传感器程序，并通过 wifiInit()、mqttCheckConnect() 和 mqttIntervalPost() 函数分别实现了 WiFi 连接、MQTT 服务器连接重试和数据上报功能，可以方便地进行二次开发和应用。
+						
+							loop()这段代码是基于前面的程序，在 Arduino 循环结构 loop() 中实现了温湿度数据读取、计算和上报的过程，并通过 mqttCheckConnect() 函数保持连接，实时接收控制指令或下发配置参数。
+							具体解释如下：
+							
+							<li> 在 loop() 函数中，首先通过 DHT.read() 函数读取 DHT11 传感器的温湿度数据，并将其存储到 RH 和 T 变量中。然后将 RH 和 T 分别累加到 RH_sum 和 T_sum 中，并将 count 累加 1，用于计算平均值并进行上报。
+							
+							<li> 通过 Serial.print() 函数向串口打印湿度和温度数据的内容，并在最后添加“C”表示温度单位为摄氏度。
+							
+							<li> 调用 mqttCheckConnect() 函数以保持连接状态，确保能够实时接收控制指令或下发配置参数。
+							
+							<li> 判断是否已经超过 30 秒钟（即当前时间与 lastMs 的差值是否大于等于 30000），如果是，则调用 mqttIntervalPost() 函数实现温湿度数据的上报，并将 count、RH_sum 和 T_sum 变量清零，准备开始新一轮的数据计算和上报。
+							
+							<li> 最后调用 client.loop() 函数等待阿里云平台的消息到来，并更新 MQTT 连接状态。
+							
+							总之，这段代码完整实现了基于 ESP8266 和阿里云物联网平台的温湿度传感器程序，能够实时读取并上报温湿度数据，通过 mqttCheckConnect() 函数保持连接状态，确保能够实时接收控制指令或下发配置参数。
+							
+						</ol>
+					</details>
+				</ul>
+			</li>
+		</ol>
+	</body>
+</html>
