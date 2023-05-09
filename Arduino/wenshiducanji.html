@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>代码</title>
+		<style>
+			font {
+				color: #b0c4de;
+			}
+		</style>
+	</head>
+	<body bgcolor="black">
+		<pre>
+		<font size="4">
+			/*******************************************导入需要用到的头文件******************************************/
+			#include <AliyunIoTSDK.h>
+			#include <ESP8266WiFi.h>
+			/* 依赖 PubSubClient 2.4.0 */
+			#include <PubSubClient.h>
+			/* 依赖 ArduinoJson 5.13.4 */
+			#include <ArduinoJson.h>
+			#include <DFRobot_DHT11.h>
+			/*******************************************************************************************************/
+			DFRobot_DHT11 DHT;
+			#define DHT11_PIN 4                 //pin2  对应的是D4引脚
+			/* 连接您的WIFI SSID和密码 */
+			#define WIFI_SSID         "007"           //这是我的WIFI名称
+			#define WIFI_PASSWD       "66666666"      //这是我的WIFI密码
+			
+			/* 设备的三元组信息*/
+			#define PRODUCT_KEY       "ic63YHceCHc"                       //这是我的阿里云服务器中对应的设备的PRODUCT_KEY
+			#define DEVICE_NAME       "TempHum"                           //这是我的阿里云服务器中对应的设备的DEVICE_NAME 
+			#define DEVICE_SECRET     "e4e934bf9c87a089c1c63ca8cd4e622f"  //这是我的阿里云服务器中对应的设备的DEVICE_SECRET
+			#define REGION_ID         "cn-shanghai"                       //这是我的阿里云服务器对应的地区
+			
+			/*  MQTT协议  */
+			#define MQTT_SERVER       "ic63YHceCHc.iot-as-mqtt.cn-shanghai.aliyuncs.com"
+			#define MQTT_PORT         1883
+			#define MQTT_USRNAME      "TempHum&ic63YHceCHc"
+			#define CLIENT_ID         "TempHum|securemode=3,signmethod=hmacsha1,timestamp=789|"
+			#define MQTT_PASSWD       "0d0fac48404d3210e6f31bc5ecaa7463fd4101cb"   
+			
+			#define ALINK_BODY_FORMAT         "{\"id\":\"ESP8266\",\"version\":\"1.0\",\"method\":\"thing.event.property.post\",\"params\":%s}"
+			#define ALINK_TOPIC_PROP_POST     "/sys/" PRODUCT_KEY "/" DEVICE_NAME "/thing/event/property/post"      //属性上报的话题
+			
+			unsigned long lastMs = 0;
+			float RH,T,RH_sum,T_sum;
+			unsigned char count=0;
+			WiFiClient espClient;
+			PubSubClient  client(espClient);
+			
+			void callback(char *topic, byte *payload, unsigned int length)
+			{
+			    Serial.print("Message arrived [");
+			    Serial.print(topic);
+			    Serial.print("] ");
+			    payload[length] = '\0';
+			    Serial.println((char *)payload);
+			
+			}
+			
+			void wifiInit()
+			{
+			    WiFi.mode(WIFI_STA);
+			    WiFi.begin(WIFI_SSID, WIFI_PASSWD);   //连接WiFi
+			    while (WiFi.status() != WL_CONNECTED)
+			    {
+			        delay(1000);
+			        Serial.println("WiFi not Connect");
+			    }
+			    Serial.println("Connected to AP");
+			    Serial.println("IP address: ");
+			    Serial.println(WiFi.localIP());    
+			    Serial.print("espClient [");
+			    client.setServer(MQTT_SERVER, MQTT_PORT);   /* 连接WiFi之后，连接MQTT服务器 */
+			    client.setCallback(callback);
+			}
+			
+			void mqttCheckConnect()
+			{
+			    while (!client.connected())
+			    {
+			        Serial.println("Connecting to MQTT Server ...");
+			        if (client.connect(CLIENT_ID, MQTT_USRNAME, MQTT_PASSWD))
+			        {
+			            Serial.println("MQTT Connected!");
+			        }
+			        else
+			        {
+			            Serial.print("MQTT Connect err:");
+			            Serial.println(client.state());
+			            delay(5000);
+			        }
+			    }
+			}
+			
+			void mqttIntervalPost()
+			{
+			    char param[32];
+			    char jsonBuf[128];
+			    sprintf(param, "{\"temperature\":%f}",T_sum/count);
+			    sprintf(jsonBuf, ALINK_BODY_FORMAT, param);
+			    Serial.println(jsonBuf);
+			    boolean d = client.publish(ALINK_TOPIC_PROP_POST, jsonBuf);
+			    if(d){
+			      Serial.println("publish Temperature success"); 
+			    }else{
+			      Serial.println("publish Temperature fail"); 
+			    }
+			    
+			    sprintf(param, "{\"humidity\":%f}",RH_sum/count);
+			    sprintf(jsonBuf, ALINK_BODY_FORMAT, param);
+			    Serial.println(jsonBuf);
+			    d = client.publish(ALINK_TOPIC_PROP_POST, jsonBuf);
+			    if(d){
+			      Serial.println("publish Humidity success"); 
+			    }else{
+			      Serial.println("publish Humidity fail"); 
+			    }
+			}
+			
+			void setup() 
+			{
+			    Serial.begin(115200);
+			    Serial.println("Demo Start");
+			    wifiInit();
+			    unsigned char i=0;
+			}
+			
+			void loop()
+			{
+			  DHT.read(DHT11_PIN);
+			  delay(1000);                  //延时1000毫秒
+			
+			    RH = DHT.humidity;   //读取湿度数据                       
+			    T = DHT.temperature;       //读取温度数据
+			    RH_sum+=RH;
+			    T_sum+=T;
+			    count+=1;                    
+			
+			  Serial.print("Humidity:");  //向串口打印 Humidity:
+			  Serial.print(RH);           //向串口打印湿度数据
+			  Serial.print("%");
+			  Serial.print("  Temperature:");
+			  Serial.print(T);            //向串口打印温度数据
+			  Serial.println("C"); 
+			
+			  mqttCheckConnect();     //上线平台连接
+			
+			  if (millis() - lastMs >= 30000)   //30000（ms）
+			  {
+			    lastMs = millis();
+			
+			    /* 上报 */
+			    mqttIntervalPost();
+			    count=0;
+			    RH_sum=0;
+			    T_sum=0;
+			  }
+			  client.loop();
+			}
+
+			</font>
+		</pre>
+	</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>代码</title>
+		<style>
+			font {
+				color: #b0c4de;
+			}
+		</style>
+	</head>
+	<body bgcolor="black">
+		<pre>
+		<font size="4">
+			#include <SPI.h> //RFID库文件 
+			#include <MFRC522.h>//RFID库文件
+			int led = 2; //定义小灯的输出引脚数字口2
+			String CardInfo[4][2] ={
+			    {"93150519", "yanyu"},
+			    {"93150519", "beyond"}
+			};//这里的卡片信息通过Serial.print("Card:" + temp + "\n");进行串口显示，将自己的卡片信息进行修改即可
+			int MaxNum = 4; //这里存储最大的卡信息数与上面数组保持一致.
+			
+			
+			#define Servo_Pin       6      //模拟开门
+			
+			
+			#define RST_PIN         9      // RFID 的RST引脚
+			#define SS_PIN          10     // RFID 的SDA(SS)引脚
+			
+			
+			int val = 0; //初始化一个变量为0
+			MFRC522 mfrc522(SS_PIN, RST_PIN);   // 创造 MFRC522 实例.
+			MFRC522::MIFARE_Key key;
+			int comdata;
+			boolean g_boolSuccess = false; //刷卡成功标识 
+			/*通信协议*/
+			int incomingByte = 0;       // 接收到的 data byte
+			String inputString = "";         // 用来储存接收到的内容
+			boolean newLineReceived = false; // 前一次数据结束标志
+			boolean startBit  = false;  //协议开始标志
+			String returntemp = ""; //存储返回值 
+			
+			void setup() 
+			{
+			    pinMode(led,OUTPUT);//设置连接小灯的引脚为输出模式
+			    while (!Serial);    // 如果没有打开串行端口，就什么也不做(添加基于ATMEGA32U4的Arduinos)
+			    SPI.begin();        //初始化SPI
+			    mfrc522.PCD_Init(); // 初始化 MFRC522
+			}
+			
+			void loop() {  
+			    /* 寻找新的卡片*/
+			    if ( ! mfrc522.PICC_IsNewCardPresent())
+			        return;
+			    /* 选择一张卡片*/
+			    if ( ! mfrc522.PICC_ReadCardSerial())
+			        return;
+			     /* 显示PICC的信息，将卡的信息写入temp */ 
+			    String temp,str;  //定义字符串temp,str
+			    for (byte i = 0; i < mfrc522.uid.size; i++)
+			    {
+			        str = String(mfrc522.uid.uidByte[i], HEX);    // 将数据转换成16进制的字符 
+			        if(str.length() == 1) //保证str的长度有两位
+			        {
+			          str = "0" + str;
+			        }
+			        temp += str; //将字符str放入temp       
+			    }
+			    Serial.print("Card:" + temp + "\n");  //这里打开可以查看实际的卡，方便填写数组
+			    /* 将temp的信息与存储的卡信息库CardInfo[4][2]进行比对*/
+			    for(int i = 0; i < MaxNum; i++)
+			    {
+			        if(CardInfo[i][0] == temp) //如果在CardInfo[i][0]中比对到卡片的信息
+			        {
+			          Serial.print("$RFID-" + CardInfo[i][0] + "-" + CardInfo[i][1] + "-1-0#"); //将卡的信息打印到串口
+			          g_boolSuccess = true;  //刷卡成功标识
+			        }
+			    }
+			    if(g_boolSuccess == true) //如果刷卡成功
+			    {  
+			        Serial.print("刷卡成功");
+			        //----------------------------------------------------------------------//
+			        //判断是否读取到卡片
+			        Serial.println("Find the card!");//串口显示
+			        digitalWrite(led,HIGH);//对应的LED小灯亮起   
+			        delay(2000);
+			        digitalWrite(led,LOW);//对应的LED小灯熄灭
+			        //----------------------------------------------------------------------//
+			    }
+			    else//刷卡失败
+			    {
+			        Serial.print("刷卡失败"); //将卡的信息打印到串口
+			        digitalWrite(led,LOW);//对应的LED小灯熄灭  
+			    }
+			    g_boolSuccess = false;//刷卡失败标识
+			    mfrc522.PICC_HaltA();      //停止读写
+			    mfrc522.PCD_StopCrypto1(); //  停止向PCD加密
+			}
+			</font>
+		</pre>
+	</body>
+</html>

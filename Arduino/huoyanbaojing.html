@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>代码</title>
+		<style>
+			font {
+				color: #b0c4de;
+			}
+		</style>
+	</head>
+	<body bgcolor="black">
+		<pre>
+		<font size="4">
+			#define lightR A0
+			#define LED 13
+			#define KEY 4
+			int KEY_NUM=0;
+			int beep = 2;//定义数字口2控制蜂鸣器
+			int vall;//定义变量vall
+			int val;
+			int dianJiPin=9;//定义数字9接口接电机驱动IN1的控制口
+			
+			void setup()
+			{
+			  pinMode(dianJiPin,OUTPUT);//定义电机驱动IN1的控制口为输出接口
+			  pinMode(KEY,INPUT_PULLUP);
+			  pinMode(LED,OUTPUT);//设置连接小灯的引脚为输出模式
+			  pinMode(lightR,INPUT);
+			  Serial.begin(9600);     //设置波特率为9600
+			
+			  pinMode(beep,OUTPUT);//设置数字2引脚为输出模式 
+			}
+			
+			void loop()
+			{
+			  ScanKey();
+			  huoyanbaojing();
+			  if(KEY_NUM==1)
+			  {
+			    digitalWrite(dianJiPin,!digitalRead(dianJiPin));
+			
+			  }
+			
+			  val=analogRead(lightR);  //读取模拟接口A0的值，也就是14号口，把值赋给val
+			  Serial.println(val);    //通过串口打印对应的val值，并且通过串口进行显示出来
+			  delay(1000);//延时1秒
+			  if(val>500)//判断是否大于设定值
+			   {
+			      digitalWrite(LED,HIGH);//点亮led
+			   }else{
+			     digitalWrite(LED,LOW);//关闭led
+			   }
+			 }
+			
+			void ScanKey()
+			{
+			  KEY_NUM=0;
+			  if(digitalRead(KEY)==LOW)
+			  {
+			    delay(20);
+			     if(digitalRead(KEY)==LOW)
+			     {
+			       KEY_NUM=1;
+			       while(digitalRead(KEY)==LOW);
+			     }
+			  }
+			}
+			
+			void huoyanbaojing()
+			{
+			  vall = analogRead(A1);//读取模拟14口的值 
+			  Serial.println("模拟量值为：");  //显示字符串"模拟量值为："
+			  Serial.println(vall);    //读取模拟接口A0的值，并且通过串口进行显示出来
+			  if(vall>100)//可以通过调节这个参数来改变火焰检测的阀值
+			  { 
+			    digitalWrite(beep,LOW);//关闭蜂鸣器
+			  } 
+			  else//否则 
+			  { 
+			    digitalWrite(beep,HIGH);//打开蜂鸣器 
+			  } 
+			  delay(1000);
+			}
+			</font>
+		</pre>
+	</body>
+</html>
