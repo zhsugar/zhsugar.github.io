@@ -35,7 +35,8 @@ body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: 
 </style>
 <link rel="stylesheet" id="saukra-css-css" href="../article_files/01_files/style.css" type="text/css" media="all">
 <link rel="stylesheet" id="entry-content-css" href="../article_files/01_files/sakura.css" type="text/css" media="all">
-<link rel="https://api.w.org/" href="https://linmuxi.cn/wp-json/"><link rel="alternate" type="application/json" href="https://linmuxi.cn/wp-json/wp/v2/posts/739"><link rel="canonical" href="https://linmuxi.cn/739/">
+<link rel="https://api.w.org/" href="https://linmuxi.cn/wp-json/"><link rel="alternate" type="application/json" href="https://linmuxi.cn/wp-json/wp/v2/posts/739">
+<link rel="canonical" href="https://linmuxi.cn/739/">
 <link rel="shortlink" href="https://linmuxi.cn/?p=739">
 <link rel="alternate" type="application/json+oembed" href="https://linmuxi.cn/wp-json/oembed/1.0/embed?url=https%3A%2F%2Flinmuxi.cn%2F739%2F">
 <link rel="alternate" type="text/xml+oembed" href="https://linmuxi.cn/wp-json/oembed/1.0/embed?url=https%3A%2F%2Flinmuxi.cn%2F739%2F&amp;format=xml">
@@ -43,7 +44,7 @@ body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: 
 .site-top .lower nav {display: block !important;}
 :root{
     --theme-skin: #505050;
-    --theme-skin-matching:#ffe066;
+    --theme-skin-matching:#99CCFF;
     --infor_bar_bgcolor:rgba(255,255,255,0.8);
     --style_menu_selection_radius:15px;
     --post_list_matching_color:;
@@ -926,8 +927,50 @@ background-image: url(https://linmuxi.cn/resources/Sakurairo_Vision-main/load_sv
 #banner_wave_2 {
     background: url(https://linmuxi.cn/resources/Sakurairo_Vision-main/basic/wave2.png) repeat-x;
 }
+li {
+	list-style: none;
+}
+pre{
+	background-color: black;
+	opacity: 0.6;
+	color: #b0c4de;
+}
 
+
+/* 弹窗样式 */
+      .popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        padding: 20px;
+        width: 300px;
+        z-index: 9999;
+        display:none;
+		opacity: 0.7;
+      }
+      /* 遮罩层样式 */
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9998;
+        display:none;
+      }
+	  
+	  button {
+	  		  background-color: #FF99CC;
+	  		  border-radius: 30%;
+	  }
 </style>
+
+
 	<link rel="stylesheet" href="../article_files/01_files/css.css" media="all">
 	<script type="text/javascript">
 		if (!!window.ActiveXObject || "ActiveXObject" in window) { //is IE?
@@ -946,8 +989,9 @@ background-image: url(https://linmuxi.cn/resources/Sakurairo_Vision-main/load_sv
 			<div class="site-branding">
 									<span class="site-title">
 						<span class="logolink moe-mashiro">
-							<a href="">
+							<a href="https://zhsugar.github.io/article.html">
 								<ruby>
+									<span class="no">文章中心</span>
 									<span class="sakuraso"></span>
 									<span class="no"></span>
 									<span class="shironeko">Zhang Hong</span>
@@ -1042,7 +1086,9 @@ background-image: url(https://linmuxi.cn/resources/Sakurairo_Vision-main/load_sv
 <article id="post-739" class="post-739 post type-post status-publish format-standard hentry category-uncategorized">
 		<header class="entry-header">
 		<h1 class="entry-title"> Arduino+光学指纹模块+舵机+其他 </h1>
-		<p class="entry-census">发布于 2022-12-25&nbsp;&nbsp; </p>
+		<p ">小组实验<br>
+		<p class="entry-census">发布于 2023-5-12&nbsp;&nbsp;</p>
+		</p>
 		<hr>
 	</header><!-- .entry-header -->
 		<!--<div class="toc-entry-content"><!-- 套嵌目录使用（主要为了支援评论）-->
@@ -1050,38 +1096,50 @@ background-image: url(https://linmuxi.cn/resources/Sakurairo_Vision-main/load_sv
 		
 <h2 id="1%E3%80%81%E8%AF%B4%E5%9C%A8%E5%89%8D%E9%9D%A2">1、说在前面</h2>
 <b><a href="" target="_blank" rel="nofollow"></a></b>
-<p><!-- 在宿舍条件有限制，不能更改门的锁体，不能破坏门的结构。<br>需要在门外安装指纹识别模块（需要有门缝走线）,门把手适当位置安装固定舵机。<br> -->通过识别指纹开发板控制舵机模拟开门的目的。<br>准备材料。开始实验 </p>
-
-
+<p>
+	1、需求描述
+	<ul>
+		<li>通过识别指纹开发板控制舵机模拟开门的目的。</li>
+		<li>我想的是温湿度烟雾和指纹模块都可以实现让舵机转动。</li>
+		<li>同时温湿度和烟雾传感器还能控制蜂鸣器。</li>
+		<li>传感器：温湿度传感器、烟雾传感器、指纹模块、光感传感器、舵机、蜂鸣器。</li>
+	</ul>
+	
+	2、实现流程
+	<ul>
+		<li>功能一:指纹模块+舵机</li>
+		<li>功能二:温湿度传感器+舵机+蜂鸣器</li>
+		<li>功能三:烟雾传感器+舵机+蜂鸣器</li>
+		<li>功能四:光感传感器</li>
+		<li>准备材料。开始实验。</li>
+	</ul>
 
 <h2 id="2%E3%80%81%E5%87%86%E5%A4%87%E6%9D%90%E6%96%99">2、准备材料</h2>
-<p>使用的材料是：<br>
-<!-- 1个充电宝（需要2个充电孔5V供电，也可使用充电器供电）<br> -->
-<!-- 1卷电工胶布（包裹和固定电线，非必要）<br> -->
-<!-- 1根USB线（给大力舵机独立供电）<br> -->
-<!-- <font color="red">1块UNO&nbsp;&nbsp;R3开发板（带打印线）<br> -->
-1个AS608指纹识别模块（带USB转TTL板）<br>
-1个MG996舵机180度（根据开门力度选择合适的舵机）（大力舵机需要独立供电）<br>
-若干根合适长度的杜邦线（公对公、母对母、公对母）
-</font>
+<p>
+使用的材料是：<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指纹识别模块（带USB转TTL板）<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;舵机（度数可调）<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;温湿度传感器<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;光感传感器<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;烟雾传感器<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;蜂鸣器<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;若干根合适长度的杜邦线<br>
 </p>
-<div>
+<!-- <div>
 <img decoding="async" src="../article_files/01_files/as608.jpg" style="height:150px;width:150px;float:left;">
 <img decoding="async" src="../article_files/01_files/r3.jpg" style="height:150px;width:150px;float:left;">
-</div>
+</div> -->
 
 
 
 <h2 id="3%E3%80%81%E6%8C%87%E7%BA%B9%E8%B0%83%E8%AF%95">3、指纹调试</h2>
 <p>使用USB转TTL板连接指纹模块和电脑。<br>
-1、Vi模块电源正输入端——TTL板3.3V（红）(注意)<br>
-2、Tx串行数据输出——TTL板Rx（黄）<br>
-3、Rx串行数据输入——TTL板Tx（白）<br>
-4、GND信号地——TTL板GND（黑）<br>
-（接线图如下）<br>
-<figure class="wp-block-image size-full"><img decoding="async" src="../article_files/01_files/USBTTL.jpg" alt="" class="wp-image-806"></figure><br>
+1、Vi模块电源正输入端（红）——TTL板3.3V<font color="red">(注意)</font><br>
+2、Tx串行数据输出（黄）——TTL板Rx<br>
+3、Rx串行数据输入（白）——TTL板Tx<br>
+4、GND信号地（黑）——TTL板GND<br>
 5、打开“设备管理器”查看并记录TTL板的端口号。<br>
-6、运行指纹程序，打开该端口的指纹模块。
+6、运行指纹程序，打开该端口的指纹模块。<br>
 7、录入指纹速度慢可以取消勾选“显示图像”。<br>
 （建议录入指纹时，波特率选择57600）。<br>
 8、录入指纹完成后拔掉TTL板，使用杜邦线连接开发板指纹模块和舵机。
@@ -1090,38 +1148,361 @@ background-image: url(https://linmuxi.cn/resources/Sakurairo_Vision-main/load_sv
 
 
 <h2 id="4%E3%80%81%E7%BA%BF%E8%B7%AF%E8%BF%9E%E6%8E%A5">4、线路连接</h2>
-准备红、黄、蓝、绿、白、黑、橙颜色合适长度的杜邦线若干。<br>
-舵机上红色为电源线，棕黑色为地线，橙黄色为信号线。<br>
-1、指纹模块红色绿色线延长接成一根红色线上接R3板3.3V口。（供电）。<br>
-2、指纹模块黑色线接R3板GND接口（地线）。<br>
-3、指纹模块黄色线接R3板数字2号口（串行数据输出）。<br>
-4、指纹模块白色线接R3板数字3号口（串行数据输入）。<br>
-5、指纹模块蓝色线接R3板数字4号口（感应信号输出）。<br>
-6、舵机棕黑色线接R3板GND接口（地线）。<br>
-7、舵机红色接R3板5V接口（供电）。<br>
-8、舵机橙黄色线接R3板9号口（信号）。<br>
+准备合适长度的杜邦线若干。<br>
+1、舵机连接步骤：
+		<ul>
+				<li>舵机（红色) 线为电源线 —— 开发板5V接口（供电）</li>
+				<li>舵机（棕黑色）线为地线 —— 开发板GND接口（地线）</li>
+				<li>舵机（橙黄色）线为信号线 —— 开发板9号口（信号）</li>
+		</ul>
+2、指纹模块连接步骤：
+		<ul>
+				<li>指纹模块（红色绿色）线延长接成1根线 —— 开发板3.3V口（供电）</li>
+				<li>指纹模块（黑色）线 —— 开发板GND接口（地线）</li>
+				<li>指纹模块（黄色）线 —— 开发板数字2号口（串行数据输出）</li>
+				<li>指纹模块（白色）线 —— 开发板数字3号口（串行数据输入）</li>
+				<li>指纹模块（蓝色）线 —— 开发板数字4号口（感应信号输出）</li>huo
+		</ul>
+3、温湿度模块连接步骤：
+		<ul>
+				<li>温湿度模块S引脚 —— 开发板模拟口</li>
+				<li>温湿度模块VCC引脚 —— 开发板VCC引脚</li>
+				<li>温湿度模块GND引脚 —— 开发板GND引脚</li>
+		</ul>
+4、光感模块连接步骤：
+		<ul>
+				<li>光感模块S引脚 —— 开发板模拟口</li>
+				<li>光感模块VCC引脚 —— 开发板VCC引脚</li>
+				<li>光感模块GND引脚 —— 开发板GND引脚</li>
+		</ul>	
+5、烟雾模块连接步骤：
+		<ul>
+				<li>烟雾模块S引脚 —— 开发板模拟口</li>
+				<li>烟雾模块VCC引脚 —— 开发板VCC引脚</li>
+				<li>烟雾模块GND引脚 —— 开发板GND引脚</li>
+		</ul>
+6、蜂鸣器模块连接步骤：
+		<ul>
+				<li>蜂鸣器模块数字引脚 —— 开发板数字引脚</li>
+				<li>蜂鸣器模块GND引脚 —— 开发板GND引脚</li>
+		</ul>
 
 
+<h2 id="5%E3%80%81%E5%88%B7%E5%86%99%E7%A8%8B%E5%BA%8F">5、代码实现</h2>
+1、把开发板连接电脑，选择开发板的端口（工具→端口→选择端口），复制以下代码进Arduino程序。<br>
+2、如果缺少库文件，就在“工具→管理库”里面搜索添加提示缺失的库即可。<br>
+3、左上角√图标编译验证没问题，就可以上传→至开发板内了。<br>
+4、源代码实现 <font color="#FF99CC">(部分代码须根据实际进行修改和调整)</font><br>
+<!--******************************************************************************************************************************************************************************-->
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;功能一：指纹模块+舵机
+<pre>
+#include <Adafruit_Fingerprint.h>  //声明调用Adafruit_Fingerprint.h库  指纹
+#include <Servo.h>    // 声明调用Servo.h库  舵机
+Servo myservo;        // 创建一个舵机对象
+int pos = 0;          // 变量pos用来存储舵机位置
+const int servoDelay = 15;
+const int servoStop  = 5000;
+const int lowPowerRate = 1;
+const int checkDelay = 1000;
+const int debug = 0;
+SoftwareSerial mySerial(2, 3);//黄色串行数据输出&&白色串行数据输入接口（可修改范围A0~A5，2~13）
+Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
+void setup()
+{
+  myservo.attach(9); //舵机信号端口（可修改范围A0~A5，2~13）
+  myservo.write(0);
+  Serial.begin(9600);
+  Serial.println("Demo Start");
+  while (!Serial);  // For Yun/Leo/Micro/Zero/...
+  delay(100);
+  Serial.println("\n\nAdafruit finger detect test");
+  // set the data rate for the sensor serial port
+  finger.begin(57600);//设置传感器串行端口的数据速率
+  delay(5);
+  if (finger.verifyPassword()) {
+    Serial.println("Found fingerprint sensor!");
+  } else {
+    Serial.println("Did not find fingerprint sensor :(");
+    while (1) { delay(1); }
+  }
+  Serial.println(F("Reading sensor parameters"));
+  finger.getParameters();
+  Serial.print(F("Status: 0x")); Serial.println(finger.status_reg, HEX);
+  Serial.print(F("Sys ID: 0x")); Serial.println(finger.system_id, HEX);
+  Serial.print(F("Capacity: ")); Serial.println(finger.capacity);
+  Serial.print(F("Security level: ")); Serial.println(finger.security_level);
+  Serial.print(F("Device address: ")); Serial.println(finger.device_addr, HEX);
+  Serial.print(F("Packet len: ")); Serial.println(finger.packet_len);
+  Serial.print(F("Baud rate: ")); Serial.println(finger.baud_rate);
+  finger.getTemplateCount();
+  if (finger.templateCount == 0) {
+    Serial.print("Sensor doesn't contain any fingerprint data. Please run the 'enroll' example.");
+  }
+  else {
+    Serial.println("Waiting for valid finger...");
+    Serial.print("Sensor contains "); Serial.print(finger.templateCount); Serial.println(" templates");
+  }
+}
+void loop()                     // run over and over again
+{
+  Serial.println("Voltage in 4"); Serial.println(digitalRead(4));
+  if(!lowPowerRate || digitalRead(4) == HIGH) {
+    getFingerprintID();
+  }
+  delay(checkDelay);            //don't ned to run this at full speed.
+}
+void openAndReset(){
+  for(pos = 0; pos < 180; pos += 1){    // 舵机从0°转到180°，每次增加1°          
+    myservo.write(pos);       // 给舵机写入角度   
+    delay(servoDelay);                    // 延时15ms让舵机转到指定位置
+  }
+  delay(servoStop);
+  for(pos = 180; pos>=1; pos-=1) {    // 舵机从180°转回到0°，每次减小1°                               
+    myservo.write(pos);        // 写角度到舵机     
+    delay(servoDelay);                 // 延时15ms让舵机转到指定位置
+  }
+}
+uint8_t getFingerprintID() {
+  uint8_t p = finger.getImage();
+  switch (p) {
+    case FINGERPRINT_OK:
+      Serial.println("Image taken");
+      break;
+    case FINGERPRINT_NOFINGER:
+      Serial.println("No finger detected");
+      return p;
+    case FINGERPRINT_PACKETRECIEVEERR:
+      Serial.println("Communication error");
+      return p;
+    case FINGERPRINT_IMAGEFAIL:
+      Serial.println("Imaging error");
+      return p;
+    default:
+      Serial.println("Unknown error");
+      return p;
+  }
+  // OK success!
+  p = finger.image2Tz();
+  switch (p) {
+    case FINGERPRINT_OK:
+      Serial.println("Image converted");
+      break;
+    case FINGERPRINT_IMAGEMESS:
+      Serial.println("Image too messy");
+      return p;
+    case FINGERPRINT_PACKETRECIEVEERR:
+      Serial.println("Communication error");
+      return p;
+    case FINGERPRINT_FEATUREFAIL:
+      Serial.println("Could not find fingerprint features");
+      return p;
+    case FINGERPRINT_INVALIDIMAGE:
+      Serial.println("Could not find fingerprint features");
+      return p;
+    default:
+      Serial.println("Unknown error");
+      return p;
+  }
+  // OK converted!
+  p = finger.fingerSearch();
+  if (p == FINGERPRINT_OK) {
+    Serial.println("Found a print match!");
+  } else if (p == FINGERPRINT_PACKETRECIEVEERR) {
+    Serial.println("Communication error");
+    return p;
+  } else if (p == FINGERPRINT_NOTFOUND) {
+    Serial.println("Did not find a match");
+    return p;
+  } else {
+    Serial.println("Unknown error");
+    return p;
+  }
+  // found a match!
+  Serial.print("Found ID #"); Serial.print(finger.fingerID);
+  Serial.print(" with confidence of "); Serial.println(finger.confidence);
+  openAndReset();
+  return finger.fingerID;
+}
+// returns -1 if failed, otherwise returns ID #
+int getFingerprintIDez() {
+  uint8_t p = finger.getImage();
+  if (p != FINGERPRINT_OK)  return -1;
+  p = finger.image2Tz();
+  if (p != FINGERPRINT_OK)  return -1;
+  p = finger.fingerFastSearch();
+  if (p != FINGERPRINT_OK)  return -1;
+  // found a match!
+  Serial.print("Found ID #"); Serial.print(finger.fingerID);
+  Serial.print(" with confidence of "); Serial.println(finger.confidence);
+  return finger.fingerID;
+}
+</pre>
+<!--******************************************************************************************************************************************************************************-->
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;功能二：温湿度传感器+舵机+蜂鸣器
+<pre>
+/*******************************************导入需要用到的头文件******************************************/
+#include <DFRobot_DHT11.h>
+/*******************************************************************************************************/
+DFRobot_DHT11 DHT;
+#define DHT11_PIN A5                  // 对应的是A0引脚
+float RH,T;
+void setup() 
+{
+    Serial.begin(9600);
+    Serial.println("Demo Start");
+}
+void loop()
+{
+  DHT.read(DHT11_PIN);
+  RH = DHT.humidity;   //读取湿度数据                       
+  T = DHT.temperature;       //读取温度数据
+  Serial.print("Humidity:");  //向串口打印 Humidity:
+  Serial.print(RH);           //向串口打印湿度数据
+  Serial.print("%");
+  Serial.print("  Temperature:");
+  Serial.print(T);            //向串口打印温度数据
+  Serial.println("C"); 
+  delay(1000);                  //延时1000毫秒
+}
+</pre>
+<!--******************************************************************************************************************************************************************************-->
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;功能三：烟雾传感器+舵机+蜂鸣器
+<pre>
+/**
+当检测到有可燃
+        1、蜂鸣叫
+        2、开舵机
+*/
+#include <Servo.h> 
+int beep = 2;
+int vall;//定义变量vall
+#define lightR A5
+Servo myservo;
+int pos = 0;          
+const int servoDelay = 15;
+const int servoStop  = 5000;
+void setup() {
+  Serial.begin(9600);
+  Serial.println("Demo Start");
+  myservo.attach(9); 
+  // put your setup code here, to run once:
+  pinMode(beep,OUTPUT);
+
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  // openAndReset();
+  huoyanbaojing();
+}
 
 
-<h2 id="5%E3%80%81%E5%88%B7%E5%86%99%E7%A8%8B%E5%BA%8F">5、刷写程序</h2>
-把R3板连接电脑，选择开发板的端口（工具→端口→选择端口），复制以下代码进Arduino程序。<br>
-如果缺少库文件，就在“工具→管理库”里面搜索添加提示缺失的库即可<br>
-左上角√图标验证没问题，就可以上传至R3板内了。
-<figure class="wp-block-image size-full"><img decoding="async" src="../article_files/01_files/Arduino.png" alt="" class="wp-image-855"></figure>
-修改端口之后也要把对应的线接到对应的端口上。<br>
-第17行修改行数据输出和串行数据输入接口。<br>
-第31行修改舵机信号端口.<br>
-第39行设置指纹识别模块波特率速率。<br>
-79~86行修改舵机属性。源代码 
-<ul>
-<li><a href="">点我</a></li>
-</ul>
+void openAndReset(){
+  Serial.println("开门逃命");
+  for(pos = 0; pos < 180; pos += 1){      
+    myservo.write(pos);      
+    delay(servoDelay);                   
+  }
+  delay(servoStop);
+  for(pos = 180; pos>=1; pos-=1) {                     
+    myservo.write(pos);       
+    delay(servoDelay);                
+  }
+}
+
+
+void huoyanbaojing()
+{
+  vall = analogRead(A0);
+  Serial.println("模拟量值为：");  
+  Serial.println(vall);   
+  if(vall<150)
+  { 
+    digitalWrite(beep,LOW);//关闭蜂鸣器
+  } 
+  else//否则 
+  { 
+    digitalWrite(beep,HIGH);//打开蜂鸣器 
+    openAndReset();
+  } 
+  delay(1000);
+}
+</pre>
+<!--******************************************************************************************************************************************************************************-->
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;功能四：光感传感器
+<pre>
+#define lightR A5
+#define LED 13
+int val;
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);     //设置波特率为9600
+  Serial.println("Demo Start");
+  pinMode(LED,OUTPUT);    //设置连接小灯的引脚为输出模式
+  pinMode(lightR,INPUT);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  guanggan();
+}
+
+void guanggan(){
+  val=analogRead(lightR);  //读取模拟接口A0的值，也就是14号口，把值赋给val
+  Serial.println(val);    //通过串口打印对应的val值，并且通过串口进行显示出来
+  delay(1000);//延时1秒
+  if(val>300)//判断是否大于设定值
+   {
+      digitalWrite(LED,HIGH);//点亮led
+   }else{
+     digitalWrite(LED,LOW);//关闭led
+   }
+}
+</pre>
+<!--******************************************************************************************************************************************************************************-->
+
 
 
 
 <h2 id="6%E3%80%81%E5%AE%89%E8%A3%85%E8%B0%83%E8%AF%95">6、安装调试</h2>
 程序烧录进开发板，先测试能否正常使用。按指纹识别模块，舵机旋转就成功啦。<br>
+
+
+
+
+<ul>
+<li><a id="popup-btn">点我</a></li>
+    <div class="overlay"></div>
+    <div class="popup">
+      <h2>点我干撒，都没了</h2>
+      <p>还想学习其他内容吗，<a href="https://www.runoob.com/">点我</a></p>
+      <button class="close-btn">关闭</button>
+    </div>
+  
+    <script>
+      const popup = document.querySelector('.popup');
+      const overlay = document.querySelector('.overlay');
+      const popupBtn = document.querySelector('#popup-btn');
+      const closeBtn = document.querySelector('.close-btn');
+      
+      popupBtn.addEventListener('click', function() {
+        popup.style.display = 'block';
+        overlay.style.display = 'block';
+      });
+      
+      closeBtn.addEventListener('click', function() {
+        popup.style.display = 'none';
+        overlay.style.display = 'none';
+      });
+      
+      overlay.addEventListener('click', function() {
+        popup.style.display = 'none';
+        overlay.style.display = 'none';
+      });
+    </script>
+</ul>
+
+
 
 				<!--<div class="oshimai"></div>-->
 		<!--<h2 style="opacity:0;max-height:0;margin:0">Comments</h2>--><!-- 评论跳转标记 -->
@@ -1134,12 +1515,12 @@ background-image: url(https://linmuxi.cn/resources/Sakurairo_Vision-main/load_sv
     </div>
         <section class="author-profile">
                 <div class="info" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-            <a href="" class="profile gravatar">
+            <a href="about.html" class="profile gravatar">
                 <img class="fa-spin" style="--fa-animation-duration: 15s;" src="https://pic2.imgdb.cn/item/645e2e6a0d2dde5777a6684d.jpg" itemprop="image" alt="香草布丁" width="30" height="30">
             </a>
         </div>
         <div class="meta">
-            <a href="" itemprop="url" rel="author">辰海</a>						
+            <a href="about.html" itemprop="url" rel="author">辰海</a>						
         </div>
                     <div class="desc">
                 <i class="fa-solid fa-feather" aria-hidden="true"></i>我是张红，现在叫我辰海就好了。            </div>
@@ -1150,12 +1531,20 @@ background-image: url(https://linmuxi.cn/resources/Sakurairo_Vision-main/load_sv
         <i class="fa-solid fa-tag" aria-hidden="true"></i> 啥也没有呀    </div>
 </footer><!-- .entry-footer -->
 </article><!-- #post-## -->
-<div class="toc-container" style="height: 11953.3px;"><div class="toc"><ol class="toc-list "><li class="toc-list-item is-active-li"><a href="#1%E3%80%81%E8%AF%B4%E5%9C%A8%E5%89%8D%E9%9D%A2" class="toc-link node-name--H2  is-active-link">1、说在前面</a></li><li class="toc-list-item"><a href="#2%E3%80%81%E5%87%86%E5%A4%87%E6%9D%90%E6%96%99" class="toc-link node-name--H2 ">2、准备材料</a></li><li class="toc-list-item"><a href="#3%E3%80%81%E6%8C%87%E7%BA%B9%E8%B0%83%E8%AF%95" class="toc-link node-name--H2 ">3、指纹调试</a></li><li class="toc-list-item"><a href="#4%E3%80%81%E7%BA%BF%E8%B7%AF%E8%BF%9E%E6%8E%A5" class="toc-link node-name--H2 ">4、线路连接</a></li><li class="toc-list-item"><a href="#5%E3%80%81%E5%88%B7%E5%86%99%E7%A8%8B%E5%BA%8F" class="toc-link node-name--H2 ">5、刷写程序</a></li><li class="toc-list-item"><a href="#6%E3%80%81%E5%AE%89%E8%A3%85%E8%B0%83%E8%AF%95" class="toc-link node-name--H2 ">6、安装调试</a></li></ol></div></div>
+
+<div class="toc-container" style="height: 11953.3px;"><div class="toc">
+<ol class="toc-list "><li class="toc-list-item is-active-li"><a href="#1%E3%80%81%E8%AF%B4%E5%9C%A8%E5%89%8D%E9%9D%A2">1、说在前面</a>
+</li><li class="toc-list-item"><a href="#2%E3%80%81%E5%87%86%E5%A4%87%E6%9D%90%E6%96%99">2、准备材料</a></li>
+<li class="toc-list-item"><a href="#3%E3%80%81%E6%8C%87%E7%BA%B9%E8%B0%83%E8%AF%95">3、指纹调试</a></li>
+<li class="toc-list-item"><a href="#4%E3%80%81%E7%BA%BF%E8%B7%AF%E8%BF%9E%E6%8E%A5">4、线路连接</a></li><li class="toc-list-item">
+<a href="#5%E3%80%81%E5%88%B7%E5%86%99%E7%A8%8B%E5%BA%8F">5、代码实现</a></li><li class="toc-list-item">
+<a href="#6%E3%80%81%E5%AE%89%E8%A3%85%E8%B0%83%E8%AF%95">6、安装调试</a></li></ol></div></div>
+
 <section class="post-squares nextprev">
 	<div class="post-nepre half previous">
 		<a href="" rel="prev"><div class="background lazyload" style="background-image:url(https://linmuxi.cn/resources/Sakurairo_Vision-main/load_svg/outload.svg);" data-src="https://linmuxi.cn/wp-content/uploads/2022/11/OTHGTHD_00BX79RI25A1.png"></div><span class="label">上一篇文章</span><div class="info"><h3>Arduino+光学指纹模块+舵机+其他</h3><hr></div></a>	</div>
 	<div class="post-nepre half next">
-		<a href="" rel="next"><div class="background lazyload" style="background-image:url(https://linmuxi.cn/resources/Sakurairo_Vision-main/load_svg/outload.svg);" data-src="https://linmuxi.cn/wp-json/sakura/v1/image/feature?331"></div><span class="label">下一篇文章</span><div class="info"><h3>敬请期待</h3><hr></div></a>	</div>
+		<a href="https://zhsugar.github.io/" rel="next"><div class="background lazyload" style="background-image:url(https://linmuxi.cn/resources/Sakurairo_Vision-main/load_svg/outload.svg);" data-src="https://linmuxi.cn/wp-json/sakura/v1/image/feature?331"></div><span class="label">下一篇文章</span><div class="info"><h3>个人网站，更多内容等你发现~</h3><hr></div></a>	</div>
 </section>
 		</main><!-- #main -->
 	</div><!-- #primary -->
