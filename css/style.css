@@ -8651,11 +8651,6 @@ html.is-animating .scroll-progress-bar {
   position: relative;
   transition: opacity 0.3s ease;
 }
-@media (max-width: 640px) {
-  .aplayer {
-    display: none;
-  }
-}
 .aplayer.hide {
   opacity: 0;
   transition: opacity 0.3s ease;
