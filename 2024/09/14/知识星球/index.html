@@ -1,0 +1,2750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="白糖">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set data attribute for CSS variables
+                root.setAttribute("data-theme", theme);
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes once DOM is ready
+            if (document.readyState !== "loading") {
+                document.body.classList.add(theme + "-mode");
+            } else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add(theme + "-mode");
+                    document.body.classList.remove((theme === DARK ? LIGHT : DARK) + "-mode");
+                });
+            }
+        })();
+    </script>
+    
+    <!-- Critical CSS to prevent flash -->
+    <style>
+        :root[data-theme="dark"] {
+            --background-color: #202124;
+            --background-color-transparent: rgba(32, 33, 36, 0.6);
+            --second-background-color: #2d2e32;
+            --third-background-color: #34353a;
+            --third-background-color-transparent: rgba(32, 33, 36, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #ffffff;
+            --second-text-color: #eeeeee;
+            --third-text-color: #bebec6;
+            --fourth-text-color: #999999;
+            --default-text-color: #bebec6;
+            --invert-text-color: #373D3F;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(255, 255, 255, 0.08);
+            --shadow-color-2: rgba(255, 255, 255, 0.05);
+        }
+        
+        :root[data-theme="light"] {
+            --background-color: #fff;
+            --background-color-transparent: rgba(255, 255, 255, 0.6);
+            --second-background-color: #f8f8f8;
+            --third-background-color: #f2f2f2;
+            --third-background-color-transparent: rgba(241, 241, 241, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #16171a;
+            --second-text-color: #2f3037;
+            --third-text-color: #5e5e5e;
+            --fourth-text-color: #eeeeee;
+            --default-text-color: #373D3F;
+            --invert-text-color: #bebec6;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(0, 0, 0, 0.08);
+            --shadow-color-2: rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+        
+        /* Apply body classes as soon as DOM is ready */
+        :root[data-theme="dark"] body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+    </style>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://example.com/2024/09/14/知识星球/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="白糖的修行日记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="知识星球">
+<meta property="og:url" content="http://example.com/2024/09/14/%E7%9F%A5%E8%AF%86%E6%98%9F%E7%90%83/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="白糖的修行日记">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/redefine-og.webp">
+<meta property="article:published_time" content="2024-09-14T08:08:00.000Z">
+<meta property="article:modified_time" content="2025-01-21T16:07:00.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="知识">
+<meta property="article:tag" content="技术">
+<meta property="article:tag" content="编程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/redefine-og.webp">
+    
+    
+        <!-- Google tag (gtag.js) -->
+        <script src="https://www.googletagmanager.com/gtag/js?id=G-X7KXE8YG2D"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-X7KXE8YG2D');
+        </script>
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="https://pic1.imgdb.cn/item/6892e3ab58cb8da5c808fd50.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://pic1.imgdb.cn/item/6892e3ab58cb8da5c808fd50.png">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="https://pic1.imgdb.cn/item/6892e3ab58cb8da5c808fd50.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            知识星球 | 云忧谷
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+        
+<script src="/js/build/libs/anime.min.js"></script>
+
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"example.com","root":"/","language":"en","path":"search.json"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":true,"list":["Apprentice","Disciple","Elder","Master","Patriarch","Sage","Venerable","Legend"]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":true,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":true},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":true,"custom_message":null},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"白糖的修行日记"},"google_analytics":{"enable":true,"id":"G-X7KXE8YG2D"}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/light.png","dark":"https://pic.imgdb.cn/item/6617aa3468eb9357137700dc.png"},"title":"有客到","subtitle":{"text":["看庭前花开花落，宠辱不惊","望天上云卷云舒，去留无意"],"hitokoto":{"enable":true,"show_author":false,"api":"https://v1.hitokoto.cn?c=i"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#CCFFFF"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/zhsugar","instagram":null,"zhihu":"https://www.zhihu.com/people/lethediana","twitter":null,"email":"1795847863@qq.com","bilibili":"https://space.bilibili.com/3493077459142699?spm_id_from=333.1007.0.0","fa-solid fa-blog":"https://blog.csdn.net/m0_65157297?spm=1010.2135.3001.5421"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"回忆观影券","artist":"IN-K&王忻辰","url":"/musicsource/huiyi.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg","lrc":null},{"name":"牵丝戏","artist":"银临/Aki阿杰","url":"/musicsource/qian.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"},{"name":"The Way I Still Love You","artist":"ALisa","url":"https://link.hhtjim.com/163/1474400749.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"},{"name":"Everytime We Touch","artist":"录音吉娃娃、谢子新# audio artist","url":"/musicsource/nice.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"},{"name":"死在江南烟雨中 (伴奏)","artist":"Mc梦柯","url":"https://link.hhtjim.com/163/485347088.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"},{"name":"记忆停留的地方","artist":"July","url":"https://link.hhtjim.com/163/28713832.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.5","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":28},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"烟花":{"path":"/yanhua","icon":"fa-solid fa-fan"},"相册":{"path":"/masonry","icon":"fa-solid fa-image"},"关于":{"icon":"fa-regular fa-user","submenus":{"Github":"https://zhsugar.github.io","码云":"https://gitee.com/zhsugar","csdn":"https://blog.csdn.net/m0_65157297?spm=1010.2135.3001.5421","知乎":"https://www.zhihu.com/people/lethediana","哔哩哔哩":"https://space.bilibili.com/3493077459142699?spm_id_from=333.1007.0.0","邮箱":"1795847863@qq.com"}}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":"看庭前花开花落，宠辱不惊。望天上云卷云舒，去留无意。","show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+	<span class="scroll-progress-bar"></span>
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    <h2 class="ml13">
+        云忧谷
+    </h2>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+        var animation = anime.timeline({ loop: true })
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [20, 0],
+                translateZ: 0,
+                opacity: [0, 1],
+                filter: ['blur(5px)', 'blur(0px)'],
+                easing: "easeOutExpo",
+                duration: 1200,
+                delay: (el, i) => 300 + 20 * i,
+            })
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [0, -20],
+                opacity: [1, 0],
+                filter: ['blur(0px)', 'blur(5px)'],
+                easing: "easeInExpo",
+                duration: 1000,
+                delay: (el, i) => 15 * i,
+                complete: function() {
+                    hidePreloader();
+                }
+            }, '-=700');
+
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(hidePreloader, 5000); // Call hidePreloader after 5000 milliseconds if not already called by animation
+        });
+
+        function hidePreloader() {
+            var preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(function () {
+                preloader.style.display = 'none';
+            }, 200);
+        }
+    </script>
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+                <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
+                    <img src="https://pic1.imgdb.cn/item/6892e3ab58cb8da5c808fd50.png" class="w-full h-full rounded-xs">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                云忧谷
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/yanhua"
+                                        >
+                                    <i class="fa-solid fa-fan fa-fw"></i>
+                                    烟花
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/masonry"
+                                        >
+                                    <i class="fa-solid fa-image fa-fw"></i>
+                                    相册
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://zhsugar.github.io">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://gitee.com/zhsugar">
+                                                    码云
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_65157297?spm=1010.2135.3001.5421">
+                                                    CSDN
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/lethediana">
+                                                    知乎
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://space.bilibili.com/3493077459142699?spm_id_from=333.1007.0.0">
+                                                    哔哩哔哩
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="/1795847863@qq.com">
+                                                    邮箱
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/yanhua"
+                        >
+                            <span>
+                                烟花
+                            </span>
+                            
+                                <i class="fa-solid fa-fan fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/masonry"
+                        >
+                            <span>
+                                相册
+                            </span>
+                            
+                                <i class="fa-solid fa-image fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-关于"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-关于">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://zhsugar.github.io">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://gitee.com/zhsugar">码云</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://blog.csdn.net/m0_65157297?spm=1010.2135.3001.5421">CSDN</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://www.zhihu.com/people/lethediana">知乎</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://space.bilibili.com/3493077459142699?spm_id_from=333.1007.0.0">哔哩哔哩</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/1795847863@qq.com">邮箱</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">22</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">8</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">11</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			
+			
+			<img src="https://wallpaperm.cmcm.com/fefca827ca2b0f4e2947b8023e9bdea5.jpg" alt="知识星球" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75" />
+			
+			<div class="w-full flex items-center absolute bottom-0 justify-start">
+				<h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color ">知识星球</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="https://pic1.imgdb.cn/item/6892e4aa58cb8da5c8090ba9.jpg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">白糖</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-09-14 16:08</span>
+        <span class="mobile">2024-09-14 16:08</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-01-22 00:07</span>
+            <span class="mobile">2025-01-22 00:07</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Java/">Java</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E7%9F%A5%E8%AF%86/">知识</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E6%8A%80%E6%9C%AF/">技术</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E7%BC%96%E7%A8%8B/">编程</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>2.4k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>10 Mins</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>ChatGPT</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>ChatGPT：<a class="link"   target="_blank" rel="noopener" href="https://chat.openai.com/" >https://chat.openai.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：一款功能丰富、智能化、易用性强的人工智能工具，适用于各种内容创作者</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>盘古大模型</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>盘古大模型：<a class="link"   target="_blank" rel="noopener" href="https://pangu.huaweicloud.com/" >https://pangu.huaweicloud.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：华为盘古大模型，重塑千行百业</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>智谱清言</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>智谱清言：<a class="link"   target="_blank" rel="noopener" href="https://chatglm.cn/apps?image=https://sfile.chatglm.cn/activeimg/bdms/66b97e348217030036f486f1&#038;open_from=ads_web_jyshare&#038;fr=ads_web_jyshare" >https://chatglm.cn/apps?image=https%3A%2F%2Fsfile.chatglm.cn%2Factiveimg%2Fbdms%2F66b97e348217030036f486f1&#038;open_from=ads_web_jyshare&#038;fr=ads_web_jyshare<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：千亿参数对话模式</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Nijijourney</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Nijijourney：<a class="link"   target="_blank" rel="noopener" href="https://nijijourney.com/zh/" >https://nijijourney.com/zh/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：魔法般的二次元绘画生成</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Midjourney</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Midjourney：<a class="link"   target="_blank" rel="noopener" href="https://www.midjourney.com/home/" >https://www.midjourney.com/home/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：是一款搭载在 Discord 上的人工智能绘画聊天工具</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Runway</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Runway：<a class="link"   target="_blank" rel="noopener" href="https://runwayml.com/" >https://runwayml.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：由人工智能驱动的创意工具</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>通义灵码</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>通义灵码：<a class="link"   target="_blank" rel="noopener" href="https://click.aliyun.com/m/1000399802/" >https://click.aliyun.com/m/1000399802/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：基于通义大模型，提供代码智能生成、研发智能问答能力</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>秘塔AI搜索</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>秘塔AI搜索：<a class="link"   target="_blank" rel="noopener" href="https://metaso.cn/" >https://metaso.cn/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：没有广告，直达结果</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Hugging Face</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Hugging Face：<a class="link"   target="_blank" rel="noopener" href="https://huggingface.co/" >https://huggingface.co/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：开源数据集和预训练模型</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Character AI</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Character AI：<a class="link"   target="_blank" rel="noopener" href="https://beta.character.ai/" >https://beta.character.ai/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：是一个神经语言模型的聊天机器人网络应用</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>通义千问</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>通义千问：<a class="link"   target="_blank" rel="noopener" href="https://tongyi.aliyun.com/" >https://tongyi.aliyun.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：阿里开发的大语言模型</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>讯飞星火</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>讯飞星火：<a class="link"   target="_blank" rel="noopener" href="https://xinghuo.xfyun.cn/desk?ch=xhweb_yLm" >https://xinghuo.xfyun.cn/desk?ch=xhweb_yLm<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：科大讯飞推出的新一代认知智能大模型</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Adobe Firefly</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Adobe Firefly：<a class="link"   target="_blank" rel="noopener" href="https://firefly.adobe.com/" >https://firefly.adobe.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：用Firefly做出无限的创作</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Galileo AI</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Galileo AI：<a class="link"   target="_blank" rel="noopener" href="https://www.usegalileo.ai/" >https://www.usegalileo.ai/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：AI 生成 UI 平台，可实现轻松快速的设计构思</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Fitten Code</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Fitten Code：<a class="link"   target="_blank" rel="noopener" href="https://code.fittentech.com/" >https://code.fittentech.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：自动生成代码，帮您调试Bug，提升开发效率，节省时间。</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Clipdrop</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Clipdrop：<a class="link"   target="_blank" rel="noopener" href="https://clipdrop.co/tools" >https://clipdrop.co/tools<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：AI 技术处理图像的工具</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>PhotoRoom</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>PhotoRoom：<a class="link"   target="_blank" rel="noopener" href="https://www.photoroom.com/" >https://www.photoroom.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：移除背景并创建产品图片</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Writesonic</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Writesonic：<a class="link"   target="_blank" rel="noopener" href="https://writesonic.com/" >https://writesonic.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：创作的最佳AI作家</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Copy.AI</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Copy.AI：<a class="link"   target="_blank" rel="noopener" href="https://www.copy.ai/" >https://www.copy.ai/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：营销软文，自媒体稿件小助手</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>getimg.ai</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>getimg.ai：<a class="link"   target="_blank" rel="noopener" href="https://getimg.ai/" >https://getimg.ai/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：创造出令人惊叹的头像</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>stockimg</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>stockimg：<a class="link"   target="_blank" rel="noopener" href="https://stockimg.ai/" >https://stockimg.ai/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：可帮助用户在几分钟内生成徽标、书籍封面、横幅等</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Phygital+</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Phygital+：<a class="link"   target="_blank" rel="noopener" href="https://phygital.plus/" >https://phygital.plus/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：让创作者在没有代码的情况下使用神经网络</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>LALAL</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>LALAL：<a class="link"   target="_blank" rel="noopener" href="https://www.lalal.ai/" >https://www.lalal.ai/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：提供音乐源分离服务，使用ai技术从任何音频中提取人声，伴奏和多种乐器</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Cascadeur</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Cascadeur：<a class="link"   target="_blank" rel="noopener" href="https://cascadeur.com/" >https://cascadeur.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：最简单的AI辅助关键帧动画制作软件</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Synthesia</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Synthesia：<a class="link"   target="_blank" rel="noopener" href="https://www.synthesia.io/" >https://www.synthesia.io<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：该平台提供了一个直观的界面，可以简化任何人的视频创作</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Autodraw</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Autodraw：<a class="link"   target="_blank" rel="noopener" href="https://www.autodraw.com/" >https://www.autodraw.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：人工智能画画平台</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Palette.fm</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Palette.fm：<a class="link"   target="_blank" rel="noopener" href="https://palette.fm/" >https://palette.fm/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：一个照片上色神器</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>文心一言</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>文心一言：<a class="link"   target="_blank" rel="noopener" href="https://yiyan.baidu.com/" >https://yiyan.baidu.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：百度出品的人工智能语言模型</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Tabnine</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Tabnine：<a class="link"   target="_blank" rel="noopener" href="https://www.tabnine.com/" >https://www.tabnine.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：是一个AI代码助手</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Codeium</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Codeium：<a class="link"   target="_blank" rel="noopener" href="https://codeium.com/" >https://codeium.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：人工智能编码及检索</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Codiga</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Codiga：<a class="link"   target="_blank" rel="noopener" href="https://www.codiga.io/" >https://www.codiga.io/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：AI 代码实时分析</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Stable Diffusion</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Stable Diffusion：<a class="link"   target="_blank" rel="noopener" href="https://stability.ai/" >https://stability.ai/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：AI 绘画，输入关键字生成图片</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Civitai</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Civitai：<a class="link"   target="_blank" rel="noopener" href="https://civitai.com/" >https://civitai.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：训练好的模型分享网站</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Genmo</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Genmo：<a class="link"   target="_blank" rel="noopener" href="https://www.genmo.ai/" >https://www.genmo.ai/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：图片生成视频AI</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Vega AI</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Vega AI：<a class="link"   target="_blank" rel="noopener" href="https://www.vegaai.net/" >https://www.vegaai.net/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：文字生成图片 AI</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Kimi</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Kimi：<a class="link"   target="_blank" rel="noopener" href="https://kimi.moonshot.cn/" >https://kimi.moonshot.cn/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：国内最接近 chatGPT 的 AI 助手，热度还在上升，相关股票涨停</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Jasper</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Jasper：<a class="link"   target="_blank" rel="noopener" href="https://www.jasper.ai/" >https://www.jasper.ai/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：文本生成器，使用 AI 制作出令人惊叹的文案</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Copilot X</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Copilot X：<a class="link"   target="_blank" rel="noopener" href="https://github.com/features/preview/copilot-x" >https://github.com/features/preview/copilot-x<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：GitHub 和 OpenAI 合作开发的一个代码自动生成工具</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Gemini</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Gemini：<a class="link"   target="_blank" rel="noopener" href="https://gemini.google.com/" >https://gemini.google.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：Google 推出的 AI 聊天对话机器人</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>豆包</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>豆包：<a class="link"   target="_blank" rel="noopener" href="https://www.doubao.com/?channel=cngj&#038;source=hw_db_cngj_01" >https://www.doubao.com?channel=cngj&#038;source=hw_db_cngj_01<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：抖音旗下的 AI 助手</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>腾讯元宝</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>腾讯元宝：<a class="link"   target="_blank" rel="noopener" href="https://yuanbao.tencent.com/" >https://yuanbao.tencent.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：腾讯出品的大语言模型</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>百小应</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>百小应：<a class="link"   target="_blank" rel="noopener" href="https://ying.baichuan-ai.com/chat" >https://ying.baichuan-ai.com/chat<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：懂搜索的AI助手</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>天工AI</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>天工AI：<a class="link"   target="_blank" rel="noopener" href="https://www.tiangong.cn/" >https://www.tiangong.cn/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：双千亿级大语言模型</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>YouChat</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>YouChat：<a class="link"   target="_blank" rel="noopener" href="https://you.com/chat" >https://you.com/chat<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：高级 AI 聊天搜索工具</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>书生</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>书生：<a class="link"   target="_blank" rel="noopener" href="https://intern-ai.org.cn/home" >https://intern-ai.org.cn/home<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：书生通用大模型体系</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>ima copilot</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>ima copilot：<a class="link"   target="_blank" rel="noopener" href="https://ima.qq.com/" >https://ima.qq.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：腾讯智能工作台</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>boardmix ai</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>boardmix ai：<a class="link"   target="_blank" rel="noopener" href="https://boardmix.cn/" >https://boardmix.cn/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：免费的ai 脑图、ai PPT在线协同白板工具</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>SnackPrompt</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>SnackPrompt：<a class="link"   target="_blank" rel="noopener" href="https://snackprompt.com/" >https://snackprompt.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：是一个为ChatGPT提供提示的平台，用户可以在这里找到各种各样的提示，也可以提交自己的提示。</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Prompt Engineering Guide</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Prompt Engineering Guide：<a class="link"   target="_blank" rel="noopener" href="https://www.promptingguide.ai/zh" >https://www.promptingguide.ai/zh<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：是一个关于Prompt Engineering的全面指南，提供了大量的学习资源和工具</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Magic Studio</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Magic Studio：<a class="link"   target="_blank" rel="noopener" href="https://magicstudio.com/zh/" >https://magicstudio.com/zh/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：用AI的魔力制作精美图片</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>DeepMotion</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>DeepMotion：<a class="link"   target="_blank" rel="noopener" href="https://www.deepmotion.com/" >https://www.deepmotion.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：人工智能动作捕捉与人体跟踪</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>怪兽AI知识库</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>怪兽AI知识库：<a class="link"   target="_blank" rel="noopener" href="https://www.guaishouai.net/" >https://www.guaishouai.net<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：企业知识库大模型 + 智能的AI问答机器人</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Suno</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Suno：<a class="link"   target="_blank" rel="noopener" href="https://suno.com/" >https://suno.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：是一个专业高质量的 AI 歌曲和音乐创作平台</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Liner</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Liner：<a class="link"   target="_blank" rel="noopener" href="https://getliner.com/zh" >https://getliner.com/zh<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：基于 ChatGPT 的搜索助手，它可以在网页上进行突出显示内容</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Poe</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Poe：<a class="link"   target="_blank" rel="noopener" href="http://poe.com/" >http://poe.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：聊天机器人,与 ChatGPT、Claude、DALLE 3等数百万机器人交谈</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>JanitorAI</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>JanitorAI：<a class="link"   target="_blank" rel="noopener" href="https://janitorai.com/" >https://janitorai.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：对话式人工智能，集合了各种有趣的聊天机器人的平台</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Brainly</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Brainly：<a class="link"   target="_blank" rel="noopener" href="https://brainly.com/" >https://brainly.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：作业辅导、人工智能导师及考试准备</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Miro</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Miro：<a class="link"   target="_blank" rel="noopener" href="https://miro.com/" >https://miro.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：创新的可视化工作空间，更快地构建、迭代和设计</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Course Hero</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Course Hero：<a class="link"   target="_blank" rel="noopener" href="https://www.coursehero.com/" >https://www.coursehero.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：为学生提供学习资料、作业帮助、教科书阅读的网站</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Beacons</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Beacons：<a class="link"   target="_blank" rel="noopener" href="https://beacons.ai/" >https://beacons.ai/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：面向内容创作者的全栈平台</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>SpicyChat</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>SpicyChat：<a class="link"   target="_blank" rel="noopener" href="https://spicychat.ai/" >https://spicychat.ai/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：AI 角色的聊天机器人，个性化、无删减角色扮演</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Prezi</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Prezi：<a class="link"   target="_blank" rel="noopener" href="https://prezi.com/" >https://prezi.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：演示文稿软件</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Eleven Labs</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Eleven Labs：<a class="link"   target="_blank" rel="noopener" href="https://elevenlabs.io/" >https://elevenlabs.io/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：文字转音频</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>MailChimp</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>MailChimp：<a class="link"   target="_blank" rel="noopener" href="https://mailchimp.com/" >https://mailchimp.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：将电子邮件转化为收入</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Loom</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Loom：<a class="link"   target="_blank" rel="noopener" href="https://www.loom.com/" >https://www.loom.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：视频编辑</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>CrushOn.AI</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>CrushOn.AI：<a class="link"   target="_blank" rel="noopener" href="https://crushon.ai/" >https://crushon.ai/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：允许用户与AI角色进行不受限制的对话</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Yodayo</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Yodayo：<a class="link"   target="_blank" rel="noopener" href="http://yodayo.com/" >http://yodayo.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：是一款智能AI绘画工具</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Gamma AI</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Gamma AI：<a class="link"   target="_blank" rel="noopener" href="https://gamma.app/" >https://gamma.app/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：以人工智能为动力，展现创意的新媒介</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Prolific</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Prolific：<a class="link"   target="_blank" rel="noopener" href="https://www.prolific.com/" >https://www.prolific.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：在 2 小时内提供高质量的人工数据集</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Candy AI</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Candy AI：<a class="link"   target="_blank" rel="noopener" href="https://candy.ai/" >https://candy.ai/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：创建自己的人工智能女友</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>VEED.IO</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>VEED.IO：<a class="link"   target="_blank" rel="noopener" href="https://www.veed.io/" >https://www.veed.io/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：免费在线视频编辑</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Kaggle</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Kaggle：<a class="link"   target="_blank" rel="noopener" href="https://www.kaggle.com/" >https://www.kaggle.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：与最大的人工智能和 ML 社区共同进步</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>YOU</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>YOU：<a class="link"   target="_blank" rel="noopener" href="http://you.com/" >http://you.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：AI搜索引擎</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>MaxAI.me</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>MaxAI.me：<a class="link"   target="_blank" rel="noopener" href="https://www.maxai.me/" >https://www.maxai.me/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：一键式人工智能，由 GPT-4、Claude 3、Gemini 1.5 提供支持。</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>GPTZero</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>GPTZero：<a class="link"   target="_blank" rel="noopener" href="https://gptzero.me/" >https://gptzero.me/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：用于聊天的可信人工智能检测器</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Picsart</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Picsart：<a class="link"   target="_blank" rel="noopener" href="http://www.picsart.com/" >http://www.picsart.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：是一款免费的移动图片编辑器</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Sea Art AI</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Sea Art AI：<a class="link"   target="_blank" rel="noopener" href="http://seaart.ai/" >http://seaart.ai/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：是一款高效且用户友好的 AI 绘图工具</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>ZeroGPT</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>ZeroGPT：<a class="link"   target="_blank" rel="noopener" href="https://www.zerogpt.com/" >https://www.zerogpt.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：最先进、最可靠的聊天GPT、GPT4和AI内容检测器</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>ChatPDF</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>ChatPDF：<a class="link"   target="_blank" rel="noopener" href="https://www.chatpdf.com/" >https://www.chatpdf.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：是一个先进的 AI智能文档阅读软件</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>VocalRemover</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>VocalRemover：<a class="link"   target="_blank" rel="noopener" href="https://vocalremover.org/" >https://vocalremover.org/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：使用强大的人工智能算法将歌曲中的声音与音乐分离</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>PixAI</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>PixAI：<a class="link"   target="_blank" rel="noopener" href="http://www.pixai.art/" >http://www.pixai.art/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：引领艺术创作新潮流</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Ideogram</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Ideogram：<a class="link"   target="_blank" rel="noopener" href="http://www.ideogram.ai/" >http://www.ideogram.ai/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：最强文字渲染能力的文生图模型</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Phind</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Phind：<a class="link"   target="_blank" rel="noopener" href="https://www.phind.com/" >https://www.phind.com<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：是一个为开发人员设计的AI搜索引擎</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>InVideo</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>InVideo：<a class="link"   target="_blank" rel="noopener" href="https://invideo.io/" >https://invideo.io/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：创建带有文本提示的视频</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Speechify</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Speechify：<a class="link"   target="_blank" rel="noopener" href="https://speechify.com/" >https://speechify.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>描述：把你的阅读时间减半</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Stack Overflow</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Stack Overflow：<a class="link"   target="_blank" rel="noopener" href="https://stackoverflow.com/search" >https://stackoverflow.com/search<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>技术学习路线</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>技术学习路线：<a class="link"   target="_blank" rel="noopener" href="https://roadmap.sh/" >https://roadmap.sh/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>DevDocs</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>DevDocs：<a class="link"   target="_blank" rel="noopener" href="https://devdocs.io/" >https://devdocs.io/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>MDN Web Docs</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>MDN Web Docs：<a class="link"   target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/" >https://developer.mozilla.org/zh-CN/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>SF思否</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>SF思否：<a class="link"   target="_blank" rel="noopener" href="https://segmentfault.com/" >https://segmentfault.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>掘金</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>掘金：<a class="link"   target="_blank" rel="noopener" href="https://juejin.cn/" >https://juejin.cn/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>前端开发</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>前端开发：<a class="link"   target="_blank" rel="noopener" href="https://www.jyshare.com/web-developer/" >https://www.jyshare.com/web-developer/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>DEV Community</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>DEV Community：<a class="link"   target="_blank" rel="noopener" href="https://dev.to/" >https://dev.to/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>InfoQ-极客邦</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>InfoQ-极客邦：<a class="link"   target="_blank" rel="noopener" href="https://www.infoq.cn/" >https://www.infoq.cn/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>免费编程书籍</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>免费编程书籍：<a class="link"   target="_blank" rel="noopener" href="https://github.com/EbookFoundation/free-programming-books" >https://github.com/EbookFoundation/free-programming-books<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>编程测验</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>编程测验：<a class="link"   target="_blank" rel="noopener" href="https://www.jyshare.com/quiz/" >https://www.jyshare.com/quiz/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Hello 算法</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Hello 算法：<a class="link"   target="_blank" rel="noopener" href="https://www.hello-algo.com/" >https://www.hello-algo.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>V2EX</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>V2EX：<a class="link"   target="_blank" rel="noopener" href="http://www.v2ex.com/" >http://www.v2ex.com<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>CNode</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>CNode：<a class="link"   target="_blank" rel="noopener" href="https://cnodejs.org/" >https://cnodejs.org/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Linux 公社</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Linux 公社：<a class="link"   target="_blank" rel="noopener" href="https://www.linuxidc.com/" >https://www.linuxidc.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>MSDN</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>MSDN：<a class="link"   target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/documentation/" >https://docs.microsoft.com/zh-cn/documentation/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>developerWork</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>developerWork：<a class="link"   target="_blank" rel="noopener" href="https://developer.ibm.com/" >https://developer.ibm.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>力扣</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>力扣：<a class="link"   target="_blank" rel="noopener" href="https://leetcode-cn.com/" >https://leetcode-cn.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Reddit</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Reddit：<a class="link"   target="_blank" rel="noopener" href="https://www.reddit.com/r/programming/" >https://www.reddit.com/r/programming/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Hacker News</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Hacker News：<a class="link"   target="_blank" rel="noopener" href="https://news.ycombinator.com/" >https://news.ycombinator.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>FreeBuf</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>FreeBuf：<a class="link"   target="_blank" rel="noopener" href="https://www.freebuf.com/" >https://www.freebuf.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>W3School</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>W3School：<a class="link"   target="_blank" rel="noopener" href="https://www.w3school.com.cn/" >https://www.w3school.com.cn/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>51CTO</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>51CTO：<a class="link"   target="_blank" rel="noopener" href="https://www.51cto.com/" >https://www.51cto.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Dzone</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Dzone：<a class="link"   target="_blank" rel="noopener" href="https://dzone.com/" >https://dzone.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>博客园</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>博客园：<a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/" >https://www.cnblogs.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>CSDN</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>CSDN：<a class="link"   target="_blank" rel="noopener" href="https://www.csdn.net/" >https://www.csdn.net/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>开源中国</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>开源中国：<a class="link"   target="_blank" rel="noopener" href="https://www.oschina.net/" >https://www.oschina.net/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Algorithms</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Algorithms：<a class="link"   target="_blank" rel="noopener" href="https://the-algorithms.com/" >https://the-algorithms.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>编程书籍</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>编程书籍：<a class="link"   target="_blank" rel="noopener" href="https://www.jyshare.com/books/" >https://www.jyshare.com/books/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>中国大学MOOC</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>中国大学MOOC：<a class="link"   target="_blank" rel="noopener" href="https://www.icourse163.org/" >https://www.icourse163.org/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>OSS Insight</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>OSS Insight：<a class="link"   target="_blank" rel="noopener" href="https://ossinsight.io/" >https://ossinsight.io/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Smashing Magazine</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Smashing Magazine：<a class="link"   target="_blank" rel="noopener" href="https://www.smashingmagazine.com/" >https://www.smashingmagazine.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>InfoQ</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>InfoQ：<a class="link"   target="_blank" rel="noopener" href="https://www.infoq.com/" >https://www.infoq.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>数据可视化</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>数据可视化：<a class="link"   target="_blank" rel="noopener" href="https://informationisbeautiful.net/" >https://informationisbeautiful.net/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Cybernews</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Cybernews：<a class="link"   target="_blank" rel="noopener" href="https://cybernews.com/" >https://cybernews.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>Product Hunt</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>Product Hunt：<a class="link"   target="_blank" rel="noopener" href="https://www.producthunt.com/" >https://www.producthunt.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>DataCamp</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>DataCamp：<a class="link"   target="_blank" rel="noopener" href="https://www.datacamp.com/" >https://www.datacamp.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>CodeGeeX编程助手</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>CodeGeeX编程助手：<a class="link"   target="_blank" rel="noopener" href="https://codegeex.cn/zh-CN?channel_utm_campaign=media042&utm_campaign=media042" >https://codegeex.cn/zh-CN?channel_utm_campaign=media042&amp;utm_campaign=media042<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> 知识星球</li>
+        <li><strong>Author:</strong> 白糖</li>
+        <li><strong>Created at
+                :</strong> 2024-09-14 16:08:00</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-01-22 00:07:00
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://zhsugar.me/2024/09/14/知识星球/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E7%9F%A5%E8%AF%86/">#知识</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E6%8A%80%E6%9C%AF/">#技术</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E7%BC%96%E7%A8%8B/">#编程</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/2025/01/20/%E6%B5%85%E5%90%AC%E6%B5%85%E5%90%9F/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">浅听浅吟</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2024/09/01/%E6%88%91%E4%BB%AC/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">我們</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: 'Ov23liUqjQP3vASrlWIA',
+                    clientSecret: '37ab394aca2d1c998a6b20dc8507167fb7fb15e0',
+                    repo: 'Gitalk',
+                    owner: 'zhsugar',
+                    admin: ['zhsugar'],
+                    id: __gitalk__pathname,
+                    language: 'en',
+                    proxy: 'https://github.com/login/oauth/access_token'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
+</div>
+
+		</div>
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">知识星球</div>
+		
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">白糖</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        11 posts in total
+                    </span>
+                    
+                        <span>
+                            29.9k words in total
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.5</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Search..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+	<div id="aplayer"></div>
+
+<script src="/js/build/libs/APlayer.min.js"></script>
+
+
+<script src="/js/build/plugins/aplayer.js"></script>
+
+
+	
+</body>
+
+</html>

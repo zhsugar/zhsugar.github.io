@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="白糖">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set data attribute for CSS variables
+                root.setAttribute("data-theme", theme);
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes once DOM is ready
+            if (document.readyState !== "loading") {
+                document.body.classList.add(theme + "-mode");
+            } else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add(theme + "-mode");
+                    document.body.classList.remove((theme === DARK ? LIGHT : DARK) + "-mode");
+                });
+            }
+        })();
+    </script>
+    
+    <!-- Critical CSS to prevent flash -->
+    <style>
+        :root[data-theme="dark"] {
+            --background-color: #202124;
+            --background-color-transparent: rgba(32, 33, 36, 0.6);
+            --second-background-color: #2d2e32;
+            --third-background-color: #34353a;
+            --third-background-color-transparent: rgba(32, 33, 36, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #ffffff;
+            --second-text-color: #eeeeee;
+            --third-text-color: #bebec6;
+            --fourth-text-color: #999999;
+            --default-text-color: #bebec6;
+            --invert-text-color: #373D3F;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(255, 255, 255, 0.08);
+            --shadow-color-2: rgba(255, 255, 255, 0.05);
+        }
+        
+        :root[data-theme="light"] {
+            --background-color: #fff;
+            --background-color-transparent: rgba(255, 255, 255, 0.6);
+            --second-background-color: #f8f8f8;
+            --third-background-color: #f2f2f2;
+            --third-background-color-transparent: rgba(241, 241, 241, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #16171a;
+            --second-text-color: #2f3037;
+            --third-text-color: #5e5e5e;
+            --fourth-text-color: #eeeeee;
+            --default-text-color: #373D3F;
+            --invert-text-color: #bebec6;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(0, 0, 0, 0.08);
+            --shadow-color-2: rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+        
+        /* Apply body classes as soon as DOM is ready */
+        :root[data-theme="dark"] body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+    </style>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://example.com/2023/04/25/arduino/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="白糖的修行日记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="项目搭建">
+<meta property="og:url" content="http://example.com/2023/04/25/Arduino/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="白糖的修行日记">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/redefine-og.webp">
+<meta property="article:published_time" content="2023-04-25T02:09:42.000Z">
+<meta property="article:modified_time" content="2024-07-08T02:09:15.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Arduino">
+<meta property="article:tag" content="物联网">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/redefine-og.webp">
+    
+    
+        <!-- Google tag (gtag.js) -->
+        <script src="https://www.googletagmanager.com/gtag/js?id=G-X7KXE8YG2D"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-X7KXE8YG2D');
+        </script>
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="https://pic1.imgdb.cn/item/6892e3ab58cb8da5c808fd50.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://pic1.imgdb.cn/item/6892e3ab58cb8da5c808fd50.png">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="https://pic1.imgdb.cn/item/6892e3ab58cb8da5c808fd50.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            项目搭建 | 云忧谷
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+        
+<script src="/js/build/libs/anime.min.js"></script>
+
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"example.com","root":"/","language":"en","path":"search.json"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":true,"list":["Apprentice","Disciple","Elder","Master","Patriarch","Sage","Venerable","Legend"]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":true,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":true},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":true,"custom_message":null},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"白糖的修行日记"},"google_analytics":{"enable":true,"id":"G-X7KXE8YG2D"}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/light.png","dark":"https://pic.imgdb.cn/item/6617aa3468eb9357137700dc.png"},"title":"有客到","subtitle":{"text":["看庭前花开花落，宠辱不惊","望天上云卷云舒，去留无意"],"hitokoto":{"enable":true,"show_author":false,"api":"https://v1.hitokoto.cn?c=i"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#CCFFFF"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/zhsugar","instagram":null,"zhihu":"https://www.zhihu.com/people/lethediana","twitter":null,"email":"1795847863@qq.com","bilibili":"https://space.bilibili.com/3493077459142699?spm_id_from=333.1007.0.0","fa-solid fa-blog":"https://blog.csdn.net/m0_65157297?spm=1010.2135.3001.5421"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"回忆观影券","artist":"IN-K&王忻辰","url":"/musicsource/huiyi.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg","lrc":null},{"name":"牵丝戏","artist":"银临/Aki阿杰","url":"/musicsource/qian.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"},{"name":"The Way I Still Love You","artist":"ALisa","url":"https://link.hhtjim.com/163/1474400749.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"},{"name":"Everytime We Touch","artist":"录音吉娃娃、谢子新# audio artist","url":"/musicsource/nice.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"},{"name":"死在江南烟雨中 (伴奏)","artist":"Mc梦柯","url":"https://link.hhtjim.com/163/485347088.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"},{"name":"记忆停留的地方","artist":"July","url":"https://link.hhtjim.com/163/28713832.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.5","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":28},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"烟花":{"path":"/yanhua","icon":"fa-solid fa-fan"},"相册":{"path":"/masonry","icon":"fa-solid fa-image"},"关于":{"icon":"fa-regular fa-user","submenus":{"Github":"https://zhsugar.github.io","码云":"https://gitee.com/zhsugar","csdn":"https://blog.csdn.net/m0_65157297?spm=1010.2135.3001.5421","知乎":"https://www.zhihu.com/people/lethediana","哔哩哔哩":"https://space.bilibili.com/3493077459142699?spm_id_from=333.1007.0.0","邮箱":"1795847863@qq.com"}}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":"看庭前花开花落，宠辱不惊。望天上云卷云舒，去留无意。","show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+	<span class="scroll-progress-bar"></span>
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    <h2 class="ml13">
+        云忧谷
+    </h2>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+        var animation = anime.timeline({ loop: true })
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [20, 0],
+                translateZ: 0,
+                opacity: [0, 1],
+                filter: ['blur(5px)', 'blur(0px)'],
+                easing: "easeOutExpo",
+                duration: 1200,
+                delay: (el, i) => 300 + 20 * i,
+            })
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [0, -20],
+                opacity: [1, 0],
+                filter: ['blur(0px)', 'blur(5px)'],
+                easing: "easeInExpo",
+                duration: 1000,
+                delay: (el, i) => 15 * i,
+                complete: function() {
+                    hidePreloader();
+                }
+            }, '-=700');
+
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(hidePreloader, 5000); // Call hidePreloader after 5000 milliseconds if not already called by animation
+        });
+
+        function hidePreloader() {
+            var preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(function () {
+                preloader.style.display = 'none';
+            }, 200);
+        }
+    </script>
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+                <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
+                    <img src="https://pic1.imgdb.cn/item/6892e3ab58cb8da5c808fd50.png" class="w-full h-full rounded-xs">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                云忧谷
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/yanhua"
+                                        >
+                                    <i class="fa-solid fa-fan fa-fw"></i>
+                                    烟花
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/masonry"
+                                        >
+                                    <i class="fa-solid fa-image fa-fw"></i>
+                                    相册
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://zhsugar.github.io">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://gitee.com/zhsugar">
+                                                    码云
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_65157297?spm=1010.2135.3001.5421">
+                                                    CSDN
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/lethediana">
+                                                    知乎
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://space.bilibili.com/3493077459142699?spm_id_from=333.1007.0.0">
+                                                    哔哩哔哩
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="/1795847863@qq.com">
+                                                    邮箱
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/yanhua"
+                        >
+                            <span>
+                                烟花
+                            </span>
+                            
+                                <i class="fa-solid fa-fan fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/masonry"
+                        >
+                            <span>
+                                相册
+                            </span>
+                            
+                                <i class="fa-solid fa-image fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-关于"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-关于">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://zhsugar.github.io">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://gitee.com/zhsugar">码云</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://blog.csdn.net/m0_65157297?spm=1010.2135.3001.5421">CSDN</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://www.zhihu.com/people/lethediana">知乎</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://space.bilibili.com/3493077459142699?spm_id_from=333.1007.0.0">哔哩哔哩</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/1795847863@qq.com">邮箱</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">22</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">8</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">11</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			
+			
+			<img src="https://pic1.imgdb.cn/item/646cafac0d2dde5777d6c52a.jpg" alt="项目搭建" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75" />
+			
+			<div class="w-full flex items-center absolute bottom-0 justify-start">
+				<h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color ">项目搭建</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="https://pic1.imgdb.cn/item/6892e4aa58cb8da5c8090ba9.jpg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">白糖</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-04-25 10:09:42</span>
+        <span class="mobile">2023-04-25 10:09:42</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-07-08 10:09:15</span>
+            <span class="mobile">2024-07-08 10:09:15</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/">物联网</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Arduino/">Arduino</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E7%89%A9%E8%81%94%E7%BD%91/">物联网</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>2.5k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>11 Mins</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>1、说在前面</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+        <div class="note p-4 mb-4 rounded-small markdown-body success">
+    <p>1、需求描述</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>通过识别指纹开发板控制舵机模拟开门的目的。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>温湿度烟雾和指纹模块都可以实现让舵机转动。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>同时温湿度和烟雾传感器还能控制蜂鸣器。    </p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>检测火焰使风扇转动实现灭火的功能          </p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>传感器：温湿度传感器、烟雾传感器、指纹模块、光感传感器、舵机、蜂鸣器、风扇灭火模块。</p>
+
+  </div>
+
+
+
+  <div class="note p-4 mb-4 rounded-small markdown-body success">
+    <p>2、实现流程</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>功能一:指纹模块+舵机                     </p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>功能二:温湿度传感器+舵机+蜂鸣器          </p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>功能三:烟雾传感器+舵机+蜂鸣器          </p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>功能四:光感传感器               </p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>功能五:风扇模块                </p>
+
+  </div>
+准备材料。开始实验。
+
+    </div>
+  </div>
+
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>2、准备材料</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>使用的材料是：</p>
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>指纹识别模块（带USB转TTL板）</p>
+
+  </div>
+          
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>舵机（度数可调）</p>
+
+  </div>
+          
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>温湿度传感器</p>
+
+  </div>
+          
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>光感传感器</p>
+
+  </div>
+          
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>烟雾传感器</p>
+
+  </div>
+          
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>蜂鸣器</p>
+
+  </div>
+          
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>风扇模块</p>
+
+  </div>
+          
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>LED灯</p>
+
+  </div>     
+          
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>若干根合适长度的杜邦线</p>
+
+  </div>   
+    </div>
+  </div>
+
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>3、指纹调试</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>使用USB转TTL板连接指纹模块和电脑。  </p>
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>1、Vi模块电源正输入端（红）——TTL板3.3V(注意)</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>2、Tx串行数据输出（黄）——TTL板Rx</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>3、Rx串行数据输入（白）——TTL板Tx</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>4、GND信号地（黑）——TTL板GND</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>5、打开“设备管理器”查看并记录TTL板的端口号。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>6、运行指纹程序，打开该端口的指纹模块。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>7、录入指纹速度慢可以取消勾选“显示图像”。<br>（建议录入指纹时，波特率选择57600）。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>8、录入指纹完成后拔掉TTL板，使用杜邦线连接开发板指纹模块和舵机。</p>
+
+  </div>
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>4、线路连接</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>准备合适长度的杜邦线若干。</p>
+  <div class="note p-4 mb-4 rounded-small markdown-body primary">
+    <p>1、舵机连接步骤：</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>舵机（红色） 线为电源线 —— 开发板5V接口（供电）</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>舵机（棕黑色）线为地线 —— 开发板GND接口（地线）</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>舵机（橙黄色）线为信号线 —— 开发板9号口（信号）</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body primary">
+    <p>2、指纹模块连接步骤：</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>指纹模块（红色绿色）线延长接成1根线 —— 开发板3.3V口（供电）</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>指纹模块（黑色）线 —— 开发板GND接口（地线）</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>指纹模块（黄色）线 —— 开发板数字2号口（串行数据输出）</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>指纹模块（白色）线 —— 开发板数字3号口（串行数据输入）</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>指纹模块（蓝色）线 —— 开发板数字4号口（感应信号输出）</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body primary">
+    <p>3、温湿度模块连接步骤：</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>温湿度模块S引脚 —— 开发板模拟口</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>温湿度模块VCC引脚 —— 开发板VCC引脚</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>温湿度模块GND引脚 —— 开发板GND引脚</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body primary">
+    <p>4、光感模块连接步骤：</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>光感模块S引脚 —— 开发板模拟口</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>光感模块VCC引脚 —— 开发板VCC引脚</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>光感模块GND引脚 —— 开发板GND引脚</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body primary">
+    <p>5、烟雾模块连接步骤：</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>烟雾模块S引脚 —— 开发板模拟口</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>烟雾模块VCC引脚 —— 开发板VCC引脚</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>烟雾模块GND引脚 —— 开发板GND引脚</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body primary">
+    <p>6、蜂鸣器模块连接步骤：</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>蜂鸣器模块数字引脚 —— 开发板数字引脚</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>蜂鸣器模块GND引脚 —— 开发板GND引脚</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body primary">
+    <p>7、风扇模块连接步骤：</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>风扇模块GND —— 开发板GND</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>风扇模块VCC —— 开发板VCC</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>风扇模块数字引脚A —— 开发板数字引脚7</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>风扇模块数字引脚B —— 开发板数字引脚8</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>风扇模块火焰模拟口 —— 开发板模拟口</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>风扇模块火焰模拟VCC —— 开发板VCC</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>风扇模块火焰模拟GND —— 开发板GND</p>
+
+  </div>
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>5、代码实现</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <div class="note p-4 mb-4 rounded-small markdown-body red icon-padding">
+  <i class="note-icon fa-solid fa-bolt"></i><p>1、把开发板连接电脑，选择开发板的端口（工具→端口→选择端口），复制以下代码进Arduino程序。</p>
+
+</div>
+
+<div class="note p-4 mb-4 rounded-small markdown-body red icon-padding">
+  <i class="note-icon fa-solid fa-bolt"></i><p>2、如果缺少库文件，就在“工具→管理库”里面搜索添加提示缺失的库即可。</p>
+
+</div>
+
+<div class="note p-4 mb-4 rounded-small markdown-body red icon-padding">
+  <i class="note-icon fa-solid fa-bolt"></i><p>3、左上角√图标编译验证没问题，就可以上传→至开发板内了。</p>
+
+</div>
+
+<div class="note p-4 mb-4 rounded-small markdown-body red icon-padding">
+  <i class="note-icon fa-solid fa-bolt"></i><p>4、源代码实现 (代码还须根据实际进行修改和调整)</p>
+
+</div>
+    </div>
+  </div>
+
+
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;DFRobot_DHT11.h&gt;</span><br><span class="line">DFRobot_DHT11 DHT;</span><br><span class="line">#define DHT11_PIN A2                  // 对应的是A0引脚</span><br><span class="line">#include &lt;Adafruit_Fingerprint.h&gt;  //声明调用Adafruit_Fingerprint.h库  指纹</span><br><span class="line">#include &lt;Servo.h&gt;    // 声明调用Servo.h库  舵机</span><br><span class="line">Servo myservo;        // 创建一个舵机对象</span><br><span class="line">int pos = 0;          // 变量pos用来存储舵机位置</span><br><span class="line">const int servoDelay = 15;</span><br><span class="line">const int servoStop  = 2000;</span><br><span class="line">const int lowPowerRate = 1;</span><br><span class="line">const int checkDelay = 1000;</span><br><span class="line">const int debug = 0;</span><br><span class="line">int beep = 6;//定义数字口6控制蜂鸣器</span><br><span class="line">int red = 5;//定义数字口5</span><br><span class="line">/*光感*/</span><br><span class="line">#define lightR A0</span><br><span class="line">#define LED 13</span><br><span class="line">/*光感*/</span><br><span class="line"></span><br><span class="line">SoftwareSerial mySerial(2, 3);//黄色串行数据输出&amp;&amp;白色串行数据输入接口（可修改范围A0~A5，2~13）</span><br><span class="line">Adafruit_Fingerprint finger = Adafruit_Fingerprint(&amp;mySerial);</span><br><span class="line">void setup()</span><br><span class="line">&#123;</span><br><span class="line">  pinMode(7, OUTPUT);</span><br><span class="line">  pinMode(8, OUTPUT);</span><br><span class="line">  pinMode(LED,OUTPUT);    //设置连接小灯的引脚为输出模式</span><br><span class="line">  pinMode(lightR,INPUT);</span><br><span class="line">  pinMode(beep,OUTPUT);//设置数字6引脚为输出模式 </span><br><span class="line">  pinMode(red,OUTPUT);//设置数字6引脚为输出模式 </span><br><span class="line">  myservo.attach(9); //舵机信号端口（可修改范围A0~A5，2~13）</span><br><span class="line">  myservo.write(0);</span><br><span class="line">  Serial.begin(9600);</span><br><span class="line">  Serial.println(&quot;Demo Start&quot;);</span><br><span class="line">  while (!Serial);  // For Yun/Leo/Micro/Zero/...</span><br><span class="line">  delay(100);</span><br><span class="line">  Serial.println(&quot;\n\nAdafruit finger detect test&quot;);</span><br><span class="line">  finger.begin(57600);//设置传感器串行端口的数据速率</span><br><span class="line">  delay(5);</span><br><span class="line">  if (finger.verifyPassword()) &#123;</span><br><span class="line">    Serial.println(&quot;Found fingerprint sensor!&quot;);</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    Serial.println(&quot;Did not find fingerprint sensor :(&quot;);</span><br><span class="line">    while (1) &#123; delay(1); &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  Serial.println(F(&quot;Reading sensor parameters&quot;));</span><br><span class="line">  finger.getParameters();</span><br><span class="line">  Serial.print(F(&quot;Status: 0x&quot;)); Serial.println(finger.status_reg, HEX);</span><br><span class="line">  Serial.print(F(&quot;Sys ID: 0x&quot;)); Serial.println(finger.system_id, HEX);</span><br><span class="line">  Serial.print(F(&quot;Capacity: &quot;)); Serial.println(finger.capacity);</span><br><span class="line">  Serial.print(F(&quot;Security level: &quot;)); Serial.println(finger.security_level);</span><br><span class="line">  Serial.print(F(&quot;Device address: &quot;)); Serial.println(finger.device_addr, HEX);</span><br><span class="line">  Serial.print(F(&quot;Packet len: &quot;)); Serial.println(finger.packet_len);</span><br><span class="line">  Serial.print(F(&quot;Baud rate: &quot;)); Serial.println(finger.baud_rate);</span><br><span class="line">  finger.getTemplateCount();</span><br><span class="line">  if (finger.templateCount == 0) &#123;</span><br><span class="line">    Serial.print(&quot;Sensor doesn&#x27;t contain any fingerprint data. Please run the &#x27;enroll&#x27; example.&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">    Serial.println(&quot;Waiting for valid finger...&quot;);</span><br><span class="line">    Serial.print(&quot;Sensor contains &quot;); Serial.print(finger.templateCount); Serial.println(&quot; templates&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">void loop()                     // run over and over again</span><br><span class="line">&#123;</span><br><span class="line">  huoyanbaojing();</span><br><span class="line">  wenshiducaiji();</span><br><span class="line">  fengshan();</span><br><span class="line">  Serial.println(&quot;Voltage in 4&quot;); </span><br><span class="line">  Serial.println(digitalRead(4));</span><br><span class="line">  if(!lowPowerRate || digitalRead(4) == HIGH) &#123;</span><br><span class="line">    getFingerprintID();</span><br><span class="line">  &#125;</span><br><span class="line">  delay(checkDelay);            //don&#x27;t ned to run this at full speed.</span><br><span class="line">  guanggan();</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">void openAndReset()&#123;</span><br><span class="line">  for(pos = 0; pos &lt; 90; pos += 1)&#123;    // 舵机从0°转到180°，每次增加1°          </span><br><span class="line">    myservo.write(pos);       // 给舵机写入角度   </span><br><span class="line">    delay(servoDelay);                    // 延时15ms让舵机转到指定位置</span><br><span class="line">  &#125;</span><br><span class="line">  delay(servoStop);</span><br><span class="line">  for(pos = 90; pos&gt;=1; pos-=1) &#123;    // 舵机从180°转回到0°，每次减小1°                               </span><br><span class="line">    myservo.write(pos);        // 写角度到舵机     </span><br><span class="line">    delay(servoDelay);                 // 延时15ms让舵机转到指定位置</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">uint8_t getFingerprintID() &#123;</span><br><span class="line">  uint8_t p = finger.getImage();</span><br><span class="line">  switch (p) &#123;</span><br><span class="line">    case FINGERPRINT_OK:</span><br><span class="line">      Serial.println(&quot;Image taken&quot;);</span><br><span class="line">      break;</span><br><span class="line">    case FINGERPRINT_NOFINGER:</span><br><span class="line">      Serial.println(&quot;No finger detected&quot;);</span><br><span class="line">      return p;</span><br><span class="line">    case FINGERPRINT_PACKETRECIEVEERR:</span><br><span class="line">      Serial.println(&quot;Communication error&quot;);</span><br><span class="line">      return p;</span><br><span class="line">    case FINGERPRINT_IMAGEFAIL:</span><br><span class="line">      Serial.println(&quot;Imaging error&quot;);</span><br><span class="line">      return p;</span><br><span class="line">    default:</span><br><span class="line">      Serial.println(&quot;Unknown error&quot;);</span><br><span class="line">      return p;</span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line">  p = finger.image2Tz();</span><br><span class="line">  switch (p) &#123;</span><br><span class="line">    case FINGERPRINT_OK:</span><br><span class="line">      Serial.println(&quot;Image converted&quot;);</span><br><span class="line">      break;</span><br><span class="line">    case FINGERPRINT_IMAGEMESS:</span><br><span class="line">      Serial.println(&quot;Image too messy&quot;);</span><br><span class="line">      return p;</span><br><span class="line">    case FINGERPRINT_PACKETRECIEVEERR:</span><br><span class="line">      Serial.println(&quot;Communication error&quot;);</span><br><span class="line">      return p;</span><br><span class="line">    case FINGERPRINT_FEATUREFAIL:</span><br><span class="line">      Serial.println(&quot;Could not find fingerprint features&quot;);</span><br><span class="line">      return p;</span><br><span class="line">    case FINGERPRINT_INVALIDIMAGE:</span><br><span class="line">      Serial.println(&quot;Could not find fingerprint features&quot;);</span><br><span class="line">      return p;</span><br><span class="line">    default:</span><br><span class="line">      Serial.println(&quot;Unknown error&quot;);</span><br><span class="line">      return p;</span><br><span class="line">  &#125;</span><br><span class="line">  p = finger.fingerSearch();</span><br><span class="line">  if (p == FINGERPRINT_OK) &#123;</span><br><span class="line">    Serial.println(&quot;Found a print match!&quot;);</span><br><span class="line">    digitalWrite(beep,LOW);//关闭蜂鸣器</span><br><span class="line">  &#125; else if (p == FINGERPRINT_PACKETRECIEVEERR) &#123;</span><br><span class="line">    Serial.println(&quot;Communication error&quot;);</span><br><span class="line">    return p;</span><br><span class="line">  &#125; else if (p == FINGERPRINT_NOTFOUND) &#123;</span><br><span class="line">    digitalWrite(red,HIGH);//提示红灯</span><br><span class="line">    Serial.println(&quot;Did not find a match&quot;);</span><br><span class="line">    digitalWrite(beep,HIGH);//打开蜂鸣器</span><br><span class="line">    delay(1000); </span><br><span class="line">    digitalWrite(beep,LOW);//打开蜂鸣器</span><br><span class="line">    return p;</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    Serial.println(&quot;Unknown error&quot;);</span><br><span class="line">    return p;</span><br><span class="line">  &#125;</span><br><span class="line">  Serial.print(&quot;Found ID #&quot;); </span><br><span class="line">  Serial.print(finger.fingerID);</span><br><span class="line">  Serial.print(&quot; with confidence of &quot;); </span><br><span class="line">  Serial.println(finger.confidence);</span><br><span class="line">  openAndReset();</span><br><span class="line">  return finger.fingerID;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int getFingerprintIDez() &#123;</span><br><span class="line">  uint8_t p = finger.getImage();</span><br><span class="line">  if (p != FINGERPRINT_OK)  return -1;</span><br><span class="line"> </span><br><span class="line">  p = finger.image2Tz();</span><br><span class="line">  if (p != FINGERPRINT_OK)  return -1;</span><br><span class="line"> </span><br><span class="line">  p = finger.fingerFastSearch();</span><br><span class="line">  if (p != FINGERPRINT_OK)  return -1;</span><br><span class="line"> </span><br><span class="line">  // found a match!</span><br><span class="line">  Serial.print(&quot;Found ID #&quot;); </span><br><span class="line">  Serial.print(finger.fingerID);</span><br><span class="line">  Serial.print(&quot; with confidence of &quot;); </span><br><span class="line">  Serial.println(finger.confidence);</span><br><span class="line">  return finger.fingerID;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//光感函数</span><br><span class="line">void guanggan()&#123;</span><br><span class="line">  int val=analogRead(lightR);  //读取模拟接口A0的值，也就是14号口，把值赋给val</span><br><span class="line">  Serial.println(&quot;光感模拟量值为：&quot;);  //显示字符串&quot;模拟量值为：&quot;</span><br><span class="line">  Serial.println(val);    //通过串口打印对应的val值，并且通过串口进行显示出来</span><br><span class="line">  delay(1000);//延时1秒</span><br><span class="line">  if(val&gt;100)//判断是否大于设定值</span><br><span class="line">   &#123;</span><br><span class="line">      digitalWrite(LED,HIGH);//点亮led</span><br><span class="line">      //digitalWrite(beep,LOW);//关闭蜂鸣器</span><br><span class="line">   &#125;else&#123;</span><br><span class="line">     digitalWrite(LED,LOW);//关闭led</span><br><span class="line">     //digitalWrite(beep,HIGH);//打开蜂鸣器 </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//可燃检测</span><br><span class="line">void huoyanbaojing()</span><br><span class="line">&#123;</span><br><span class="line">  int vall = analogRead(A1);//读取模拟14口的值 </span><br><span class="line">  Serial.println(&quot;可燃模拟量值为：&quot;);  //显示字符串&quot;模拟量值为：&quot;</span><br><span class="line">  Serial.println(vall);    //读取模拟接口A0的值，并且通过串口进行显示出来</span><br><span class="line">  if(vall&gt;1000)//可以通过调节这个参数来改变火焰检测的阀值</span><br><span class="line">  &#123; </span><br><span class="line">    Serial.print(&quot;环境正常&quot;);</span><br><span class="line">    digitalWrite(red,LOW);//关闭提示灯</span><br><span class="line">    digitalWrite(beep,LOW);//关闭蜂鸣器</span><br><span class="line">  &#125; </span><br><span class="line">  else//否则 </span><br><span class="line">  &#123; </span><br><span class="line">    Serial.print(&quot;环境异常&quot;);</span><br><span class="line">    digitalWrite(red,HIGH);//打开提示灯</span><br><span class="line">    digitalWrite(beep,HIGH);//打开蜂鸣器 </span><br><span class="line">    openAndReset();</span><br><span class="line">    delay(1000);</span><br><span class="line">    digitalWrite(red,LOW);//关闭提示灯</span><br><span class="line">  &#125; </span><br><span class="line">  delay(1000);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">void wenshiducaiji()&#123;</span><br><span class="line">  delay(1000);</span><br><span class="line">  DHT.read(DHT11_PIN);</span><br><span class="line">  float RH = DHT.humidity;   //读取湿度数据                       </span><br><span class="line">  float T = DHT.temperature;       //读取温度数据</span><br><span class="line">  Serial.print(&quot;Humidity:&quot;);  //向串口打印 Humidity:</span><br><span class="line">  Serial.print(RH);           //向串口打印湿度数据</span><br><span class="line">  Serial.print(&quot;%&quot;);</span><br><span class="line">  Serial.print(&quot;  Temperature:&quot;);</span><br><span class="line">  Serial.print(T);            //向串口打印温度数据</span><br><span class="line">  Serial.println(&quot;C&quot;); </span><br><span class="line">  if(T&lt;33)//可以通过调节这个参数来改变火焰检测的阀值</span><br><span class="line">  &#123; </span><br><span class="line">    Serial.print(&quot;温度正常&quot;);</span><br><span class="line">    digitalWrite(red,LOW);//关闭提示灯</span><br><span class="line">    digitalWrite(beep,LOW);//关闭蜂鸣器</span><br><span class="line">  &#125; </span><br><span class="line">  else//否则 </span><br><span class="line">  &#123; </span><br><span class="line">    Serial.print(&quot;温度异常&quot;);</span><br><span class="line">    digitalWrite(red,HIGH);//打开提示灯</span><br><span class="line">    //digitalWrite(beep,HIGH);//打开蜂鸣器</span><br><span class="line">    openAndReset();//开门</span><br><span class="line">    delay(1000);</span><br><span class="line">    digitalWrite(red,LOW);//关闭提示灯</span><br><span class="line">  &#125; </span><br><span class="line">  delay(500);                  //延时1000毫秒</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void fengshan()&#123;</span><br><span class="line">  int valll = analogRead(A3);</span><br><span class="line">  Serial.println(&quot; &quot;);</span><br><span class="line">  Serial.println(&quot;模拟量值为: &quot;);</span><br><span class="line">  Serial.println(valll);</span><br><span class="line">  if (valll &lt; 600) &#123;</span><br><span class="line">    digitalWrite(7,HIGH);</span><br><span class="line">    digitalWrite(8,LOW);</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    digitalWrite(7,LOW);</span><br><span class="line">    digitalWrite(8,LOW);</span><br><span class="line">  &#125;</span><br><span class="line">  //delay(500);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>风扇模块代码</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      
+    </div>
+  </div>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">void setup()&#123;</span><br><span class="line">  Serial.begin(9600);</span><br><span class="line">  pinMode(7, OUTPUT);</span><br><span class="line">  pinMode(8, OUTPUT);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void loop()&#123;</span><br><span class="line">  int valll = analogRead(A3);</span><br><span class="line">  Serial.println(&quot;模拟量值为: &quot;);</span><br><span class="line">  Serial.println(valll);</span><br><span class="line">  if (valll &lt; 600) &#123;</span><br><span class="line">    digitalWrite(7,HIGH);</span><br><span class="line">    digitalWrite(8,LOW);</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    digitalWrite(7,LOW);</span><br><span class="line">    digitalWrite(8,LOW);</span><br><span class="line">  &#125;</span><br><span class="line">  delay(500);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+  <div class="note-large red">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>补充</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <div class="note p-4 mb-4 rounded-small markdown-body warning">
+  <p>上述代码还需根据实际整合</p>
+
+</div>
+
+<div class="note p-4 mb-4 rounded-small markdown-body warning">
+  <p>代码中可能存在错误的地方</p>
+
+</div>
+
+<div class="note p-4 mb-4 rounded-small markdown-body warning">
+  <p>如有误请自行进行更正代码</p>
+
+</div>
+    </div>
+  </div>
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> 项目搭建</li>
+        <li><strong>Author:</strong> 白糖</li>
+        <li><strong>Created at
+                :</strong> 2023-04-25 10:09:42</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-07-08 10:09:15
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://zhsugar.me/2023/04/25/Arduino/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/Arduino/">#Arduino</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E7%89%A9%E8%81%94%E7%BD%91/">#物联网</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/2023/05/20/%E8%B5%9B%E5%8D%9A%E6%9C%8B%E5%85%8B/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">赛博朋克</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2022/05/20/%E9%93%B6%E6%B2%B3%E7%B3%BBvs%E4%BB%99%E5%A5%B3%E5%BA%A7%E6%98%9F%E7%B3%BB/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">银河系vs仙女座星系</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: 'Ov23liUqjQP3vASrlWIA',
+                    clientSecret: '37ab394aca2d1c998a6b20dc8507167fb7fb15e0',
+                    repo: 'Gitalk',
+                    owner: 'zhsugar',
+                    admin: ['zhsugar'],
+                    id: __gitalk__pathname,
+                    language: 'en',
+                    proxy: 'https://github.com/login/oauth/access_token'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
+</div>
+
+		</div>
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">项目搭建</div>
+		
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">白糖</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        11 posts in total
+                    </span>
+                    
+                        <span>
+                            29.9k words in total
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.5</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Search..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+	<div id="aplayer"></div>
+
+<script src="/js/build/libs/APlayer.min.js"></script>
+
+
+<script src="/js/build/plugins/aplayer.js"></script>
+
+
+	
+</body>
+
+</html>

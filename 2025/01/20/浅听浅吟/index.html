@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="白糖">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set data attribute for CSS variables
+                root.setAttribute("data-theme", theme);
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes once DOM is ready
+            if (document.readyState !== "loading") {
+                document.body.classList.add(theme + "-mode");
+            } else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add(theme + "-mode");
+                    document.body.classList.remove((theme === DARK ? LIGHT : DARK) + "-mode");
+                });
+            }
+        })();
+    </script>
+    
+    <!-- Critical CSS to prevent flash -->
+    <style>
+        :root[data-theme="dark"] {
+            --background-color: #202124;
+            --background-color-transparent: rgba(32, 33, 36, 0.6);
+            --second-background-color: #2d2e32;
+            --third-background-color: #34353a;
+            --third-background-color-transparent: rgba(32, 33, 36, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #ffffff;
+            --second-text-color: #eeeeee;
+            --third-text-color: #bebec6;
+            --fourth-text-color: #999999;
+            --default-text-color: #bebec6;
+            --invert-text-color: #373D3F;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(255, 255, 255, 0.08);
+            --shadow-color-2: rgba(255, 255, 255, 0.05);
+        }
+        
+        :root[data-theme="light"] {
+            --background-color: #fff;
+            --background-color-transparent: rgba(255, 255, 255, 0.6);
+            --second-background-color: #f8f8f8;
+            --third-background-color: #f2f2f2;
+            --third-background-color-transparent: rgba(241, 241, 241, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #16171a;
+            --second-text-color: #2f3037;
+            --third-text-color: #5e5e5e;
+            --fourth-text-color: #eeeeee;
+            --default-text-color: #373D3F;
+            --invert-text-color: #bebec6;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(0, 0, 0, 0.08);
+            --shadow-color-2: rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+        
+        /* Apply body classes as soon as DOM is ready */
+        :root[data-theme="dark"] body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+    </style>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://example.com/2025/01/20/浅听浅吟/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="白糖的修行日记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅听浅吟">
+<meta property="og:url" content="http://example.com/2025/01/20/%E6%B5%85%E5%90%AC%E6%B5%85%E5%90%9F/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="白糖的修行日记">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/redefine-og.webp">
+<meta property="article:published_time" content="2025-01-20T12:21:34.000Z">
+<meta property="article:modified_time" content="2025-01-23T15:27:35.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="倾听">
+<meta property="article:tag" content="小确幸">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/redefine-og.webp">
+    
+    
+        <!-- Google tag (gtag.js) -->
+        <script src="https://www.googletagmanager.com/gtag/js?id=G-X7KXE8YG2D"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-X7KXE8YG2D');
+        </script>
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="https://pic1.imgdb.cn/item/6892e3ab58cb8da5c808fd50.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://pic1.imgdb.cn/item/6892e3ab58cb8da5c808fd50.png">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="https://pic1.imgdb.cn/item/6892e3ab58cb8da5c808fd50.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            浅听浅吟 | 云忧谷
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+        
+<script src="/js/build/libs/anime.min.js"></script>
+
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"example.com","root":"/","language":"en","path":"search.json"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":true,"list":["Apprentice","Disciple","Elder","Master","Patriarch","Sage","Venerable","Legend"]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":true,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":true},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":true,"custom_message":null},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"白糖的修行日记"},"google_analytics":{"enable":true,"id":"G-X7KXE8YG2D"}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/light.png","dark":"https://pic.imgdb.cn/item/6617aa3468eb9357137700dc.png"},"title":"有客到","subtitle":{"text":["看庭前花开花落，宠辱不惊","望天上云卷云舒，去留无意"],"hitokoto":{"enable":true,"show_author":false,"api":"https://v1.hitokoto.cn?c=i"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#CCFFFF"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/zhsugar","instagram":null,"zhihu":"https://www.zhihu.com/people/lethediana","twitter":null,"email":"1795847863@qq.com","bilibili":"https://space.bilibili.com/3493077459142699?spm_id_from=333.1007.0.0","fa-solid fa-blog":"https://blog.csdn.net/m0_65157297?spm=1010.2135.3001.5421"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"回忆观影券","artist":"IN-K&王忻辰","url":"/musicsource/huiyi.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg","lrc":null},{"name":"牵丝戏","artist":"银临/Aki阿杰","url":"/musicsource/qian.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"},{"name":"The Way I Still Love You","artist":"ALisa","url":"https://link.hhtjim.com/163/1474400749.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"},{"name":"Everytime We Touch","artist":"录音吉娃娃、谢子新# audio artist","url":"/musicsource/nice.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"},{"name":"死在江南烟雨中 (伴奏)","artist":"Mc梦柯","url":"https://link.hhtjim.com/163/485347088.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"},{"name":"记忆停留的地方","artist":"July","url":"https://link.hhtjim.com/163/28713832.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.5","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":28},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"烟花":{"path":"/yanhua","icon":"fa-solid fa-fan"},"相册":{"path":"/masonry","icon":"fa-solid fa-image"},"关于":{"icon":"fa-regular fa-user","submenus":{"Github":"https://zhsugar.github.io","码云":"https://gitee.com/zhsugar","csdn":"https://blog.csdn.net/m0_65157297?spm=1010.2135.3001.5421","知乎":"https://www.zhihu.com/people/lethediana","哔哩哔哩":"https://space.bilibili.com/3493077459142699?spm_id_from=333.1007.0.0","邮箱":"1795847863@qq.com"}}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":"看庭前花开花落，宠辱不惊。望天上云卷云舒，去留无意。","show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+	<span class="scroll-progress-bar"></span>
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    <h2 class="ml13">
+        云忧谷
+    </h2>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+        var animation = anime.timeline({ loop: true })
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [20, 0],
+                translateZ: 0,
+                opacity: [0, 1],
+                filter: ['blur(5px)', 'blur(0px)'],
+                easing: "easeOutExpo",
+                duration: 1200,
+                delay: (el, i) => 300 + 20 * i,
+            })
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [0, -20],
+                opacity: [1, 0],
+                filter: ['blur(0px)', 'blur(5px)'],
+                easing: "easeInExpo",
+                duration: 1000,
+                delay: (el, i) => 15 * i,
+                complete: function() {
+                    hidePreloader();
+                }
+            }, '-=700');
+
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(hidePreloader, 5000); // Call hidePreloader after 5000 milliseconds if not already called by animation
+        });
+
+        function hidePreloader() {
+            var preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(function () {
+                preloader.style.display = 'none';
+            }, 200);
+        }
+    </script>
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+                <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
+                    <img src="https://pic1.imgdb.cn/item/6892e3ab58cb8da5c808fd50.png" class="w-full h-full rounded-xs">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                云忧谷
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/yanhua"
+                                        >
+                                    <i class="fa-solid fa-fan fa-fw"></i>
+                                    烟花
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/masonry"
+                                        >
+                                    <i class="fa-solid fa-image fa-fw"></i>
+                                    相册
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://zhsugar.github.io">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://gitee.com/zhsugar">
+                                                    码云
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_65157297?spm=1010.2135.3001.5421">
+                                                    CSDN
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/lethediana">
+                                                    知乎
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://space.bilibili.com/3493077459142699?spm_id_from=333.1007.0.0">
+                                                    哔哩哔哩
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="/1795847863@qq.com">
+                                                    邮箱
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/yanhua"
+                        >
+                            <span>
+                                烟花
+                            </span>
+                            
+                                <i class="fa-solid fa-fan fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/masonry"
+                        >
+                            <span>
+                                相册
+                            </span>
+                            
+                                <i class="fa-solid fa-image fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-关于"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-关于">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://zhsugar.github.io">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://gitee.com/zhsugar">码云</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://blog.csdn.net/m0_65157297?spm=1010.2135.3001.5421">CSDN</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://www.zhihu.com/people/lethediana">知乎</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://space.bilibili.com/3493077459142699?spm_id_from=333.1007.0.0">哔哩哔哩</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/1795847863@qq.com">邮箱</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">22</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">8</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">11</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			
+			
+			<img src="https://pic1.imgdb.cn/item/678e98a3d0e0a243d4f5ffab.jpg" alt="浅听浅吟" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75" />
+			
+			<div class="w-full flex items-center absolute bottom-0 justify-start">
+				<h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color ">浅听浅吟</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="https://pic1.imgdb.cn/item/6892e4aa58cb8da5c8090ba9.jpg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">白糖</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-01-20 20:21:34</span>
+        <span class="mobile">2025-01-20 20:21:34</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-01-23 23:27:35</span>
+            <span class="mobile">2025-01-23 23:27:35</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%A4%9C%E8%AF%BB/">夜读</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E5%80%BE%E5%90%AC/">倾听</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E5%B0%8F%E7%A1%AE%E5%B9%B8/">小确幸</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>5.8k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>19 Mins</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>九篇雪</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+       <div class="note p-4 mb-4 rounded-small markdown-body success">
+   <p>九篇雪(一)</p>
+
+ </div>
+
+ <div class="note p-4 mb-4 rounded-small markdown-body default">
+   <p>&emsp;&emsp;我说：“又下雪了。”我悄悄起床，趴在窗台上往外看。外面黑乎乎的。我又说：“又下雪了。”睁大了眼睛，什么也看不见。此时，雪的白不知正在谁的梦中白着。我咳嗽了一声，清清嗓子第三次大声说道：“下雪了！”——黑暗中没有一丝响应。许久，房子的某个角落传来打鼾声。我忍不住流下泪来：“真的下雪了……”<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.imgdb.cn/item/678fb541d0e0a243d4f63575.png"
+                      title="img"
+                ><br>&emsp;&emsp;就像我说“我真的爱你”一样。这世上总是有那么多的事情不能让人相信。我真的知道每个夜晚雪其实都在下。我无法把这件事告诉别人，是因为我不能解释那些落下的雪又是如何穿行在一个神秘的通道中，然后在天亮前消失。我也并不是真的什么都知道了。当夜深人静时，自己突然从床上坐起，脱口而出的那句话——我也弄不清是不是梦话。<br>&emsp;&emsp;那么，雪到底下了还是没下？</p>
+
+ </div>
+
+
+ <div class="note p-4 mb-4 rounded-small markdown-body success">
+   <p>九篇雪(二)</p>
+
+ </div>
+
+ <div class="note p-4 mb-4 rounded-small markdown-body default">
+   <p>&emsp;&emsp;真正下雪的夜晚，绝对不会只让我一个人知道。首先天气预报就会提前好几天公布。一推开门世界就变白变厚了的大怪事也只在童年里出现。下雪的夜里，通夜都有人在忙碌，这人刚刚回到家，那人又推开门踏雪而去，说不上究竟是谁第一个经历了雪。<br>&emsp;&emsp;我穿好衣服，戴好围巾手套，早早地推门出去，但还是看到有人在四十厘米厚的大雪上留下了脚印。这行脚印横在门口，从东到西，让我没法过去，只好踩进脚印坑里前进。天色漆黑，路灯昏暗，街道冷清。走在这行脚印中，想着到底是谁，比我更加孤独。<br>&emsp;&emsp;踩着这脚印一直往前走，渐渐丢失了自己原来的方向。我曾停下来想了一会儿，再抬起脚时，不由自主又踩入下一个脚印。我发现我已经无法离开那人留给我的路了。虽然也曾试着从经过的一个路口踏入别的方向，可踩出去一脚，就在雪上跌了一跤。<br>&emsp;&emsp;我接着向前走，渐渐发现，我走他的路是为了追上他，为了看看他的容颜。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.imgdb.cn/item/678fb542d0e0a243d4f63576.png"
+                      title="img"
+                ><br>&emsp;&emsp;我知道他是谁了。<br>&emsp;&emsp;接下来我又渐渐感觉到那行脚印在每一处岔路口的迟疑。也许我可以追上他，我没有丝毫的迟疑。我便跑了起来。路灯突然没有了，天却朦朦胧胧亮了起来，我的心怦怦直跳，呼吸急促。每跨出一步我都感觉他在下一步等我。近了，快了……我跌跌撞撞，不停地摔跤。天渐亮了，我愈发清晰地感觉到了他的气息，我甚至真的听到了他的呼吸和叹气。我心中狂喜，不能自已——我看到前面的脚印停止了下来！我马上就见着他了！我连跑几步，在脚印消失的地方，欲往前再走一步——马上就要见着他的最后一步——时，却赫然惊觉，自己正站在一处悬崖的尽头……<br>&emsp;&emsp;——天一下子重新黑了。我从梦中惊醒，穿好衣服，坐到天明。
+</p>
+
+ </div>
+
+
+ <div class="note p-4 mb-4 rounded-small markdown-body success">
+   <p>九篇雪(三)</p>
+
+ </div>
+
+ <div class="note p-4 mb-4 rounded-small markdown-body default">
+   <p>&emsp;&emsp;雪是多么不可思议的一种事物！<br>&emsp;&emsp;首先它是白的。它没有杂质，它耀眼。它白，它就是白。它总会让人想起一个咬着嘴唇的沉默而倔强的女孩。它从上面重重积云中下来，云却是灰的。<br>&emsp;&emsp;其次，它是飘落下来的。漫天地飘落，从天到地缠绵着。我们也渴望那种飘——当流星和雨点笔直迅疾地坠落，当鸟儿拍着翅膀呼啦啦啦远去，我渴望升入高处，再慢慢悠悠地落向大地。慢慢悠悠地，什么都看见了，什么都记住了。<br>&emsp;&emsp;然后，它是图案精致的。让人得知有一个人曾多么寂寞，他在那么漫长的岁月中，一片一片反复雕琢出这些精美的尤物。再在剩下的时间里将它们一把一把抛撒、丢弃。这些尤物，在静处和近处给你指出迷宫，然后淡淡一笑，自己却欠身堵住了出口。它展示着它的六片花瓣。树叶有这种形状吗？石头有这种形状吗？梦有吗？死亡有吗？如果世上没有雪，人类永远无法靠现有的想象将这种东西凭空合成。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.imgdb.cn/item/678fb542d0e0a243d4f63577.png"
+                      title="img"
+                ><br>&emsp;&emsp;雪还可以堆积和覆盖。在这世上，能够完完全全去覆盖什么的只有雪和坟墓吧？因此，雪地总是有着墓地的美。我们走在雪上，想到雪被下面的那些，会想到自己就这样走过了。会回头张望。<br>&emsp;&emsp;雪还可以融化，在手心消失，在春天消失。我们留不住雪，以及更多的东西。抓一大把雪将它攥紧吧，去感觉冰凉的、泪水流逝一般的流逝。如果此时你不能把它融化，你就将被它冻僵。雪冷冷地看你，消失了还在梦中这样看你。<br>&emsp;&emsp;但是小的时候我们不知道有关雪的这么多。我们只知道雪可以堆雪人，一个和我们一样大的雪人，而且和我们一样站在大地上。它的一切都由我们来给。胡萝卜的鼻子，煤炭的眼睛，还戴过我的眼镜，围过你的围巾。有一天，它因我们年幼的记忆而产生了奇迹，它和我们一起奔跑过大街和广场，有了生命。后来天暗了，我们回家时不该把它独自留在那里。我们什么都给它的时候没有想到也会给了它孤独。我们真的没有想到。当我们纷纷隔着窗子远远凝望着它，在各自温暖如春的家里。<br>&emsp;&emsp;我们来自于生命中的第一次寂寞，是看到了一个雪人的寂寞吧？如果它没有眼睛和鼻子，如果它仍是一摊平整的雪。如果我们没有惊醒雪，我们没有惊醒它。<br>&emsp;&emsp;我们可能将替它，站过一个又一个冬天。
+</p>
+
+ </div>
+
+
+ <div class="note p-4 mb-4 rounded-small markdown-body success">
+   <p>九篇雪(四)</p>
+
+ </div>
+
+ <div class="note p-4 mb-4 rounded-small markdown-body default">
+   <p>&emsp;&emsp;我不会悲叹任何一朵落下的花，因为它们已经落下，而我还在这里。而我还不曾老去。我不会悲叹的，当漫天雪花从冬的枝头落下，会看到我仍没有离开。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.imgdb.cn/item/678fb542d0e0a243d4f63578.png%22img%22"
+                     
+                ><br>&emsp;&emsp;漫天雪花落下，像舞台的帷幕落幕一样落下。我站在雪地中频频欠身谢幕，又在空旷的观众席上独自热烈鼓掌。我不会哀叹。任何的落去的花，我看见它们已经把青春落下，然后是爱情，最后是生命。落在我脚边的地方。最最后才是雪，像墓土一样层层覆盖，洁白温柔，柔软一地。<br>&emsp;&emsp;等待我的落下。等待我的悲叹。最后它们只等到我亲人们的悲叹。我的亲人们掘开冰雪和泥土，以及一切落下的尘埃，把我深深埋葬，然后落泪离去。我最后看到的是他们的身影在天边落下。
+</p>
+
+ </div>
+
+
+ <div class="note p-4 mb-4 rounded-small markdown-body success">
+   <p>九篇雪(五)</p>
+
+ </div>
+
+ <div class="note p-4 mb-4 rounded-small markdown-body default">
+   <p>&emsp;&emsp; 雪一个冬天一个冬天地下。在我们看得见的地方陆续融化，却在我们看不见的地方一层一层堆积、加厚。这就是为什么童年时代丢失在操场上的那双红手套再也找不回来了。它被埋得那样深。<br>&emsp;&emsp; 还有春天、夏天和秋天，它们过去也总会有什么一层一层留下。我们看不到。但我们能看到冬天的雪在经过它们时的迟疑和吃力——雪花是一片一片、纷纷扬扬地下的，而不是倾巢出动，轰然从云层里坍塌下来的。每一片雪都是在经过漫长的旅程后，才侧身抱着双肩，小心穿梭行进，一步一步地到达大地。在空中左突右闪，回旋辗转。我们还小的时候只能看到它们的轻盈和优雅，看不到它们正经历着的岁月。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.imgdb.cn/item/678fb543d0e0a243d4f63579.png"
+                      title="img"
+                ><br>&emsp;&emsp; 一年被雪，以及其他的——春天的，秋天的，夏天的——什么东西所埋葬后，十二月才进入到它的最后一天。<br>&emsp;&emsp; 一年过后，我们走在雪野上，含泪想到，又是一年了。<br>&emsp;&emsp; 但是，雪下的时候，却留下了去年经过雪地时的一行脚印，叫我们知道，他也一样一直从去年走到现在。
+</p>
+
+ </div>
+
+
+ <div class="note p-4 mb-4 rounded-small markdown-body success">
+   <p>九篇雪(六)</p>
+
+ </div>
+
+ <div class="note p-4 mb-4 rounded-small markdown-body default">
+   <p>&emsp;&emsp;雪霁天晴。碎雪仍在若有若无地飘荡。我抬头望着深蓝的天空，看星星点点的碎雪从白茫茫的大地上浮起，像水底的气泡一样缓慢地通过空气向天空浮起，一粒一粒消失在上方的蓝色中。<br>&emsp;&emsp;很少有人注意到雪落地后还会重新升起、回去。他们只会偶尔惊诧一下为什么雪晴后，阳光照耀下的空气会闪闪地发光。<br>&emsp;&emsp;没有风。碎雪左右飘荡，盘旋漫舞，像在风中一样，又像在音乐中一样。<br>&emsp;&emsp;上升，上升。就像眼泪滑落那样上升。天空蓝得能蜇出人的泪水。是不是正是天空的那种比蓝还蓝的蓝，动荡在上空几百米的高处，磁铁一样吸吮着皑皑积雪中没有分量的那部分——那一部分因重量而下坠，落地过程中却不小心将它的重量从手中失落，先它自己掉下来。它便轻轻飘飘失重了。在茫茫大雪中，我们总能看到纷纷扬扬的飞雪中有几粒在犹豫——就是它们；雪停天晴后，我们又看到总有隐隐碎雪浮在空中渐渐上升——也是它们。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.imgdb.cn/item/678fb5a0d0e0a243d4f635ab.png"
+                      title="img"
+                ><br>&emsp;&emsp;那一片亮闪闪的空气中，微渺的碎雪四起时，我正在兀自前行，不住回头张望。假如有一天，我也像一粒落下又飞起的雪那样，那么我又是在为着什么？……这么想着的时候，远方似乎还在等我向它坠落，我踩出的一个个脚印却轻轻牵住了我。并且轻轻，向未来某个日子里浮显，等我有朝一日再次踏上去，再次回到这一步，回到四起的碎雪中去，继续向前。<br>&emsp;&emsp;我不停地回头，不停仰面张望。乍然看去，空中什么也没有，直到眼泪被天地间的明亮刺激出来时，上升的碎雪才一粒一粒被我看见，又一粒一粒在视力可及的范围内向上方的深处消失。<br>&emsp;&emsp;很多故事里，大结局之后我们所不知道的情节又是如何继续的？我们翻过了最后一页，仍然什么也不能知道。除了那个故事结尾的最后一句话，整本书什么也没有说。<br>&emsp;&emsp;难道一切真的不会停止，真的没有结束的时候？<br>&emsp;&emsp;落下又扬起的雪走了，那些落下并积起的雪也不会停留多久。它们离开的过程更复杂，更不易发现。它们的经历更曲折，更不可想象。<br>&emsp;&emsp;而我的行进已经停了下来，在碎雪四处闪烁浮扬的雪野上停了下来。<br>&emsp;&emsp;就像落下的雪那样停了下来。<br>&emsp;&emsp;我最后一次回头望，并仰望蓝天。
+</p>
+
+ </div>
+
+
+ <div class="note p-4 mb-4 rounded-small markdown-body success">
+   <p>九篇雪(七)</p>
+
+ </div>
+
+ <div class="note p-4 mb-4 rounded-small markdown-body default">
+   <p>&emsp;&emsp; 经年雪封、亘古不化的冰山，是被遗弃得最彻底的东西。四季没法找到它，甚至连冬天也这么说：“这可能是另外一个冬天的尸体。”它说：“是很久很久以前的一个冬天——我不认识它，我们相隔太多的岁月。”那些相隔太多的岁月闻言，便年复一年降落着大雪。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.imgdb.cn/item/678fb5a0d0e0a243d4f635ac.png"
+                      title="img"
+                ><br>&emsp;&emsp; 有一天大山深处喷出了汹涌激荡的岩浆，一泻千里，势不可挡。亿年积雪烟蒸气氲，万古冰层四处迸裂；天为之倾，地为之崩，复活的声音撕裂寰宇，震荡天际，久久不绝，久久不绝。<br>&emsp;&emsp; 后来这声音渐渐远去并消逝。又一场更大的雪降临，一切被埋葬了过去。整个世界仍然什么都不知道。四季仍然沉默，甚至冬天也说：“我真的不认识它。它可能是死亡了亿万年的，曾有过的第五个季节。”
+</p>
+
+ </div>
+
+
+ <div class="note p-4 mb-4 rounded-small markdown-body success">
+   <p>九篇雪(八)</p>
+
+ </div>
+
+ <div class="note p-4 mb-4 rounded-small markdown-body default">
+   <p>&emsp;&emsp; 下雪与冬天没有多大关系，一年四季都在下。只是别的日子里的雪在落下的过程中渐渐变成了另外的事物，有时以雨的形象出现，有时则是一些落叶，有时则是一场灾难，更多的时候是无边的寂寞。只有冬天的寒冷才能将它原封不动地保存下来，洁白剔透地降临人间。<br>&emsp;&emsp; 或者我们所看到的，所谓的“雪”，也是另外某种事物的最终命运，最后的化身。<br>&emsp;&emsp; 那么雪到底是什么？<br>&emsp;&emsp; 有一种东西到底是什么？<br>&emsp;&emsp; 我们只知年年岁岁都在落下一些东西。一次幸福、一些年轻、一个孩子、一场车祸，或一块陨石。就像雪从铅灰虚茫的天空落下，这些事物的来处也同样渺茫未知。但我们接受了它们，直到我们因越来越多的接受而变得越来越沉重时，我们自己也不能自拔地落下。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.imgdb.cn/item/678fb5a0d0e0a243d4f635ad.png"
+                      title="img"
+                ><br>&emsp;&emsp; 那些绝对不是雪。雪的轻盈和精致是一切下落事物的典范。做这典范的人说：“你此时，就像这样飘荡人世。<br>&emsp;&emsp; 看你多么美丽！可惜你看不到你自己……”<br>&emsp;&emsp; 叫我们如何去相信！<br>&emsp;&emsp; 我们永远无法忍心舍弃的美好，永远不肯罢休的痛苦，还有爱情、童年、孤独、欺骗，还有罪过、仇恨、热望、抵抗……当我们携着这所有落下，我们怎么相信，此时的我们，仅仅只是一片雪？<br>&emsp;&emsp; 他又说：“雪的心，本也是一粒灰尘，只不过衣了重重的华裳。”<br>&emsp;&emsp; 可我们的心却是在怦怦跳动，泵起血液向高处喷涌。我们的四肢和面孔健康而年轻。我们怎能只是像一些雪花那样简单？是谁随随便便就用了这种比拟来搪塞我们激情纷扬的一生，是谁仅用一些雪就欺骗了整个冬天，蒙蔽了我们的眼睛。让一些不该落下的落下，又立即用别的落下的东西，掩盖了它。
+</p>
+
+ </div>
+
+
+ <div class="note p-4 mb-4 rounded-small markdown-body success">
+   <p>九篇雪(九)</p>
+
+ </div>
+
+ <div class="note p-4 mb-4 rounded-small markdown-body default">
+   <p>&emsp;&emsp;雪下得如此平静，好像它什么都不知道似的。好像它在一边下，一边思量、冥想。在想好之前，绝不愿惊动人似的。<br>&emsp;&emsp;好像它真的什么都不曾做过。它轻轻地摇头，再落下。<br>&emsp;&emsp;而雪地更加平静。平静到看不出它正在延伸。<br>&emsp;&emsp;久久地看，久久地看，也看出了。此种延伸的不易察觉是因为它是以万物的渐渐沉静渐渐休止而延伸。<br>&emsp;&emsp;雪地微颤了一下是因为有人从那边过来了。雪地最后的颤动则是他已经永远地离开。雪地是世间最大的一片空白，填满它吧！于是又下起了一场更安静的雪。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.imgdb.cn/item/678fb5a1d0e0a243d4f635ae.png"
+                      title="img"
+                ><br>&emsp;&emsp;而最静寂最空洞的要数那些雪夜了。夜色把一切动静含在嘴里，雪落像是在梦中落，无凭无依。睡意正滴水般，秒针一格一格地移动般一下一下叩击心灵。入睡后，雪更静更遥远了，梦悄悄地把人向相反的地方带。如果带去的地方也在下雪的话，它又会立即轻轻把你带回来。会让你暂醒片刻。<br>&emsp;&emsp;室内的安静被整个世界的安静所挤压。睡醒的人静静听了一会儿，又更沉地睡去。隔着墙壁和梦，雪纷纷扬扬地下，它既不濡湿什么也不击打什么。它只是一层层覆盖，不露声色。把你留在夜里，不着痕迹。<br>&emsp;&emsp;就这样安静地埋葬你在你的梦境里。<br>&emsp;&emsp;如果有人此时敲打你的院门，深夜里大声呼喊你的名字，它会把所有声响引向别处，引向很多年以后，才让你被唤醒。<br>&emsp;&emsp;雪和夜愈来愈靠近你，又渐渐远去，去到世界上最遥远的地方。再回来，在你的梦里告诉你一些你所不知的事情。再愈来愈近地靠近你。<br>&emsp;&emsp;雪越下，天越黑。雪层一点一点加厚，挤缩着黑夜的空间，使夜退守得更浓，更放低了呼吸。<br>&emsp;&emsp;——正是在这样一个平静异常的深夜里，我突然大汗淋漓，惊梦而起。并失声叫道：<br>&emsp;&emsp;“下雪了！”
+</p>
+
+ </div>
+
+    </div>
+  </div>
+
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>遥远的向日葵地</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+        <div class="note p-4 mb-4 rounded-small markdown-body success">
+    <p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.imgdb.cn/item/678fbe3ed0e0a243d4f638a4.jpg"
+                      title="img"
+                ><br>有些人的文字你看一百遍也记不住，<br>有些人的文字看一遍就难以忘怀。<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;——王安忆</p>
+
+  </div>
+
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>1.所谓“希望”，就是付出努力有可能比完全放弃强一点点。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>2.人是被时间磨损的吗？不是的。人是被各种各样的离别磨损的。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>3.大地最雄浑的力量不是地震，而是万物的生长啊……</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>4.当我小的时候我什么都爱。当我长大了，我忘记了我其实什么都爱。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <ol start="5">
+<li>她已经没有同路人了。她早已迷路。她在迷途中慢慢向死亡靠拢，慢慢与死亡和解。我却只知一味拉扯她，不负责地同死亡争夺她。我离她多远啊，我离她，比死亡离她还要远。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.imgdb.cn/item/678fb9eed0e0a243d4f6375e.jpg"
+                      title="img"
+                ></li>
+</ol>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>6.等待是植根于孤独之中的植物吧？孤独越强大，等待越茂盛。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>7.眼下世界里，青草顶天而生，爬虫昼追日，夜逐月。风是透明的河流，雨是冰凉的流星。只有我最简陋，最局促。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>8.人生统统由之前从未曾有过，之后也绝不再发生的事情组成。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.imgdb.cn/item/678fbe3fd0e0a243d4f638a5.jpg"
+                      title="img"
+                ></p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>9.亲眼看着一点点长成的生命，再亲眼看着它们一点点枯萎，是耕种者千百年来共有的痛苦。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>10.月亮的金色是黑暗的金色。每一个人都认为月亮与故乡有关，与童年有关。其实它只和夜晚有关。它把人间的一切的依恋拒之门外。它最孤独，也最自由。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>11.睡眠是地球上第二巨大的事物。第一巨大的是安静。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>12.世界上最强烈的希望就是“一线希望”吧？<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.imgdb.cn/item/678fbe3fd0e0a243d4f638a6.jpg"
+                      title="img"
+                ></p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>13.在北方隆冬的深夜里，火炉是我生活过的每一个低矮又沉暗的房屋的心脏。温暖，踏实，汩汩跳动。冬夜里一边烤火一边看书，不时翻动炉板上的馍馍片儿。渐渐地，馍馍片儿均匀地镀上了金黄色泽。轻轻掰开，一股雪白的烫气倏地冒出，露出更加洁白的柔软内瓤。夜是黑的，煤是黑的，屋梁上方更是黑洞洞的，深不见底。而手心中这团食物的白与万物对立。它的香美与无边的寒冷对立。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>14.我无数次沉迷于荒野气息不能自拔，却永远不能说出这气息的万分之一。我站在那里，复杂、混乱、喧嚣、贪婪。被寂静重重围裹，张口结舌。我无数次赞美荒野，仍不能撇清我和荒野的毫无关系。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>15.我就是一个骗子，一个欲望大于能力的骗子。而被欺骗的外婆，拄着拐棍站在楼梯口等待。她脆弱不堪，她的愿望也脆弱不堪。我根本支撑不了她，拐棍也支撑不了她。其实我早就隐隐意识到了，唯有死亡才能令她展翅高飞。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>16.几乎每个母亲都有自己的拿手菜，几乎每个孩子对母亲的怀念里都有食物的内容。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.imgdb.cn/item/678fbec1d0e0a243d4f638c8.jpg"
+                      title="img"
+                ></p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>17.没有风，田野静得像封存在旧照片里。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>18.屋顶没留天窗，地窝子里总是黑洞洞的。然而安全感正来源于黑。外部世界实在太亮了，夜晚都那么亮。万物没遮没拦。只有我们的地窝子，在无限开阔之中伸出双手把我们微微挡了一下。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>19.等尘埃落定，再出门去看，风已转移到天上。河流全部涌向了星空。大风令星空一片混乱，灿烂耀眼。银河流得哗啦作响。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>20.关于地球的全部秘密都在风中。风声呼啸，激动又急迫。可我一句也听不懂。它拼命推我攘我，我还是什么都不明白。它转身撞向另一场大风，在我对面不远处卷起旋风，先指天，后指地。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.imgdb.cn/item/678fbec1d0e0a243d4f638ca.jpg"
+                      title="img"
+                ></p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>21.如果说作物的生长是地底深处黑暗里唯一的光芒，那么，那个人经过的大地，随着他脚步的到来，一路熄灯。他的每一个脚印都是无底深渊。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>22.沙枣花开了，这片荒野中所有的年轻的，无依无靠的爱情，终于在大地上停止了流浪。直到沙枣终于成熟，沙枣花香才心甘情愿退守到果实深处。所有爱情瓜熟蒂落。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>23.她只知道火车是唯一的希望。火车意味着最坚定的离开。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.imgdb.cn/item/678fbec1d0e0a243d4f638cb.jpg"
+                      title="img"
+                ></p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>24.外婆死了，一滴水消失在大海之中。一生寂静得如同从未在这世上存在过。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>25.实在不愿独自出现在陌生而喜庆的人群中。便极力地谢绝。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>26.都说“人死如灯灭”，可外婆死了以后，她的灯才慢慢亮起，慢慢照亮我们最真实的内心，和我们往后的道路。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body default">
+    <p>27.秋天来临的时候，我们的葵花地金光灿烂、无边喧哗，无数次将我从梦中惊醒，却没有一次惊醒过他的故乡。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.imgdb.cn/item/678fbec2d0e0a243d4f638cc.jpg"
+                      title="img"
+                ></p>
+
+  </div>
+
+    </div>
+  </div>
+
+
+
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>文章摘自|李娟散文</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p><a href="/2025/01/20/%E6%B5%85%E5%90%AC%E6%B5%85%E5%90%9F/">九篇雪</a><br><a href="/2025/01/20/%E6%B5%85%E5%90%AC%E6%B5%85%E5%90%9F/">遥远的向日葵地</a><br><a class="link"   target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%9D%8E%E5%A8%9F/5674" >百度百科<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> 浅听浅吟</li>
+        <li><strong>Author:</strong> 白糖</li>
+        <li><strong>Created at
+                :</strong> 2025-01-20 20:21:34</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-01-23 23:27:35
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://zhsugar.me/2025/01/20/浅听浅吟/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E5%80%BE%E5%90%AC/">#倾听</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E5%B0%8F%E7%A1%AE%E5%B9%B8/">#小确幸</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2024/09/14/%E7%9F%A5%E8%AF%86%E6%98%9F%E7%90%83/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">知识星球</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: 'Ov23liUqjQP3vASrlWIA',
+                    clientSecret: '37ab394aca2d1c998a6b20dc8507167fb7fb15e0',
+                    repo: 'Gitalk',
+                    owner: 'zhsugar',
+                    admin: ['zhsugar'],
+                    id: __gitalk__pathname,
+                    language: 'en',
+                    proxy: 'https://github.com/login/oauth/access_token'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
+</div>
+
+		</div>
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">浅听浅吟</div>
+		
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">白糖</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        11 posts in total
+                    </span>
+                    
+                        <span>
+                            29.9k words in total
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.5</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Search..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+	<div id="aplayer"></div>
+
+<script src="/js/build/libs/APlayer.min.js"></script>
+
+
+<script src="/js/build/plugins/aplayer.js"></script>
+
+
+	
+</body>
+
+</html>

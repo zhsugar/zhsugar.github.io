@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="白糖">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set data attribute for CSS variables
+                root.setAttribute("data-theme", theme);
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes once DOM is ready
+            if (document.readyState !== "loading") {
+                document.body.classList.add(theme + "-mode");
+            } else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add(theme + "-mode");
+                    document.body.classList.remove((theme === DARK ? LIGHT : DARK) + "-mode");
+                });
+            }
+        })();
+    </script>
+    
+    <!-- Critical CSS to prevent flash -->
+    <style>
+        :root[data-theme="dark"] {
+            --background-color: #202124;
+            --background-color-transparent: rgba(32, 33, 36, 0.6);
+            --second-background-color: #2d2e32;
+            --third-background-color: #34353a;
+            --third-background-color-transparent: rgba(32, 33, 36, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #ffffff;
+            --second-text-color: #eeeeee;
+            --third-text-color: #bebec6;
+            --fourth-text-color: #999999;
+            --default-text-color: #bebec6;
+            --invert-text-color: #373D3F;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(255, 255, 255, 0.08);
+            --shadow-color-2: rgba(255, 255, 255, 0.05);
+        }
+        
+        :root[data-theme="light"] {
+            --background-color: #fff;
+            --background-color-transparent: rgba(255, 255, 255, 0.6);
+            --second-background-color: #f8f8f8;
+            --third-background-color: #f2f2f2;
+            --third-background-color-transparent: rgba(241, 241, 241, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #16171a;
+            --second-text-color: #2f3037;
+            --third-text-color: #5e5e5e;
+            --fourth-text-color: #eeeeee;
+            --default-text-color: #373D3F;
+            --invert-text-color: #bebec6;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(0, 0, 0, 0.08);
+            --shadow-color-2: rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+        
+        /* Apply body classes as soon as DOM is ready */
+        :root[data-theme="dark"] body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+    </style>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://example.com/2023/05/25/深度学习-神经网络模型/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="白糖的修行日记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习-神经网络模型">
+<meta property="og:url" content="http://example.com/2023/05/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="白糖的修行日记">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/redefine-og.webp">
+<meta property="article:published_time" content="2023-05-25T12:17:12.000Z">
+<meta property="article:modified_time" content="2024-07-08T02:10:53.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="深度学习">
+<meta property="article:tag" content="神经网络">
+<meta property="article:tag" content="Resnet50">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/redefine-og.webp">
+    
+    
+        <!-- Google tag (gtag.js) -->
+        <script src="https://www.googletagmanager.com/gtag/js?id=G-X7KXE8YG2D"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-X7KXE8YG2D');
+        </script>
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="https://pic1.imgdb.cn/item/6892e3ab58cb8da5c808fd50.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://pic1.imgdb.cn/item/6892e3ab58cb8da5c808fd50.png">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="https://pic1.imgdb.cn/item/6892e3ab58cb8da5c808fd50.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            深度学习-神经网络模型 | 云忧谷
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+        
+<script src="/js/build/libs/anime.min.js"></script>
+
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"example.com","root":"/","language":"en","path":"search.json"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":true,"list":["Apprentice","Disciple","Elder","Master","Patriarch","Sage","Venerable","Legend"]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":true,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":true},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":true,"custom_message":null},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"白糖的修行日记"},"google_analytics":{"enable":true,"id":"G-X7KXE8YG2D"}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/light.png","dark":"https://pic.imgdb.cn/item/6617aa3468eb9357137700dc.png"},"title":"有客到","subtitle":{"text":["看庭前花开花落，宠辱不惊","望天上云卷云舒，去留无意"],"hitokoto":{"enable":true,"show_author":false,"api":"https://v1.hitokoto.cn?c=i"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#CCFFFF"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/zhsugar","instagram":null,"zhihu":"https://www.zhihu.com/people/lethediana","twitter":null,"email":"1795847863@qq.com","bilibili":"https://space.bilibili.com/3493077459142699?spm_id_from=333.1007.0.0","fa-solid fa-blog":"https://blog.csdn.net/m0_65157297?spm=1010.2135.3001.5421"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"回忆观影券","artist":"IN-K&王忻辰","url":"/musicsource/huiyi.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg","lrc":null},{"name":"牵丝戏","artist":"银临/Aki阿杰","url":"/musicsource/qian.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"},{"name":"The Way I Still Love You","artist":"ALisa","url":"https://link.hhtjim.com/163/1474400749.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"},{"name":"Everytime We Touch","artist":"录音吉娃娃、谢子新# audio artist","url":"/musicsource/nice.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"},{"name":"死在江南烟雨中 (伴奏)","artist":"Mc梦柯","url":"https://link.hhtjim.com/163/485347088.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"},{"name":"记忆停留的地方","artist":"July","url":"https://link.hhtjim.com/163/28713832.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.5","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":28},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"烟花":{"path":"/yanhua","icon":"fa-solid fa-fan"},"相册":{"path":"/masonry","icon":"fa-solid fa-image"},"关于":{"icon":"fa-regular fa-user","submenus":{"Github":"https://zhsugar.github.io","码云":"https://gitee.com/zhsugar","csdn":"https://blog.csdn.net/m0_65157297?spm=1010.2135.3001.5421","知乎":"https://www.zhihu.com/people/lethediana","哔哩哔哩":"https://space.bilibili.com/3493077459142699?spm_id_from=333.1007.0.0","邮箱":"1795847863@qq.com"}}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":"看庭前花开花落，宠辱不惊。望天上云卷云舒，去留无意。","show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+	<span class="scroll-progress-bar"></span>
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    <h2 class="ml13">
+        云忧谷
+    </h2>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+        var animation = anime.timeline({ loop: true })
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [20, 0],
+                translateZ: 0,
+                opacity: [0, 1],
+                filter: ['blur(5px)', 'blur(0px)'],
+                easing: "easeOutExpo",
+                duration: 1200,
+                delay: (el, i) => 300 + 20 * i,
+            })
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [0, -20],
+                opacity: [1, 0],
+                filter: ['blur(0px)', 'blur(5px)'],
+                easing: "easeInExpo",
+                duration: 1000,
+                delay: (el, i) => 15 * i,
+                complete: function() {
+                    hidePreloader();
+                }
+            }, '-=700');
+
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(hidePreloader, 5000); // Call hidePreloader after 5000 milliseconds if not already called by animation
+        });
+
+        function hidePreloader() {
+            var preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(function () {
+                preloader.style.display = 'none';
+            }, 200);
+        }
+    </script>
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+                <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
+                    <img src="https://pic1.imgdb.cn/item/6892e3ab58cb8da5c808fd50.png" class="w-full h-full rounded-xs">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                云忧谷
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/yanhua"
+                                        >
+                                    <i class="fa-solid fa-fan fa-fw"></i>
+                                    烟花
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/masonry"
+                                        >
+                                    <i class="fa-solid fa-image fa-fw"></i>
+                                    相册
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://zhsugar.github.io">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://gitee.com/zhsugar">
+                                                    码云
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_65157297?spm=1010.2135.3001.5421">
+                                                    CSDN
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/lethediana">
+                                                    知乎
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://space.bilibili.com/3493077459142699?spm_id_from=333.1007.0.0">
+                                                    哔哩哔哩
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="/1795847863@qq.com">
+                                                    邮箱
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/yanhua"
+                        >
+                            <span>
+                                烟花
+                            </span>
+                            
+                                <i class="fa-solid fa-fan fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/masonry"
+                        >
+                            <span>
+                                相册
+                            </span>
+                            
+                                <i class="fa-solid fa-image fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-关于"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-关于">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://zhsugar.github.io">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://gitee.com/zhsugar">码云</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://blog.csdn.net/m0_65157297?spm=1010.2135.3001.5421">CSDN</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://www.zhihu.com/people/lethediana">知乎</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://space.bilibili.com/3493077459142699?spm_id_from=333.1007.0.0">哔哩哔哩</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/1795847863@qq.com">邮箱</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">22</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">8</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">11</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			
+			
+			<img src="https://pic.imgdb.cn/item/6475fef6f024cca173c8c9f7.jpg" alt="深度学习-神经网络模型" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75" />
+			
+			<div class="w-full flex items-center absolute bottom-0 justify-start">
+				<h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color ">深度学习-神经网络模型</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="https://pic1.imgdb.cn/item/6892e4aa58cb8da5c8090ba9.jpg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">白糖</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-05-25 20:17:12</span>
+        <span class="mobile">2023-05-25 20:17:12</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-07-08 10:10:53</span>
+            <span class="mobile">2024-07-08 10:10:53</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Resnet50/">Resnet50</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>4.5k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>15 Mins</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			
+  <div class="note p-4 mb-4 rounded-small markdown-body success">
+    <p>恭喜你发现宝藏了，先收藏，在慢慢看吧，看完后相信你会有很大收获。</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body success">
+    <p>本文章中若有读者已知内容，可自行阅读其他对自己有帮助的内容部分。</p>
+
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>一、写在前面</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>如果让你设计一个可以识别图像的神经网络，你会怎么做？<br>我之前问过自己这个问题，思来想去，我的答案是：我可能不知道如何下手，梦还没开始就结束了。<br>于是，我有了一个大胆的想法。接下来，我会从头开始，聊聊一个图像识别网络是怎么工作的，每一步算法的原理，以及相关的背景知识。<br>你可能会想，看懂这些需要什么知识呢？其实不需要太深奥的数学知识。我会尽可能把每一步写的通俗易懂，这个过程中我也会搜集一些资料，<br>也是一个不断完善自己知识体系的过程。文中聊得网络，就是大家都比较熟悉的，被玩烂的、作为各大AI芯片厂商性能标杆的Resnet50。<br>个人水平有限，文中如有错误，欢迎联系我指正。</p>
+
+    </div>
+  </div>
+
+
+
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>二、从像素说起</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>要实现图像识别，最离不开的，就是像素。<br>其实我们都知道，图像是由像素组成的。实际上，神经网络计算，算的就是像素之间的关系，以及这些关系背后可能隐藏的图片信息。相机摄像头像素2000万，拍出来的照片肯定比像素1000万的要清晰我们更容易看到图片中的物体是什么。<br>这是为什么？因为像素越多，像素之间的关系（色彩，轮廓）越丰富，我们所能看到的信息就越多，自然而然获取到的信息就多。<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic.imgdb.cn/item/647604abf024cca173ce417a.png"
+                      alt="图片" title="Magic Gardens"
+                ><figcaption>图片</figcaption></figure><br>一张1080p的图片，我们可以更容易辨别出图像中的物体是山还是水。这是因为更多的像素会给眼睛更丰富的图片细节<br>但是，你有没有发现，当我们去看一张图片时，我们绝对不是盯着某一个像素或某几个像素看，而是看了整个图像的大部分区域，或者说，大部分像素！<br>因为只有看到了大部分的图片，才能知道图中是座山。正所谓，聚沙成山！绝不是少了一粒沙，山就不是山，多了一粒沙，就变成了山。</p>
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>像素局部性 </p>
+
+  </div>
+
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic.imgdb.cn/item/647604abf024cca173ce419d.png"
+                      alt="图片" title="sui bain"
+                ><figcaption>图片</figcaption></figure><br>上图哆啦A梦，虽然不是很清晰，像素点数也很少，但一眼望去，依然可以分清是哆啦A梦，甚至，用手捂住一半的图像，依然可以。<br>这是因为人眼对于图像信息的识别，是建立在对像素局部性分析的基础上的。<br>所谓局部性，通俗点说，就是眼睛或大脑会将相邻的像素或大片的像素连接起来分析，从而组合成嘴巴，然后是耳朵，最后是哆啦A梦。<br>神经网络识别图片大致就是这样的原理，它模拟的，就是人们看到图片之后的信息处理过程。<br>当我们盯着一个图片看时，我们首先会获取到图片的细节特征。比如哆啦A梦红色的大嘴巴。但是如果仅仅盯着大嘴巴，又反而让人有一种“只缘身在此山中”的感觉，看不到图片的全貌。<br>因此还需要看一下图像的轮廓。于是，我们的眼睛看图片大致有以下两个过程：<br>瞳孔放大，盯着某一处细节（如大嘴巴）看<br>瞳孔缩小，模糊的看一张图片的大致轮廓<br>两个过程获取的信息叠加。<br>Bingo，看清楚了，是哆啦A梦！那么神经网络是否可以模拟这种瞳孔放大、缩小的方式呢？<br>很幸运，可以！<br>那就是卷积算法。</p>
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>卷积</p>
+
+  </div>
+
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic.imgdb.cn/item/647604abf024cca173ce4222.png"
+                      alt="图片" title="shi ta"
+                ><figcaption>图片</figcaption></figure><br>卷积的计算示意图<br>卷积核的设计，就可以很直观的模拟这种获取图片信息的方法。<br>人们通过调整卷积核的大小，来达到瞳孔张开、缩小的目的。并且大量的实验和论文表明，卷积这一针对图像局部性识别的算法，可以非常有效的模拟人眼识别物体的过程。关于卷积算法以及卷积核的设计原理，后面会专门来讲，因为卷积这一算法，在图像处理领域，太重要了。<br>我们现在继续沿着像素这一话题讲下去。</p>
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>色彩分量RGB</p>
+
+  </div>
+回到像素这一话题，你有没有想过，为什么一张图片会是彩色的。
+学过摄影的小明同学可能这时会回答：因为图片是由RGB三种颜色来表示的，每个像素实际是不同的R/G/B分量的叠加，混合起来，就表示成了不同的颜色。
+回答正确。
+
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic.imgdb.cn/item/64760578f024cca173cee4d7.png"
+                      alt="图片" title="hei ni"
+                ><figcaption>图片</figcaption></figure><br>三张分别表示R&#x2F;G&#x2F;B分量的图片，合成一张彩色图片<br>对于上面一张RGB的图，我们人眼可以很直观的看到红色和蓝色，可以察觉到一张图片的色彩和轮廓。<br>那么，如果让计算机来处理图片，他又是如何知道色彩和轮廓的呢？<br>其实对于计算机来说，一张图片只是一堆数据，计算机是无法知道这堆数据代表的是什么。这就需要人为的给这堆数据一种表示方法，让计算机知道，哦，这1&#x2F;3的数据是红色分量，这1&#x2F;3的是蓝色分量，这些数据（像素）组合起来，可能代表的是个“帽子”。<br>怎么做呢？通过设计数据在计算机中的存储方式来解决。<br>数据在计算机的存储中，最常见的存储方式是连续存储的。比如C语言，定义一个数组，那么数组在内存中的位置是连续的。<br>int data[10] &#x3D; {0,1,2,3,4,5,6,7,8,9};<br>内存怎么理解，它就是一排连着的门牌号的公寓宿舍。门牌号为101里面住着的，是data的第一个数据0。门牌号102里面住着的，是data的第二个数据1，…，以此类推。</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic.imgdb.cn/item/64760637f024cca173cf8800.png"
+                      alt="图片" title="ni lai"
+                ><figcaption>图片</figcaption></figure><br>哈利波特的女贞路4号，内存也是类似于门牌号规则，数据就像人一样，存储在以地址为标识的一个个的内存地址上（房子）<br>只不过，在计算机存储器中，没有门牌号，有的都是地址。这个时候，计算机根本就不关心数据是啥，计算机用到的时候，就把数据从内存对应的地址中取出来用。</p>
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>计算机是如何取像素数据的</p>
+
+  </div>
+人们为数据存储设计一种格式，告诉计算机，这堆数据大概是什么样的。只有这样，通过这种约定的方式，计算机才能正确的取到R分量或者B分量。
+对于一张图片来说，最常见的两个参数是长和宽，一般用H（height） 和W(width) 来表示，那么RGB三个分量，看作是3个通道（channel），一般用 C 来表示。
+如此一来，一张长宽分别是224像素*224像素的RGB图像，就可以用 HWC = [224, 224, 3]来表示。两张类似的图片就用 NHWC = [2, 224, 224, 3]表示，其中N代表图片张数。
+
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic.imgdb.cn/item/64760741f024cca173d07653.png"
+                      alt="图片" title="wo lai"
+                ><figcaption>图片</figcaption></figure><br>一张图片的抽象数据表示<br>友好的数据表示方法，可以减少大量的计算复杂度。<br>虽然这样表示不太利于人们的直观理解，但是计算机处理这种数据是十分方便的。在目前主流的深度学习框架中，对于图片的数据格式，基本都支持了NHWC或NCHW这种数据摆放格式。说到底，都是为了更高效地进行图片数据的处理和运算。</p>
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>总结一下</p>
+
+  </div>
+这一章，从像素说起，说到了像素具有局部连接性的，人眼识别图像也是通过获取像素的局部连接性信息来完成的。
+幸运的是，卷积这一算法，可以很好的模拟这一过程。最后，为了使计算机更高效的处理图片数据，引出NHWC的图片数据表示方法，所以，之后我们说图片，不仅仅局限于图片的长和宽，还多了一个维度信息，那就是channel。
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>加餐</p>
+
+  </div>
+熟悉OpenCV或者计算机视觉，数字图像处理的同学，可能对于下面的RGB分量中的大神很熟悉。没错，在很多的教程中，这位女神不止一次的出场。
+Lena
+
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic.imgdb.cn/item/647609d3f024cca173d3097e.png"
+                      alt="图片" title="kan lai"
+                ><figcaption>图片</figcaption></figure><br>这位女士名叫Lena。<br>电气电子工程师学会图像处理汇刊（IEEE Transactions on Image Processing）主编曾在1996年1月出版的一期中解释道，Lena的流行，因为她是一张好的测试图片，其中包含了很多细节，平滑区域，阴影和纹理。</p>
+
+    </div>
+  </div>
+
+
+
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>三、图像的色彩空间</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>上一章从像素开始，聊到了RGB 这一常见的色彩空间模型。<br>之所以还想继续聊聊RGB 以及另一种色彩空间模型-YUV ，不是说想要以后去学摄影，学学如何需要调节色度、曝光和饱和度啥的。<br>而是在图像识别的深度学习任务中，RGB以及YUV这些概念，总是会时不时的出现一下，让枯燥无味且高度抽象的深度学习算法，突然之间，变得具体一些，光鲜一些。</p>
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>RGB</p>
+
+  </div>
+Red，Green，Blue（RGB）是我们最常见的图像表示方法。这个非常好理解，三原色的融合，几乎可以构造出所有需要的颜色。三张RGB分量图片的融合，就可以构成一幅色彩斑斓的图片。
+原图与R G B 三个分量图片
+
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic.imgdb.cn/item/647724bef024cca173ed1973.jpg"
+                      alt="图片" title="kan xin"
+                ><figcaption>图片</figcaption></figure><br>平时我们说，分辨率为1920*1080的图片，它代表的是在长宽两个方向上，有 1920 * 1080 个像素，但是，在色彩这个方向上，还有 3 个通道（channel），也就是RGB，往往被我们忽略。<br>我们看到的一个像素点的颜色，在计算系统中，并不是简单的由一个数值来表示的，而是由RGB三个分量的三个数值来表示的。<br>一个像素点的 RGB 表示</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic.imgdb.cn/item/64772716f024cca173eff01e.png"
+                      alt="图片" title="kan men"
+                ><figcaption>图片</figcaption></figure><br>因此，想要计算一张1920*1080的图片的大小，或者说计算这张图片在计算机内存中所占用的大小时，不能仅仅用图片的长度乘以宽度这么算，还需要考虑通道数。</p>
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>数值表示和图片大小计算</p>
+
+  </div>
+我们可能用过画图这一软件来调过颜色。
+通过简单的设置红色，绿色，蓝色的数值，就可以在调色板中得到一个颜色。有没有注意到，无论红色，还是绿色，还是蓝色，其表示的数值都没有超过255。
+为什么？因为像素值，在计算机语言中，是用一个 int8 的数据来表示的。而 int8，指的是 8bit 无符号整数，其能表示的范围就是 0 - 255。
+说到这，我们就可以算一算，一张1920 * 1080 的RGB图像，在计算机的表示中，到底占多少的内存？
+很简单，长宽方向上每个像素由 3 个通道组成，每个通道由一个 8 bit 的数值表示，一个 8 bit 数值代表一个字节（Byte）。
+因此，一张1920 * 1080的 RGB 图像，占计算机存储大小为1920* 1080 * 3 * 1 Bytes = 6075 KB = 5.9 MB5.9 MB 的内存占用！
+大么？和目前动辄几个G的手机内存相比，不算大。
+小么？和边缘侧图像识别终端内存，比如摄像头里的嵌入式芯片内存相比，又不算小。
+更何况在公路违法拍照的摄像头场景下，在车流量很大的时候，需要实时处理的图片，可远远不止一张！
+那怎么办？有没有办法可以在进行图像处理时，减少图片的数据量，从而减少图片大小和内存占用呢？
+有，YUV就是其中一种办法。
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>YUV</p>
+
+  </div>
+YUV是将亮度信息和颜色信息进行编码的一种颜色空间表示方法。和RGB类似，YUV 也使用3个字母维度来表示颜色。为了简单点，我们暂时将这3个值称为Y，U和V。（事实上，YUV的称呼很多，比如Y'CbCr，也很细节，这里不多描述，我们只要知道它是另外一种表示颜色的方法就可以。）
+Y 代表亮度，U 代表色彩度，V代表饱和度。
+原图
+
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic.imgdb.cn/item/64772891f024cca173f1300e.png"
+                      alt="图片" title="kan men"
+                ><figcaption>图片</figcaption></figure><br>仅有Y分量也就是亮度，黑白图片</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic.imgdb.cn/item/64772891f024cca173f13023.png"
+                      alt="图片" title="kan men"
+                ><figcaption>图片</figcaption></figure><br>仅有U分量，只有色度</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic.imgdb.cn/item/64772891f024cca173f13064.png"
+                      alt="图片" title="kan men"
+                ><figcaption>图片</figcaption></figure><br>仅有V分量，只有饱和度</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic.imgdb.cn/item/64772891f024cca173f1307a.png"
+                      alt="图片" title="kan men"
+                ><figcaption>图片</figcaption></figure><br>上面的几张图片，除了原图之外，我们可能更加倾向于使用只有Y分量的图片，也就是那张黑白图像。<br>因为即使没有色彩，但是它的轮廓以及明亮程度，也足以让我们分辨出图片中的物体。其视觉效果远远好于其他两个分量的图片。相反，只有色度和饱和度的图片，反而变得模糊不堪。<br>这就是问题所在！人眼对于亮度具有更高的敏感度，而对色度和饱和度反而显得迟钝一些。<br>说到这，有没发现什么？既然人眼对于色度和饱和度的反应不敏感，那就没有必要把所有的色度和饱和度信息都放在图片里了啊。<br>举个例子，色度和饱和度我隔一个像素放一个，剩下的像素没有饱和度，不就可以了么。没错，是可以，而且效果很好。<br>这就是YUV的不同编码。</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic.imgdb.cn/item/647728e7f024cca173f1de66.png"
+                      alt="图片" title="kan men"
+                ><figcaption>图片</figcaption></figure><br>YUV422编码<br>实际上，YUV的编码方式有很多种，比如YUV444, YUV422等。<br>大致意思就是，保留全部的Y分量（人眼最敏感的亮度分量），但是只保留部分的U&#x2F;V分量（人眼不敏感），以此来减少图片的占用，但又不失重要信息。<br>还记得上面的1920<em>1080的RGB图片的内存占用么，为5.9MB。如果用YUV444的编码，结果也同样是5.9MB，因为YUV444也是全采样，所有的亮度、色度、饱和度信息都保留了。而如果采用YUV422的编码，相当于U分量减少一半，V分量减少一半。<br>那么最终的图片占用大小就变成了1920</em> 1080 * (1 + 0.5 + 0.5) Bytes &#x3D; 4050KB &#x3D; 3.9MB<br>只有3.9MB，减少了1&#x2F;3的内存占用！是不是好很多？更多关于YUV的编码知识，有兴趣的同学可以Google。如果不做相关课题，可以不用深究。<br>我们只需要知道，YUV这一色彩编码方法，在保留亮度这一人眼最敏感信息的基础上，通过降低其他人眼不太需要的信息，可以来达到降低图片大小的目的。<br>就足够了！</p>
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>YUV编码的用途</p>
+
+  </div>
+原始图片，channel数代表的是RGB通道，可以理解为原始图片具有的三个特征。
+可在深度学习网络中，随着网络深度的增加，图片的channel数会不断的增大。就拿Resnet50这个网络来说，最后面的一层图片，channel数已经增大到了2048。这时channel代表的信息，早已不再是RGB这种基础的特征了。而是通过了大量的神经网络训练，代表了图片的多种分类特征，比如是猫的特征还是狗的特征。
+这个后面会详细说。
+YUV这种编码方法，可以用在图片的上下采样中。通过降低或增加通道数，实现图片的上下采样，以此来实现图片的增大或减少，但又不损失太多我们希望保留的信息。
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>总结一下</p>
+
+  </div>
+这章聊了聊RGB、YUV 两种颜色空间，以及YUV可能的用途和它的优势。
+为什么聊这么多关于图片的东西，因为在深度学习处理图像的任务中，图片是原材料。正所谓知己知彼，百战不殆。
+了解了图片这一深度学习的原材料之后，我们就可以更加高效的来完成图片数据的处理和分析。就可以开始图像识别的算法之旅了！
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>加餐</p>
+
+  </div>
+公元663年，唐代诗人王勃游历南昌，登滕王阁而做序，大笔一挥，豪气万丈。
+当时的王勃，傲立在滕王阁楼顶时，看到的应该是怎样的一副壮美图景，才使得中国文坛留下了一句千古绝唱。
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>潦水尽而寒潭清， 烟光凝而暮山紫。</p>
+
+  </div>
+当时的王勃，应该怎么也不会想到，1000年后的今天，聪明华夏后人，将"暮山紫"这一颜色进行了编码。从此，暮山紫，不只存在于人们的想象中，而是精确地存在了计算机里。
+
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic.imgdb.cn/item/647728e7f024cca173f1deba.png"
+                      alt="图片" title="kan men"
+                ><figcaption>图片</figcaption></figure><br>暮山紫-RGB：163 171 214 |</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>参考文章</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>后续内容 -&gt; 初识卷积<br><a class="link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/554100794" >知乎<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+  <div class="note p-4 mb-4 rounded-small markdown-body warning">
+    <p>本人时间精力能力有限，也是刚开始学习这方面内容，准备参赛</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body warning">
+    <p>文中一些表述难免有疏漏，若有错误请联系我进行更正,谢谢</p>
+
+  </div>
+
+  <div class="note p-4 mb-4 rounded-small markdown-body warning">
+    <p>QQ Email邮箱：<a class="link"   href="mailto:&#49;&#55;&#57;&#53;&#x38;&#x34;&#55;&#56;&#x36;&#51;&#x40;&#113;&#x71;&#46;&#99;&#x6f;&#x6d;" >&#49;&#55;&#57;&#53;&#x38;&#x34;&#55;&#56;&#x36;&#51;&#x40;&#113;&#x71;&#46;&#99;&#x6f;&#x6d;<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+  </div>
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> 深度学习-神经网络模型</li>
+        <li><strong>Author:</strong> 白糖</li>
+        <li><strong>Created at
+                :</strong> 2023-05-25 20:17:12</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-07-08 10:10:53
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://zhsugar.me/2023/05/25/深度学习-神经网络模型/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">#深度学习</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">#神经网络</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/Resnet50/">#Resnet50</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/2023/06/02/VR%20AND%20AR/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">VR AND AR</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2023/05/20/%E8%B5%9B%E5%8D%9A%E6%9C%8B%E5%85%8B/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">赛博朋克</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: 'Ov23liUqjQP3vASrlWIA',
+                    clientSecret: '37ab394aca2d1c998a6b20dc8507167fb7fb15e0',
+                    repo: 'Gitalk',
+                    owner: 'zhsugar',
+                    admin: ['zhsugar'],
+                    id: __gitalk__pathname,
+                    language: 'en',
+                    proxy: 'https://github.com/login/oauth/access_token'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
+</div>
+
+		</div>
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">深度学习-神经网络模型</div>
+		
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">白糖</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        11 posts in total
+                    </span>
+                    
+                        <span>
+                            29.9k words in total
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.5</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Search..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+	<div id="aplayer"></div>
+
+<script src="/js/build/libs/APlayer.min.js"></script>
+
+
+<script src="/js/build/plugins/aplayer.js"></script>
+
+
+	
+</body>
+
+</html>

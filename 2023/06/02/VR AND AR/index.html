@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="白糖">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set data attribute for CSS variables
+                root.setAttribute("data-theme", theme);
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes once DOM is ready
+            if (document.readyState !== "loading") {
+                document.body.classList.add(theme + "-mode");
+            } else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add(theme + "-mode");
+                    document.body.classList.remove((theme === DARK ? LIGHT : DARK) + "-mode");
+                });
+            }
+        })();
+    </script>
+    
+    <!-- Critical CSS to prevent flash -->
+    <style>
+        :root[data-theme="dark"] {
+            --background-color: #202124;
+            --background-color-transparent: rgba(32, 33, 36, 0.6);
+            --second-background-color: #2d2e32;
+            --third-background-color: #34353a;
+            --third-background-color-transparent: rgba(32, 33, 36, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #ffffff;
+            --second-text-color: #eeeeee;
+            --third-text-color: #bebec6;
+            --fourth-text-color: #999999;
+            --default-text-color: #bebec6;
+            --invert-text-color: #373D3F;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(255, 255, 255, 0.08);
+            --shadow-color-2: rgba(255, 255, 255, 0.05);
+        }
+        
+        :root[data-theme="light"] {
+            --background-color: #fff;
+            --background-color-transparent: rgba(255, 255, 255, 0.6);
+            --second-background-color: #f8f8f8;
+            --third-background-color: #f2f2f2;
+            --third-background-color-transparent: rgba(241, 241, 241, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #16171a;
+            --second-text-color: #2f3037;
+            --third-text-color: #5e5e5e;
+            --fourth-text-color: #eeeeee;
+            --default-text-color: #373D3F;
+            --invert-text-color: #bebec6;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(0, 0, 0, 0.08);
+            --shadow-color-2: rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+        
+        /* Apply body classes as soon as DOM is ready */
+        :root[data-theme="dark"] body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+    </style>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://example.com/2023/06/02/vr and ar/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="白糖的修行日记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VR AND AR">
+<meta property="og:url" content="http://example.com/2023/06/02/VR%20AND%20AR/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="白糖的修行日记">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/redefine-og.webp">
+<meta property="article:published_time" content="2023-06-02T12:12:32.000Z">
+<meta property="article:modified_time" content="2024-07-08T02:14:10.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="教育">
+<meta property="article:tag" content="娱乐">
+<meta property="article:tag" content="科技">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/redefine-og.webp">
+    
+    
+        <!-- Google tag (gtag.js) -->
+        <script src="https://www.googletagmanager.com/gtag/js?id=G-X7KXE8YG2D"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-X7KXE8YG2D');
+        </script>
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="https://pic1.imgdb.cn/item/6892e3ab58cb8da5c808fd50.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://pic1.imgdb.cn/item/6892e3ab58cb8da5c808fd50.png">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="https://pic1.imgdb.cn/item/6892e3ab58cb8da5c808fd50.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            VR AND AR | 云忧谷
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+        
+<script src="/js/build/libs/anime.min.js"></script>
+
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"example.com","root":"/","language":"en","path":"search.json"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":true,"list":["Apprentice","Disciple","Elder","Master","Patriarch","Sage","Venerable","Legend"]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":true,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":true},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":true,"custom_message":null},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"白糖的修行日记"},"google_analytics":{"enable":true,"id":"G-X7KXE8YG2D"}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/light.png","dark":"https://pic.imgdb.cn/item/6617aa3468eb9357137700dc.png"},"title":"有客到","subtitle":{"text":["看庭前花开花落，宠辱不惊","望天上云卷云舒，去留无意"],"hitokoto":{"enable":true,"show_author":false,"api":"https://v1.hitokoto.cn?c=i"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#CCFFFF"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/zhsugar","instagram":null,"zhihu":"https://www.zhihu.com/people/lethediana","twitter":null,"email":"1795847863@qq.com","bilibili":"https://space.bilibili.com/3493077459142699?spm_id_from=333.1007.0.0","fa-solid fa-blog":"https://blog.csdn.net/m0_65157297?spm=1010.2135.3001.5421"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"回忆观影券","artist":"IN-K&王忻辰","url":"/musicsource/huiyi.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg","lrc":null},{"name":"牵丝戏","artist":"银临/Aki阿杰","url":"/musicsource/qian.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"},{"name":"The Way I Still Love You","artist":"ALisa","url":"https://link.hhtjim.com/163/1474400749.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"},{"name":"Everytime We Touch","artist":"录音吉娃娃、谢子新# audio artist","url":"/musicsource/nice.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"},{"name":"死在江南烟雨中 (伴奏)","artist":"Mc梦柯","url":"https://link.hhtjim.com/163/485347088.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"},{"name":"记忆停留的地方","artist":"July","url":"https://link.hhtjim.com/163/28713832.mp3","cover":"https://pic1.imgdb.cn/item/6893139158cb8da5c80988da.jpg"}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.5","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":28},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"烟花":{"path":"/yanhua","icon":"fa-solid fa-fan"},"相册":{"path":"/masonry","icon":"fa-solid fa-image"},"关于":{"icon":"fa-regular fa-user","submenus":{"Github":"https://zhsugar.github.io","码云":"https://gitee.com/zhsugar","csdn":"https://blog.csdn.net/m0_65157297?spm=1010.2135.3001.5421","知乎":"https://www.zhihu.com/people/lethediana","哔哩哔哩":"https://space.bilibili.com/3493077459142699?spm_id_from=333.1007.0.0","邮箱":"1795847863@qq.com"}}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":"看庭前花开花落，宠辱不惊。望天上云卷云舒，去留无意。","show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+	<span class="scroll-progress-bar"></span>
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    <h2 class="ml13">
+        云忧谷
+    </h2>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+        var animation = anime.timeline({ loop: true })
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [20, 0],
+                translateZ: 0,
+                opacity: [0, 1],
+                filter: ['blur(5px)', 'blur(0px)'],
+                easing: "easeOutExpo",
+                duration: 1200,
+                delay: (el, i) => 300 + 20 * i,
+            })
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [0, -20],
+                opacity: [1, 0],
+                filter: ['blur(0px)', 'blur(5px)'],
+                easing: "easeInExpo",
+                duration: 1000,
+                delay: (el, i) => 15 * i,
+                complete: function() {
+                    hidePreloader();
+                }
+            }, '-=700');
+
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(hidePreloader, 5000); // Call hidePreloader after 5000 milliseconds if not already called by animation
+        });
+
+        function hidePreloader() {
+            var preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(function () {
+                preloader.style.display = 'none';
+            }, 200);
+        }
+    </script>
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+                <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
+                    <img src="https://pic1.imgdb.cn/item/6892e3ab58cb8da5c808fd50.png" class="w-full h-full rounded-xs">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                云忧谷
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/yanhua"
+                                        >
+                                    <i class="fa-solid fa-fan fa-fw"></i>
+                                    烟花
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/masonry"
+                                        >
+                                    <i class="fa-solid fa-image fa-fw"></i>
+                                    相册
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://zhsugar.github.io">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://gitee.com/zhsugar">
+                                                    码云
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_65157297?spm=1010.2135.3001.5421">
+                                                    CSDN
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/lethediana">
+                                                    知乎
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://space.bilibili.com/3493077459142699?spm_id_from=333.1007.0.0">
+                                                    哔哩哔哩
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="/1795847863@qq.com">
+                                                    邮箱
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/yanhua"
+                        >
+                            <span>
+                                烟花
+                            </span>
+                            
+                                <i class="fa-solid fa-fan fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/masonry"
+                        >
+                            <span>
+                                相册
+                            </span>
+                            
+                                <i class="fa-solid fa-image fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-关于"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-关于">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://zhsugar.github.io">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://gitee.com/zhsugar">码云</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://blog.csdn.net/m0_65157297?spm=1010.2135.3001.5421">CSDN</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://www.zhihu.com/people/lethediana">知乎</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://space.bilibili.com/3493077459142699?spm_id_from=333.1007.0.0">哔哩哔哩</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/1795847863@qq.com">邮箱</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">22</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">8</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">11</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			
+			
+			<img src="https://pic.imgdb.cn/item/659e9048871b83018af30c54.png" alt="VR AND AR" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75" />
+			
+			<div class="w-full flex items-center absolute bottom-0 justify-start">
+				<h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color ">VR AND AR</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="https://pic1.imgdb.cn/item/6892e4aa58cb8da5c8090ba9.jpg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">白糖</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-06-02 20:12:32</span>
+        <span class="mobile">2023-06-02 20:12:32</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-07-08 10:14:10</span>
+            <span class="mobile">2024-07-08 10:14:10</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/%E7%A7%91%E6%99%AE/">科普</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%95%99%E8%82%B2/">教育</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E5%A8%B1%E4%B9%90/">娱乐</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E7%A7%91%E6%8A%80/">科技</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>5.7k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>19 Mins</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>AR&amp;VR</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>AR和VR都属于虚拟现实（Virtual Reality）技术标签。AR指增强现实（Augmented Reality），通常是在真实世界中叠加虚拟元素，创造一个融合了现实和虚拟世界的体验；而VR指虚拟现实（Virtual Reality），通常是通过戴上头戴式显示器等设备，让用户沉浸在虚拟环境中。两者都提供了一种新的互动方式，正在被广泛应用于教育、娱乐、医疗、工业制造等领域。</p>
+
+    </div>
+  </div>
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>虚拟现实VR</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>虚拟现实（英语：virtual reality，缩写VR），简称虚拟环境，是利用电脑模拟产生一个三维空间的虚拟世界，提供用户关于视觉等感官的模拟，让用户感觉仿佛身历其境，可以即时、没有限制地观察三维空间内的事物。用户进行位置移动时，电脑可以立即进行复杂的运算，将精确的三维世界影像传回产生临场感。该技术集成了电脑图形、电脑仿真、人工智能、感应、显示及网络并行处理等技术的最新发展成果，是一种由电脑技术辅助生成的高技术模拟系统。</p>
+
+    </div>
+  </div>
+
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>增强现实AR</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>增强现实（Augmented Reality，简称AR），增强现实技术也被称为扩增现实，AR增强现实技术是促使真实世界信息和虚拟世界信息内容之间综合在一起的较新的技术内容，其将原本在现实世界的空间范围中比较难以进行体验的实体信息在电脑等科学技术的基础上，实施模拟仿真处理，叠加将虚拟信息内容在真实世界中加以有效应用，并且在这一过程中能够被人类感官所感知，从而实现超越现实的感官体验。真实环境和虚拟物体之间重叠之后，能够在同一个画面以及空间中同时存在。<br>增强现实技术不仅能够有效体现出真实世界的内容，也能够促使虚拟的信息内容显示出来，这些细腻内容相互补充和叠加。在视觉化的增强现实中，用户需要在头盔显示器的基础上，促使真实世界能够和电脑图形之间重合在一起，在重合之后可以充分看到真实的世界围绕着它。增强现实技术中主要有多媒体和三维建模以及场景融合等新的技术和手段，增强现实所提供的信息内容和人类能够感知的信息内容之间存在着明显不同。</p>
+
+    </div>
+  </div>
+
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>发展历史</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+        <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>AR</p>
+
+  </div>
+AR技术的起源，可追溯到Morton Heilig在20世纪五、六十年代所发明的Sensorama Stimulator。他是一名电影制作人兼发明家。他利用他的多年的电影拍摄经验设计出了叫Sensorama Stimulator的机器。 SensoramaStimulator同时使用了图像、声音、香味和震动，让人们感受在纽约的布鲁克林街道上骑着摩托车风驰电掣的场景。这个发明在当时非常超前。以此为契机，AR也展开了它的发展史。 由于AR技术的颠覆性和革命性，AR技术获得了大量关注。早在20世纪90年代，就有3D游戏上市，但由于当时的AR技术价格较高，其自身延迟较长，设备计算能力有限等缺陷，导致这些AR游戏产品以失败收尾，第一次AR热潮就此消退。到了2014年，Facebook以20亿美元收购Oculus后，类似的AR热再次袭来。在2015和2016两年间，AR领域共进行了225笔风险投资，投资额达到了35亿美元，原有的领域扩展到多个新领域，如城市规划、虚拟仿真教学、手术诊疗、文化遗产保护等。如今，AR、VR等沉浸式技术正在快速发展，一定程度上改变了消费者、企业与数字世界的互动方式。用户期望更大程度上从2D转移到沉浸感更强的3D，从3D获得新的体验，包括商业、体验店、机器人、虚拟助理、区域规划、监控等，人们从只使用语言功能升级到包含视觉在内的全方位体验。而在这个发展过程中，AR将超越VR，更能满足用户的需求。 
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>VR</p>
+
+  </div>
+1950年之前
+虚拟现实VR的概念首先来自于斯坦利·G·温鲍姆（Stanley G. Weinbaum）的科幻小说《皮格马利翁的眼镜（Pygmalion's Spectacles）》，被认为探讨虚拟现实的第一部科幻作品，简短的故事中详细地描述了包括嗅觉、触觉和全息护目镜为基础的虚拟现实系统。
+1950年至1970年
+莫顿·海利希（Morton Heilig ）在50年代创造一个“体验剧场”，可以有效涵盖所有的感觉，吸引观众注意屏幕上的活动。1962年，他创建一个原型被称为Sensorama，五部短片同时进行多种感官（视觉，听觉，嗅觉，触觉）。Sensorama是机械设备，据说今天仍在使用。大约在同一时间，道格拉斯·恩格尔巴特使用电脑屏幕当作输入和输出设备。
+1968年，伊凡·苏泽兰与学生Bob Sproull创造第一个虚拟现实及增强现实头戴式显示器系统。这种头戴式显示器相当原始，也相当沉重，不得不被悬挂在天花板上。该设备被称为达摩克利斯之剑（The Sword of Damocles）。
+1970年至1990年
+早期的虚拟现实中，值得注意的是阿斯电影地图（Aspen Movie Map），它由麻省理工学院于1978年创建，背景是科罗拉多州阿斯彭，用户可以徜徉在三种街头模式：夏季、冬季和三维模式。前两个模式无论春夏秋冬由研究人员实际拍摄城市街道每一个运动。
+Atari公司在1982年成立虚拟现实研究实验室，但是两年后关闭。然而汤姆·齐默尔曼，斯科特·费舍尔，贾瑞恩·拉尼尔仍持续对虚拟现实相关技术的研究和开发。
+到了80年代，贾瑞恩·拉尼尔（Jaron Lanier）使“虚拟现实”广为人知。拉尼尔于1985年创办VPL Research研究几种虚拟现实设备，如数据手套、眼睛电话、音量控制。
+在此期间，虚拟现实并不广为人知，媒体报导在80年代末逐渐增加。虚拟现实来自边缘文化，例如赛博朋克视为社会变革的潜在手段，毒品文化则称赞虚拟现实不仅是一种新的艺术形式，更是一个全新的领域。虚拟现实开始吸引媒体的报导，人们开始意识到虚拟现实潜力。有些媒体甚至将虚拟现实与莱特兄弟发明飞机相比。
+1990年，Jonathan Waldern在伦敦亚历山德拉宫举行的电脑图形90展览会展示“虚拟性”（Virtuality）。这个新系统是种街机，使用虚拟耳机。
+1990年至2000年
+1991年，SEGA发行SEGA VR虚拟现实耳机街机游戏和Mega Drive。它使用液晶显示屏幕，立体声耳机和惯性传感器，让系统可以追踪并反应用户头部运动。
+同年，游戏Virtuality推出，并成为第一大多人虚拟现实网络娱乐系统。它在许多国家发行，包括旧金山内河码头中心一个专门虚拟现实商场。每台Virtuality系统成本为73,000美元，包含头盔和外骨骼手套，是第一个三维虚拟现实系统。
+麻省理工学院科学家安东尼奥·梅迪纳设计一个虚拟现实系统，从地球“驾驶”火星车，尽管信号严重延误。该系统被称为“电脑模拟遥控操作”，是虚拟现实的延伸。
+1991年，罗莱·克鲁兹·内拉（Carolina Cruz-Neira），丹尼尔·J·桑丁和Thomas A. DeFanti在电子可视化实验室创建第一个可视化立方房间，人们可以看到周遭的其他人。
+1994年，SEGA发行SEGA VR-1运动模拟器街机，它能够跟踪头部运动并制造立体3D图像。
+1994年，苹果发布QuickTime VR格式。它是与VR广泛链接使用的产品。
+1995年7月21日，任天堂完成Virtual Boy并在日本发布。
+1995年，西雅图一个组织创造一个“洞穴般的270度沉浸式投影室”，称为虚拟环境剧场。1996年，同一系统在Netscape Communications主办展览会中发表，首次展示虚拟现实连接到网络，内容提要与VRML 3D虚拟世界相链接。
+1995年，个人电脑供电的虚拟现实耳机VFX1 Headgear出现，它支持游戏包含天旋地转、星球大战：黑暗力量、System Shock和雷神之锤 (游戏)。
+1999年，企业家菲利普·罗斯戴尔（Philip Rosedale）组织林登实验室（Linden Lab），最初的重点是硬件，使电脑用户完全沉浸在360度虚拟现实中。
+一个2013年版本的Oculus VR公司的Oculus Rift设备, 这家公司于2014年被Facebook以20亿美元收购。
+2001年-至今
+经济实惠和方便的Google Cardboard。
+2001年，SAS3或SAS Cube成为第一个台式机立体空间，由Z-A生产，2001年4月在法国拉瓦尔完成。
+2007年，谷歌推出街景视图，显示越来越多的世界各地全景，如道路，建筑物和农村地区。一个立体3D模式在2010年推出。
+2010年，帕尔默·拉奇创办欧酷拉，设计虚拟现实头戴式显示器Oculus Rift。
+2013年，任天堂申请专利，提出使用虚拟现实技术概念使2D电视拥有更逼真的3D效果。
+2015年7月，OnePlus成为第一家利用虚拟现实推出产品的公司。他们用虚拟现实的平台推出OnePlus 2，在谷歌应用程序Play商店，YouTube上发布。
+2016年4月27日，Mojang宣布Minecraft可以在三星Gear VR上使用。
+2016年7月，宏达电与电玩商Valve推出个人电脑VR眼镜产品HTC Vive．
+2016年7月，指挥家VRconductorVR发布全球首个大空间多人交互VR行业应用。
+2018年1月，上海一个团队首先突破技术难点，于CES大会上推出了商用化的个人8K分辨率电脑VR眼镜，两眼各4K，有效消除了近距观看显示器时人眼的纱窗效应。
+    </div>
+  </div>
+
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>应用场景</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+        <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>AR</p>
+
+  </div>
+随着AR技术的成熟，AR越来越多地应用于各个行业，如教育、培训、医疗、设计、广告等。 
+1、教育
+AR以其丰富的互动性为儿童教育产品的开发注入了新的活力，儿童的特点是活泼好动，运用AR技术开发的教育产品更适合孩子们的生理和心理特性。例如，市场上随处可见的AR书籍，对于低龄儿童来说，文字描述过于抽象，文字结合动态立体影像会让孩子快速掌握新的知识，丰富的交互方式更符合孩子们活泼好动的特性，提高了孩子们的学习积极性。在学龄教育中AR也发挥着越来越多的作用，如一些危险的化学实验，及深奥难懂的数学、物理原理都可以通过AR使学生快速掌握。 
+AR技术具备提升现实情境的清晰直观性和感知冲击力，使得情景式的学习方式更具亲和性、动态性和自然性，在一定程度上能弥补孤独症儿童对现实世界信息和刺激接收迟缓的弱势，以及社交沟通上动机明显不足的劣势，能为孤独症儿童教学情景创设的实现提供新的途径。 
+2、健康医疗
+近年来，AR技术也越来越多地被应用于医学教育、病患分析及临床治疗中，微创手术越来越多地借助AR及VR技术来减轻病人的痛苦，降低手术成本及风险。此外在医疗教学中，AR与VR的技术应用使深奥难懂的医学理论变得形象立体、浅显易懂，大大提高了教学效率和质量。 
+3、广告购物
+AR技术可帮助消费者在购物时更直观地判断某商品是否适合自己，以作出更满意的选择。用户可以轻松地通过该软件直观地看到不同的家具放置在家中的效果，从而方便用户选择，该软件还具有保存并添加到购物车的功能。 
+4、展示导览
+AR技术被大量应用于博物馆对展品的介绍说明中，该技术通过在展品上叠加虚拟文字、图片、视频等信息为游客提供展品导览介绍。此外，AR技术还可应用于文物复原展示，即在文物原址或残缺的文物上通过AR技术将复原部分与残存部分完美结合，使参观者了解文物原来的模样，达到身临其境的效果。 
+5、应用于信息检索领域
+对于用户需要对某一物品的功能和说明清晰了解时，增强现实技术会根据用户需要将该物品的相关信息从不同方向汇聚并实时展现在用户的视野内。在未来，人们可以在通过扫描面部，识别出此人的信用以及部分公开信息，防止上当受骗，这些技术的实现很大程度上减少了受骗几率，方便用户快速高效的工作。 
+6、应用于工业设计交互领域
+增强现实技术最特殊的地方就是在于其高度交互性，应用于工业设计中，主要表现为虚拟交互，通过手势、点击等识别来实现交互技术，将虚拟的设备、产品去展示给设计者和用户前，也可以通过部分控制实现虚拟仿真，模仿装配情况或日常维护、拆装等工作，在虚拟中学习，减少了制造浪费以及对人才培训的成本，大大改善了设计的体制，缩短了设计时间提高效率。 
+影视影业
+当前，虚拟现实技术在影视制作中的应用，主要是通过构建出可与影视场景交互的虚幻三维空间场景，结合对观众的头、眼、手等部位动作捕捉，及时调整影像呈现内容，继而形成人景互动的独特体验。由于目前 VR 影业尚不成熟，在实际制作中会遇到许多困难，如导演人选、拍摄无分镜、剧情的呈现方式等。近年来LED显示屏的点间距、亮度、不受限于尺寸与形状的限制等优势，开始被全球厂商陆续采用，建置成XR (Extended Reality) 虚拟摄影棚或LED显示屏虚拟摄影棚，进行无论电视、电影、商业广告等拍摄，使导演、演员、灯光师、摄影师等幕前幕后工作人员能快速融入拍摄场景，提升现场的视觉沉浸感，并大幅降低后制的时间与成本。
+
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>VR</p>
+
+  </div>
+网络直播
+传统方式的视频直播中，观众往往不能全方位了解直播对象周围环境状况，无法切身感受现场氛围，而 VR 直播将活动现场还原到虚拟空间中，其优势在于：
+
+<p>身临其境，借助 VR 头显，观众可以身临其境的在现场观看比赛，增加观众观看节目的趣味性；<br>自由选择位置和角度，时刻关注自己感兴趣的场景；<br>互动性强，VR 直播的‚现场‛氛围要远远高于普通显示屏观看，在这种现场气氛的烘托下，观众的情绪极易被充分调动，增加观看愉悦感。<br>此外，VR 直播也面临着多种挑战，如全景相机拼接算法尚不成熟、对网络环境要求较高、传输格式标准未统一带来的渲染制作和编解码等诸多环节问题。</p>
+<p>线下主题馆<br>VR 线下主题馆将传统电竞与虚拟现实技术相结合，结合大空间光学动作捕捉系统、精确的多相机同步管理运算系统与特殊体感交互设备等，玩家可以化身为游戏中的虚拟角色，在特定游戏场景中自由行动，同时借助本地网络环境或云平台，让多人、多地的在线合作或对抗成为可能，极大增强了游戏可玩性和趣味性。</p>
+<p>数字展馆<br>传统展馆多采用展品陈列、图片展示、人员讲解等方式向观众传达信息，难以实现多角度欣赏、近距离观看功能，很难快速吸引观众兴趣。虚拟现实技术与展馆展示相结合，不仅体现了其开放、共享、多媒体呈现的特点，数字化呈现实体展的全部内容，还突破实体展的时空局限性，利用图文、视频、三维模型等深度资料，对重点展品进行延展和补充，加强了可视化的网络互动体验，使得展览内容更丰富和多样。</p>
+<p>文物保护<br>将虚拟现实技术应用于文物保护工作，可以创建数字化的文物保护方法，为文物的保存、修复和展示提供了新的技术手段，让历史得以数字化再现，文明得以信息化传承。如2017 年，兵马俑实施了200亿像素360°全景兵马俑坑展示工程和AI秦始皇兵马俑复原工程。其中200亿像素360°全景兵马俑坑展示工程采用了矩阵全景技术，收录了兵马俑的一号坑和三号坑的高精度全景图资料。</p>
+<p>科研教学<br>相比传统的训练方式，医学生使用实体（如小白鼠）解剖的成本不低，且通常无法重复利用。虚拟现实技术则可以帮助医学生在虚拟手术台上反复练习，虽然仍无法完全取代真实练习，但已经可以作为预习和强化记忆的手段，具备在医学领域推广应用条件。</p>
+<p>课堂教学<br>在教育场景，虚拟现实技术可通过自然的交互方式，将抽象的学习内容可视化、形象化，为学生提供传统教材无法实现的沉浸式学习体验，提升学生获取知识主动性，实现更高的知识保留度。目前，教育已成为虚拟现实应用行业中发展最快也是最先落地的领域，随着政策的鼓励和市场的驱动，预计虚拟现实教育市场还将持续增长。</p>
+<p>运维巡检<br>工业生产制造过程中，为维护设备安全稳定运行而展开的运维巡检工作量非常巨大，虚拟现实技术的到来，使生产人员可以通过安全的数据可视化头显对设备运转状态、生产环境以及潜在隐患等关键信息进行监测和排查，有利于全面、准确、实时了解整体生产制造情况，从而提高生产安全系数和生产效率。</p>
+<p>安全消防<br>虚拟现实技术的发展填补了安全消防教育在感知交互需求方面的空白，通过构造出特定的安防培训场景，将传统的教学元素如图形和数据嵌入到生动虚拟环境中，通过模拟特定的危险情景，更容易激发体验者的紧张感并提升专注度，强化事故演练效果。</p>
+<p>自动驾驶<br>在不能无限扩大自动驾驶测试车队规模的情况下，通过虚拟现实技术模拟真实道路环境进行测试成为业界主流解决方案，如使用 NVIDIA DGX 和 Tensor RT 3 进行仿真，工程师可以加快道路测试，加快自动驾驶汽车研发量产进度。</p>
+<p>产品设计<br>以工业互联网或物联网平台为基础，虚拟现实成为实现数字孪生（Digital Twins）的核心技术之一。依托特定工具软件可以在虚拟空间中构建出与物理世界完全对等的数字镜像，成为将产品研发、生产制造、商业推广三个维度的数据全部汇集的基础，实现了数据信息与真实物理环境间的互动，为进行阶段性数据验证、业务流程参考的提供了重要支撑。</p>
+<p>商业营销<br>虚拟现实+商业营销是利用虚拟现实技术，使消费者获得逼真的感官体验，充分调动消费者的感性基因，从而影响其消费决策。虚拟现实+商业营销分为线上和线下两种方式。线上营销是电商 2.0 版，VR&#x2F;AR电商通过三维建模技术与VR&#x2F;AR设备以及交互体验，可以带给消费者更好的消费体验，线下营销则是在产品的实体店或是展示活动现场利用VR&#x2F;AR设备给消费者带来有趣的互动体验，增加消费者的兴趣与购买欲。例如房地产行业，通过使用虚拟现实技术，看房者在线上即可浏览房源的全貌，步入房间查看细节，除了沉浸式的体验之外，还可以得到房间长、宽、高、年限、周边配套等全方位数据展示，便于全面掌握房屋信息；对于开发商或中介商来说，通过分析用户行为数据，可实现房源精准推销的同时节省人力资源投入成本，有助于提升业务成交效率和企业运营收益。</p>
+
+    </div>
+  </div>
+
+
+
+  <div class="note-large blue">
+    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
+      <p>参考来源</p>
+
+    </div>
+    <div class="notel-content markdown-body">
+      <p>维基百科 <a class="link"   target="_blank" rel="noopener" href="https://zh.wikipedia.org/" >维基百科<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>百度百科 <a class="link"   target="_blank" rel="noopener" href="https://baike.baidu.com/" >百度百科<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+    </div>
+  </div>
+
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> VR AND AR</li>
+        <li><strong>Author:</strong> 白糖</li>
+        <li><strong>Created at
+                :</strong> 2023-06-02 20:12:32</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-07-08 10:14:10
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://zhsugar.me/2023/06/02/VR AND AR/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E6%95%99%E8%82%B2/">#教育</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E5%A8%B1%E4%B9%90/">#娱乐</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E7%A7%91%E6%8A%80/">#科技</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/2024/04/08/%E6%97%A5%E5%85%A8%E9%A3%9F/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">日全食</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2023/05/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">深度学习-神经网络模型</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: 'Ov23liUqjQP3vASrlWIA',
+                    clientSecret: '37ab394aca2d1c998a6b20dc8507167fb7fb15e0',
+                    repo: 'Gitalk',
+                    owner: 'zhsugar',
+                    admin: ['zhsugar'],
+                    id: __gitalk__pathname,
+                    language: 'en',
+                    proxy: 'https://github.com/login/oauth/access_token'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
+</div>
+
+		</div>
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">VR AND AR</div>
+		
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">白糖</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        11 posts in total
+                    </span>
+                    
+                        <span>
+                            29.9k words in total
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.5</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Search..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+	<div id="aplayer"></div>
+
+<script src="/js/build/libs/APlayer.min.js"></script>
+
+
+<script src="/js/build/plugins/aplayer.js"></script>
+
+
+	
+</body>
+
+</html>
