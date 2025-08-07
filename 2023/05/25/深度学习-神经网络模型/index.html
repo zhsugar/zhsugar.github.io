@@ -140,7 +140,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/redefine-og.webp">
 <meta property="article:published_time" content="2023-05-25T12:17:12.000Z">
-<meta property="article:modified_time" content="2025-08-07T06:58:08.684Z">
+<meta property="article:modified_time" content="2025-08-07T08:26:53.359Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="深度学习">
 <meta property="article:tag" content="神经网络">
@@ -738,8 +738,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-08-07 14:58:08</span>
-            <span class="mobile">2025-08-07 14:58:08</span>
+            <span class="desktop">2025-08-07 16:26:53</span>
+            <span class="mobile">2025-08-07 16:26:53</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -785,7 +785,7 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>4.5k Words</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>4.6k Words</span>
         </span>
     
     
@@ -861,9 +861,9 @@
 
   </div>
 &emsp;&emsp;回到像素这一话题，你有没有想过，为什么一张图片会是彩色的。
-&emsp;&emsp;学过摄影的小明同学可能这时会回答：因为图片是由RGB三种颜色来表示的，每个像素实际是不同的R/G/B分量的叠加，混合起来，就表示成了不同的颜色。
-&emsp;&emsp;回答正确。
 
+<p>&emsp;&emsp;学过摄影的小明同学可能这时会回答：因为图片是由RGB三种颜色来表示的，每个像素实际是不同的R&#x2F;G&#x2F;B分量的叠加，混合起来，就表示成了不同的颜色。</p>
+<p>&emsp;&emsp;回答正确。</p>
 <p>&emsp;&emsp;<figure class="image-caption"><img src="https://pic.imgdb.cn/item/64760578f024cca173cee4d7.png" alt="三张分别表示R/G/B分量的图片，合成一张彩色图片" title="hei ni"><figcaption>三张分别表示R/G/B分量的图片，合成一张彩色图片</figcaption></figure><br>&emsp;&emsp;对于上面一张RGB的图，我们人眼可以很直观的看到红色和蓝色，可以察觉到一张图片的色彩和轮廓。<br>&emsp;&emsp;那么，如果让计算机来处理图片，他又是如何知道色彩和轮廓的呢？<br>&emsp;&emsp;其实对于计算机来说，一张图片只是一堆数据，计算机是无法知道这堆数据代表的是什么。<br>&emsp;&emsp;这就需要人为的给这堆数据一种表示方法，让计算机知道，哦，这1&#x2F;3的数据是红色分量，这1&#x2F;3的是蓝色分量，这些数据（像素）组合起来，可能代表的是个“帽子”。<br>&emsp;&emsp;怎么做呢？通过设计数据在计算机中的存储方式来解决。<br>&emsp;&emsp;数据在计算机的存储中，最常见的存储方式是连续存储的。<br>&emsp;&emsp;比如C语言，定义一个数组，那么数组在内存中的位置是连续的。<br>&emsp;&emsp;int data[10] &#x3D; {0,1,2,3,4,5,6,7,8,9};<br>&emsp;&emsp;内存怎么理解，它就是一排连着的门牌号的公寓宿舍。门牌号为101里面住着的，是data的第一个数据0。门牌号102里面住着的，是data的第二个数据1，…，以此类推。</p>
 <p>&emsp;&emsp;内存也是类似于门牌号规则，数据就像人一样，存储在以地址为标识的一个个的内存地址上（房子）<br>&emsp;&emsp;只不过，在计算机存储器中，没有门牌号，有的都是地址。这个时候，计算机根本就不关心数据是啥，计算机用到的时候，就把数据从内存对应的地址中取出来用。</p>
   <div class="note p-4 mb-4 rounded-small markdown-body info">
@@ -871,10 +871,10 @@
 
   </div>
 &emsp;&emsp;人们为数据存储设计一种格式，告诉计算机，这堆数据大概是什么样的。只有这样，通过这种约定的方式，计算机才能正确的取到R分量或者B分量。
-&emsp;&emsp;对于一张图片来说，最常见的两个参数是长和宽，一般用H（height）和W(width) 来表示，那么RGB三个分量，看作是3个通道（channel），一般用 C 来表示。
-&emsp;&emsp;如此一来，一张长宽分别是224像素*224像素的RGB图像，就可以用 HWC = [224, 224, 3]来表示。
-&emsp;&emsp;两张类似的图片就用 NHWC = [2, 224, 224, 3]表示，其中N代表图片张数。
 
+<p>&emsp;&emsp;对于一张图片来说，最常见的两个参数是长和宽，一般用H（height）和W(width) 来表示，那么RGB三个分量，看作是3个通道（channel），一般用 C 来表示。</p>
+<p>&emsp;&emsp;如此一来，一张长宽分别是224像素*224像素的RGB图像，就可以用 HWC &#x3D; [224, 224, 3]来表示。</p>
+<p>&emsp;&emsp;两张类似的图片就用 NHWC &#x3D; [2, 224, 224, 3]表示，其中N代表图片张数。</p>
 <p>&emsp;&emsp;<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
@@ -886,9 +886,9 @@
 
   </div>
 &emsp;&emsp;这一章，从像素说起，说到了像素具有局部连接性的，人眼识别图像也是通过获取像素的局部连接性信息来完成的。
-&emsp;&emsp;幸运的是，卷积这一算法，可以很好的模拟这一过程。最后，为了使计算机更高效的处理图片数据，引出NHWC的图片数据表示方法，所以，之后我们说图片，不仅仅局限于图片的长和宽，还多了一个维度信息，那就是channel。
-&emsp;&emsp;熟悉OpenCV或者计算机视觉，数字图像处理的同学，可能对于下面的RGB分量中的大神很熟悉。没错，在很多的教程中，这位女神不止一次的出场。
 
+<p>&emsp;&emsp;幸运的是，卷积这一算法，可以很好的模拟这一过程。最后，为了使计算机更高效的处理图片数据，引出NHWC的图片数据表示方法，所以，之后我们说图片，不仅仅局限于图片的长和宽，还多了一个维度信息，那就是channel。</p>
+<p>&emsp;&emsp;熟悉OpenCV或者计算机视觉，数字图像处理的同学，可能对于下面的RGB分量中的大神很熟悉。没错，在很多的教程中，这位女神不止一次的出场。</p>
 <p>&emsp;&emsp;<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
@@ -918,7 +918,7 @@
                      data-src="https://pic.imgdb.cn/item/647724bef024cca173ed1973.jpg"
                       alt="原图与RGB 三个分量图片" title="kan xin"
                 ><figcaption>原图与RGB 三个分量图片</figcaption></figure></p>
-<p>&emsp;&emsp;平时我们说，分辨率为1920<em>1080的图片，它代表的是在长宽两个方向上，有 1920 * 1080 个像素，但是，在色彩这个方向上，还有 3<br>个通道（channel），也就是RGB，往往被我们忽略。我们看到的一个像素点的颜色，在计算系统中，并不是简单的由一个数值来表示的，而是由RGB三个分量的三个数值来表示的。<br>&emsp;&emsp;<figure class="image-caption"><img  
+<p>&emsp;&emsp;平时我们说，分辨率为1920<em>1080的图片，它代表的是在长宽两个方向上，有 1920 * 1080 个像素，但是，在色彩这个方向上，还有 3个通道（channel），也就是RGB，往往被我们忽略。我们看到的一个像素点的颜色，在计算系统中，并不是简单的由一个数值来表示的，而是由RGB三个分量的三个数值来表示的。<br>&emsp;&emsp;<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://pic.imgdb.cn/item/64772716f024cca173eff01e.png"
@@ -987,14 +987,16 @@
 <p>&emsp;&emsp;可在深度学习网络中，随着网络深度的增加，图片的channel数会不断的增大。就拿Resnet50这个网络来说，最后面的一层图片，channel数已经增大到了2048。这时channel代表的信息，早已不再是RGB这种基础的特征了。而是通过了大量的神经网络训练，代表了图片的多种分类特征，比如是猫的特征还是狗的特征。</p>
 <p>&emsp;&emsp;这个后面会详细说。</p>
 <p>&emsp;&emsp;YUV这种编码方法，可以用在图片的上下采样中。通过降低或增加通道数，实现图片的上下采样，以此来实现图片的增大或减少，但又不损失太多我们希望保留的信息。</p>
-<p>&emsp;&emsp;<br>  <div class="note p-4 mb-4 rounded-small markdown-body info"><br>    <p>总结一下</p></p>
+  <div class="note p-4 mb-4 rounded-small markdown-body info">
+    <p>总结一下</p>
+
   </div>
 
 <p>&emsp;&emsp;这章聊了聊RGB、YUV 两种颜色空间，以及YUV可能的用途和它的优势。</p>
 <p>&emsp;&emsp;为什么聊这么多关于图片的东西，因为在深度学习处理图像的任务中，图片是原材料。正所谓知己知彼，百战不殆。</p>
 <p>&emsp;&emsp;了解了图片这一深度学习的原材料之后，我们就可以更加高效的来完成图片数据的处理和分析。就可以开始图像识别的算法之旅了！</p>
 <p>&emsp;&emsp;公元663年，唐代诗人王勃游历南昌，登滕王阁而做序，大笔一挥，豪气万丈。</p>
-<p>&emsp;&emsp;当时的王勃，傲立在滕王阁楼顶时，看到的应该是怎样的一副壮美图景，才使得中国文坛留下了一句千古绝唱。</p>
+<p>&emsp;&emsp;当时的王勃，傲立在滕王阁楼顶时，看到的应该是怎样的一副壮美图景，才使得中国文坛留下了一句千古绝唱。&emsp;&emsp;</p>
   <div class="note p-4 mb-4 rounded-small markdown-body info">
     <p>潦水尽而寒潭清， 烟光凝而暮山紫。</p>
 
@@ -1014,12 +1016,14 @@
 
   <div class="note-large blue">
     <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
-      <p>文章摘自</p>
+      <p>文章源自</p>
 
     </div>
     <div class="notel-content markdown-body">
-      <p><a class="link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/554100794" >知乎<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+      <div class="note p-4 mb-4 rounded-small markdown-body primary">
+  <p><a class="link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/554100794" >知乎-图像识别-Resnet网络拆解<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
 
+</div>
     </div>
   </div>
 
@@ -1030,7 +1034,7 @@
   </div>
 
   <div class="note p-4 mb-4 rounded-small markdown-body warning">
-    <p>邮箱：<a class="link"   href="mailto:&#49;&#55;&#57;&#53;&#x38;&#52;&#55;&#56;&#x36;&#x33;&#x40;&#113;&#113;&#46;&#x63;&#111;&#x6d;" >&#49;&#55;&#57;&#53;&#x38;&#52;&#55;&#56;&#x36;&#x33;&#x40;&#113;&#113;&#46;&#x63;&#111;&#x6d;<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+    <p>邮箱：<a class="link"   href="mailto:&#49;&#55;&#57;&#x35;&#56;&#x34;&#55;&#56;&#x36;&#51;&#x40;&#x71;&#113;&#x2e;&#x63;&#111;&#x6d;" >&#49;&#55;&#57;&#x35;&#56;&#x34;&#55;&#56;&#x36;&#51;&#x40;&#x71;&#113;&#x2e;&#x63;&#111;&#x6d;<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
 
   </div>
 		</div>
@@ -1046,7 +1050,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-08-07 14:58:08
+                    :</strong> 2025-08-07 16:26:53
             </li>
         
         <li>
