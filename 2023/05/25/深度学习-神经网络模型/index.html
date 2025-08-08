@@ -1024,7 +1024,7 @@
   </div>
 
   <div class="note p-4 mb-4 rounded-small markdown-body warning">
-    <p>邮箱：<a class="link"   href="mailto:&#x31;&#55;&#x39;&#53;&#x38;&#52;&#55;&#x38;&#54;&#51;&#64;&#x71;&#113;&#46;&#99;&#111;&#109;" >&#x31;&#55;&#x39;&#53;&#x38;&#52;&#55;&#x38;&#54;&#51;&#64;&#x71;&#113;&#46;&#99;&#111;&#109;<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+    <p>邮箱：<a class="link"   href="mailto:&#x31;&#x37;&#x39;&#x35;&#x38;&#x34;&#55;&#x38;&#x36;&#51;&#64;&#x71;&#113;&#x2e;&#99;&#111;&#x6d;" >&#x31;&#x37;&#x39;&#x35;&#x38;&#x34;&#55;&#x38;&#x36;&#51;&#64;&#x71;&#113;&#x2e;&#99;&#111;&#x6d;<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
 
   </div>
 		</div>
@@ -1241,6 +1241,26 @@
         </div>
         
         
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
         
         
         
@@ -1378,6 +1398,10 @@
     <script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.8.5/files/source/js/build/layouts/lazyload.js" ></script>
 
 
+
+    <script  src="https://registry.npmmirror.com/hexo-theme-redefine/2.8.5/files/source/js/build/tools/runtime.js" ></script>
+    <script  src="https://registry.npmmirror.com/hexo-theme-redefine/2.8.5/files/source/js/build/libs/odometer.min.js" ></script>
+    <link rel="stylesheet" href="https://registry.npmmirror.com/hexo-theme-redefine/2.8.5/files/source/assets/odometer-theme-minimal.css">
 
 
 
